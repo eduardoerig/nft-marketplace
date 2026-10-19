@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 06** — `docs/steps/06-inicio-catalogo.md`.
+- [ ] **Próximo: passo 07** — `docs/steps/07-detalhe-nft.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -42,6 +42,13 @@ Passos concluídos (marque com o hash do commit):
   `networkDelay()` + `ok()`/`fail()` de `handlers/respond.ts`. Testes: importe `test`/`expect` de
   `tests/e2e/fixtures.ts` (reset automático); chamadas à API nos testes saem da página
   (`mockApi.getJson`), senão não passam pelo MSW. Testes têm tsconfig próprio (`tsconfig.e2e.json`).
+- [x] passo 06 — Início e catálogo (a283a09). Feature em `src/features/catalog/` (search.ts = schema
+  zod da URL + rótulos; `useCatalogSearch`/`useUpdateCatalogSearch`). Listas de valores
+  (`CATEGORIES`, `NETWORKS`, `NFT_SORTS`, `NFT_VIEWS`) moram em `src/api/types.ts`. **Armadilha do
+  TanStack Link:** link ativo recebe `aria-current="page"` à força e a busca compara de forma parcial —
+  links do catálogo usam `activeOptions={{ exact: true }}`; links com `hash` usam `{ includeHash: true }`.
+  Após `reload()` nos testes, a API só responde quando `window.__mocksReady` (o fixture já espera).
+  O dev server às vezes não vê pastas novas do Tailwind: reinicie se uma classe "não pegar".
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
