@@ -90,7 +90,7 @@ function toNft(seed: Seed, index: number): Nft {
     network: NETWORKS[Math.floor(index / CATEGORIES.length) % NETWORKS.length],
     images: [main, ...ART.filter((a) => a !== main)],
     description: `${seed.name} é uma obra digital finalizada à mão da coleção Kurio Editions, verificada na rede, com arte desbloqueável e acesso para colecionadores.`,
-    attributes: ['Óculos', 'Esmeralda', 'Raro'].slice(0, 1 + (index % 3)),
+    attributes: ['Óculos', 'Esmeralda', 'Raro'].slice(0, 3 - (index % 3)),
     rating: seed.rating ?? 3 + (index % 3) * 0.5 + (index % 2) * 0.4,
     reviewCount: seed.reviewCount ?? 5 + ((index * 17) % 60),
     rare: seed.rare ?? false,

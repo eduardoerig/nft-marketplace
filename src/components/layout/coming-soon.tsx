@@ -27,3 +27,26 @@ export function ComingSoon({ children, className }: Props) {
     </Tooltip>
   )
 }
+
+/**
+ * Mesma ideia para AÇÕES (botões). Usa aria-disabled em vez de disabled: assim o botão continua
+ * focável pelo teclado e o tooltip "Em breve" aparece — e o clique não faz nada.
+ */
+export function ComingSoonButton({ children, className }: Props) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          aria-disabled="true"
+          onClick={(e) => e.preventDefault()}
+          className={cn('cursor-not-allowed opacity-60', className)}
+        >
+          {children}
+          <span className="sr-only"> (em breve)</span>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>Em breve</TooltipContent>
+    </Tooltip>
+  )
+}
