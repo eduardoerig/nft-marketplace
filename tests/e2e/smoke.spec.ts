@@ -3,8 +3,8 @@ import { expect, test } from './fixtures'
 
 test('home carrega e a API simulada responde com os NFTs', async ({ page, mockApi }) => {
   await page.goto('/')
-  await expect(page.getByRole('heading', { level: 1, name: 'Início' })).toBeVisible()
-  await expect(page).toHaveTitle('Início — Kurio')
+  await expect(page.getByRole('heading', { level: 1, name: /seja dono do futuro/i })).toBeVisible()
+  await expect(page).toHaveTitle('Kurio — Marketplace de NFTs')
 
   // A requisição sai da página e é respondida pelo MSW (service worker), como no app.
   const { status, body } = await mockApi.getJson<NftListResponse>('/api/nfts?pageSize=3')

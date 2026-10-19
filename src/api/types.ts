@@ -1,4 +1,4 @@
-// Contratos da API — fonte única de tipos entre transporte (Axios), estado (Query) e interface.
+// Contratos da API — fonte única de tipos (e das listas de valores aceitos) entre transporte (Axios), estado (Query) e interface.
 // Regras: valores em ETH são SEMPRE string decimal ("1.19"); quantidades são number inteiro;
 // datas são string ISO 8601. Documentação dos endpoints em docs/API.md.
 
@@ -103,7 +103,8 @@ export type PasswordChange = {
 // Carteiras
 // ---------------------------------------------------------------------------
 
-export type Network = 'ethereum' | 'polygon' | 'solana'
+export const NETWORKS = ['ethereum', 'polygon', 'solana'] as const
+export type Network = (typeof NETWORKS)[number]
 export type WalletProvider = 'metamask' | 'walletconnect' | 'coinbase'
 
 export type Wallet = {
@@ -123,16 +124,18 @@ export type WalletUpdate = Partial<Omit<Wallet, 'id' | 'kind'>>
 // Catálogo
 // ---------------------------------------------------------------------------
 
-export type Category =
-  | 'digital-art'
-  | 'photography'
-  | 'music'
-  | '3d-art'
-  | 'collectibles'
-  | 'generative'
-  | 'gaming'
-  | 'memberships'
-  | 'utility'
+export const CATEGORIES = [
+  'digital-art',
+  'photography',
+  'music',
+  '3d-art',
+  'collectibles',
+  'generative',
+  'gaming',
+  'memberships',
+  'utility',
+] as const
+export type Category = (typeof CATEGORIES)[number]
 
 /** Uma edição à venda de um NFT (pílulas "1/1", "1/10", "1/50", "ABERTA" no Figma). */
 export type NftEdition = {
@@ -163,9 +166,11 @@ export type Nft = {
   version: number // aumenta a cada mudança; usado para ignorar eventos antigos
 }
 
-export type NftSort = 'recent' | 'price-asc' | 'price-desc' | 'popular'
+export const NFT_SORTS = ['recent', 'price-asc', 'price-desc', 'popular'] as const
+export type NftSort = (typeof NFT_SORTS)[number]
 /** Abas do catálogo: "Todos os NFTs", "Novos lançamentos", "Em alta". */
-export type NftView = 'all' | 'new' | 'trending'
+export const NFT_VIEWS = ['all', 'new', 'trending'] as const
+export type NftView = (typeof NFT_VIEWS)[number]
 
 /** Parâmetros de GET /nfts. Os mesmos ficam na URL do catálogo. */
 export type NftListParams = {

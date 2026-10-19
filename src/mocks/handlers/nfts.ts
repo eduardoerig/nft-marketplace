@@ -1,12 +1,20 @@
 import { http } from 'msw'
-import type { Category, Network, Nft, NftListResponse, NftSort, NftView } from '@/api/types'
+import {
+  CATEGORIES,
+  NETWORKS,
+  NFT_SORTS,
+  NFT_VIEWS,
+  type Category,
+  type Network,
+  type Nft,
+  type NftListResponse,
+  type NftSort,
+  type NftView,
+} from '@/api/types'
 import { compare } from '@/lib/money'
 import { readDb } from '../db'
-import { CATEGORIES, NETWORKS } from '../fixtures/nfts'
 import { fail, networkDelay, ok } from './respond'
 
-const SORTS: NftSort[] = ['recent', 'price-asc', 'price-desc', 'popular']
-const VIEWS: NftView[] = ['all', 'new', 'trending']
 const DECIMAL = /^\d+(\.\d+)?$/
 const NEW_WINDOW_MS = 21 * 24 * 60 * 60 * 1000 // "Novos lançamentos": listados nos últimos 21 dias
 
@@ -42,7 +50,7 @@ function sortNfts(nfts: Nft[], sort: NftSort) {
   return sorted
 }
 
-function countBy<K extends string>(keys: K[], nfts: Nft[], pick: (n: Nft) => K) {
+function countBy<K extends string>(keys: readonly K[], nfts: Nft[], pick: (n: Nft) => K) {
   const counts = Object.fromEntries(keys.map((k) => [k, 0])) as Record<K, number>
   for (const nft of nfts) counts[pick(nft)] += 1
   return counts
@@ -69,8 +77,8 @@ export const nftHandlers = [
     if (network && !NETWORKS.includes(network as Network)) fields.network = 'Rede inválida.'
     if (minPrice && !DECIMAL.test(minPrice)) fields.minPrice = 'Preço mínimo inválido.'
     if (maxPrice && !DECIMAL.test(maxPrice)) fields.maxPrice = 'Preço máximo inválido.'
-    if (!VIEWS.includes(view as NftView)) fields.view = 'Aba inválida.'
-    if (!SORTS.includes(sort as NftSort)) fields.sort = 'Ordenação inválida.'
+    if (!NFT_VIEWS.includes(view as NftView)) fields.view = 'Aba inválida.'
+    if (!NFT_SORTS.includes(sort as NftSort)) fields.sort = 'Ordenação inválida.'
     if (!Number.isInteger(page) || page < 1) fields.page = 'Página inválida.'
     if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 48) fields.pageSize = 'Tamanho inválido.'
     if (Object.keys(fields).length) return fail('VALIDATION', 'Parâmetros de busca inválidos.', { fields })

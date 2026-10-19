@@ -33,6 +33,8 @@ export function MobileMenu({ pathname }: { pathname: string }) {
                   {item.to ? (
                     <Link
                       to={item.to}
+                      hash={item.hash}
+                      activeOptions={{ includeHash: true }}
                       onClick={close}
                       aria-current={active ? 'page' : undefined}
                       className={cn(active && 'font-bold text-highlight')}

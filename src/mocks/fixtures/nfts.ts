@@ -1,6 +1,6 @@
 // ~60 NFTs determinísticos (sem aleatoriedade): os 9 primeiros são os do Figma; o resto é gerado
 // por combinação, com variedade de categoria, rede, preço, edições esgotadas e selo "RARO".
-import type { Category, Network, Nft, NftEdition } from '@/api/types'
+import { CATEGORIES, NETWORKS, type Nft, type NftEdition } from '@/api/types'
 import { mul } from '@/lib/money'
 
 // As 4 artes do Figma (public/images): 1 macaco de óculos, 2 gorila de chapéu,
@@ -11,19 +11,6 @@ const ART = [
   '/images/nft-art-3.png',
   '/images/nft-art-4.png',
 ]
-
-export const CATEGORIES: Category[] = [
-  'digital-art',
-  'photography',
-  'music',
-  '3d-art',
-  'collectibles',
-  'generative',
-  'gaming',
-  'memberships',
-  'utility',
-]
-export const NETWORKS: Network[] = ['ethereum', 'polygon', 'solana']
 
 type Seed = {
   name: string

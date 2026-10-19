@@ -24,6 +24,8 @@ export function SiteHeader() {
                   {item.to ? (
                     <Link
                       to={item.to}
+                      hash={item.hash}
+                      activeOptions={{ includeHash: true }}
                       aria-current={active ? 'page' : undefined}
                       className={cn(
                         'flex h-full flex-col border-b-3 border-transparent text-base',
@@ -42,7 +44,13 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-4 lg:gap-7">
-          <Link to="/" aria-label="Buscar NFTs" className="hidden lg:block">
+          <Link
+            to="/"
+            hash="busca"
+            activeOptions={{ includeHash: true }}
+            aria-label="Buscar NFTs"
+            className="hidden lg:block"
+          >
             <img src="/icons/search-icon.svg" alt="" width={20} height={20} />
           </Link>
           <Link to="/cart" aria-label="Carrinho" className="relative">

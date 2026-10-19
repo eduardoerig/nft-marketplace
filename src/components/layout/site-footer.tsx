@@ -132,7 +132,12 @@ export function SiteFooter() {
           <ul className={columnList}>
             {COLLECTIONS.map((label) => (
               <li key={label}>
-                <Link to="/" hash="catalogo" className="hover:text-highlight">
+                <Link
+                  to="/"
+                  hash="catalogo"
+                  activeOptions={{ includeHash: true }}
+                  className="hover:text-highlight"
+                >
                   {label}
                 </Link>
               </li>
