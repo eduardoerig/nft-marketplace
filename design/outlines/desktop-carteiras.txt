@@ -1,0 +1,185 @@
+frame "Desktop / Carteiras" 1440x1080 fill=#140d0a col gap=96 pad=24/120/24/120
+  frame "Top" 1200x716 col gap=32 pad=0/0/0/0
+    instance "Header With Divider" 1200x45 col gap=0 pad=0/0/0/0 comp=70504:3017
+      instance "Header Row" 1200x45 row gap=0 pad=0/0/0/0 comp=70486:529
+        frame "Logo" 160x34
+          text "KURIO Wordmark" 48x18 fill=#f5f1eb [Roboto Mono 700 14/auto ls1.4] "KURIO"
+        frame "Nav" 401x45 row gap=40 pad=0/0/0/0
+          frame "Nav Item" 58x45 col gap=24 pad=0/0/0/0
+            text "Início" 58x21 fill=#e89b55 [Roboto Mono 700 16/auto] "Início"
+            line "Active Underline" 58x0 stroke=#d28a4c 3px
+          text "Mercado" 68x21 fill=#f5f1eb [Roboto Mono 400 16/auto] "Mercado"
+          text "Criadores" 87x21 fill=#f5f1eb [Roboto Mono 400 16/auto] "Criadores"
+          text "Aprenda" 68x21 fill=#f5f1eb [Roboto Mono 400 16/auto] "Aprenda"
+        frame "Header Actions" 207x35 row gap=28 pad=0/0/0/0
+          vector "Search Icon" 20x20 fill=#f5f1eb
+          group "Cart" 31x24
+            vector "Cart Icon" 24x24 fill=#f5f1eb
+            ellipse "Badge" 16x16 fill=#d28a4c stroke=#140d0a 2px
+            text "Badge Count" 7x13 fill=#140d0a [Roboto Mono 500 10/auto] "6"
+          group "Login" 100x35 r=6
+            frame "Login Button" 100x35 fill=#d28a4c r=6 col gap=10 pad=0/0/0/0
+              frame "Login Button Content" 82x21 row gap=4 pad=0/0/0/0
+                instance "Iconly/Curved/Logout" 20x20 comp=2:36
+                text "Entrar" 58x21 fill=#140d0a [Roboto Mono 500 16/auto] "Entrar"
+      line "Line 1" 1200x0 stroke=#d28a4c 0.30000001192092896px
+    frame "Body" 1200x639 row gap=28 pad=0/0/0/0
+      frame "Account Sidebar" 310x407 fill=#241612 col gap=0 pad=8/0/8/0
+        frame "Frame 457" 129x36 row gap=10 pad=10/10/10/10
+          text "Meu perfil" 109x16 fill=#f5f1eb [Roboto Mono 700 18/16] "Meu perfil"
+        frame "Frame 459" 310x45 col gap=0 pad=0/16/0/16
+          frame "Frame 458" 278x45 row gap=16 pad=0/0/0/0
+            instance "User" 18x18 comp=9:1443
+              vector "Vector" 12x15 fill=#cfb28c
+            text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 136x45 fill=#e89b55 [Roboto Mono 400 15/45] "Dados do perfil"
+        frame "Frame 460" 310x45 stroke=#d28a4c 1px row gap=12 pad=0/16/0/16
+          instance "Iconly/Light-Outline/Location" 20x20 comp=9:1651
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 82x45 fill=#e89b55 [Roboto Mono 400 15/45] "Carteiras"
+        frame "Frame 461" 310x45 row gap=12 pad=0/16/0/16
+          frame "shopping 1" 18x18
+            vector "Vector" 18x18 fill=#b39463
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 82x45 fill=#e89b55 [Roboto Mono 400 15/45] "Atividade"
+        frame "Frame 462" 310x45 row gap=12 pad=0/16/0/16
+          frame "heart 1" 16x16
+            vector "Vector" 16x14 fill=#b39463
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 163x45 fill=#e89b55 [Roboto Mono 400 15/45] "Lista de interesse"
+        frame "Frame 463" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Curved/Activity" 18x18 comp=9:1467
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 64x45 fill=#e89b55 [Roboto Mono 400 15/45] "Ofertas"
+        frame "Frame 464" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Curved/Download" 18x18 comp=9:1477
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 154x45 fill=#e89b55 [Roboto Mono 400 15/45] "Arquivos baixados"
+        frame "Frame 465" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Curved/Danger Triangle" 18x18 comp=9:1487
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 64x45 fill=#e89b55 [Roboto Mono 400 15/45] "Suporte"
+        line "Line 2" 310x0 stroke=#d28a4c 0.30000001192092896px
+        frame "Frame 38" 310x40 row gap=8 pad=0/16/0/16
+          instance "Iconly/Curved/Logout" 20x20 comp=2:36
+          text "Sair" 37x15 fill=#e89b55 [Roboto Mono 700 15/15] "Sair"
+      frame "Wallets Form" 862x639 col gap=32 pad=0/0/0/0
+        frame "Section Heading" 862x39 col gap=8 pad=0/0/0/0
+          frame "Title Row" 862x16 row gap=0 pad=0/0/0/0
+            text "Carteira principal" 184x16 fill=#f5f1eb [Roboto Mono 700 17/16] "Carteira principal"
+            text "Adicionar" 87x16 fill=#e89b55 [Roboto Mono 500 16/16] "Adicionar"
+          text "Estas carteiras ficam disponíveis no pagamento e para receber NFTs comprados." 648x15 fill=#cfb28c [Roboto Mono 400 14/15] "Estas carteiras ficam disponíveis no pagamento e para receber NFTs comprados."
+        frame "Fields" 862x421 col gap=24 pad=0/0/0/0
+          frame "Field Row 1" 862x65 row gap=0 pad=0/0/0/0
+            frame "Main Wallet Name" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 19" 159x29 row gap=0 pad=0/0/0/0
+                text "Nome de exibição" 145x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nome de exibição"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 72" 417x40 stroke=#3f2319 1px r=3
+            frame "Wallet Alias" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 27" 186x29 row gap=0 pad=0/0/0/0
+                text "Apelido da carteira" 172x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Apelido da carteira"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 73" 417x40 stroke=#3f2319 1px r=3
+          frame "Field Row 2" 862x65 row gap=0 pad=0/0/0/0
+            frame "Network Select" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 20" 55x29 row gap=4 pad=0/0/0/0
+                text "Rede" 37x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Rede"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              frame "Input" 417x40
+                rectangle "Rectangle 59" 417x40 stroke=#3f2319 1px r=3
+                text "Selecione uma rede" 152x15 fill=#b39463 [Roboto Mono 400 14/15] "Selecione uma rede"
+                instance "Arrow-Down" 20x20 comp=9:1589
+                  vector "Vector 37 (Stroke)" 11x6 fill=#b39463
+            frame "Wallet Label" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 26" 141x29 row gap=0 pad=0/0/0/0
+                text "Nome do perfil" 127x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nome do perfil"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 60" 417x40 stroke=#3f2319 1px r=3
+          frame "Field Row 3" 862x65 row gap=0 pad=0/0/0/0
+            frame "Wallet Address" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 21" 181x29 row gap=0 pad=0/0/0/0
+                text "Endereço da carteira" 181x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Endereço da carteira"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              frame "Input" 417x40
+                rectangle "Rectangle 68" 417x40 stroke=#3f2319 1px r=3
+                text "Endereço 0x da carteira" 194x15 fill=#b39463 [Roboto Mono 400 14/15] "Endereço 0x da carteira"
+            frame "Secondary Address Input" 417x40
+              rectangle "Rectangle 69" 417x40 stroke=#3f2319 1px r=3
+              text "ENS ou carteira secundária (opcional)" 312x15 fill=#b39463 [Roboto Mono 400 14/15] "ENS ou carteira secundária (opcional)"
+          frame "Field Row 4" 862x65 row gap=0 pad=0/0/0/0
+            frame "Wallet Select" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 22" 145x29 row gap=0 pad=0/0/0/0
+                text "Tipo de carteira" 145x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Tipo de carteira"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              frame "Input" 417x40
+                rectangle "Rectangle 70" 417x40 stroke=#3f2319 1px r=3
+                text "Selecione uma carteira" 185x15 fill=#b39463 [Roboto Mono 400 14/15] "Selecione uma carteira"
+                instance "Arrow-Down" 20x20 comp=9:1589
+                  vector "Vector 37 (Stroke)" 11x6 fill=#b39463
+            frame "Wallet Tag" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 25" 172x29 row gap=0 pad=0/0/0/0
+                text "Código de indicação" 172x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Código de indicação"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 71" 417x40 stroke=#3f2319 1px r=3
+          frame "Field Row 5" 862x65 row gap=0 pad=0/0/0/0
+            frame "Extra Field" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 23" 69x29 row gap=0 pad=0/0/0/0
+                text "E-mail" 55x15 fill=#f5f1eb [Roboto Mono 400 15/15] "E-mail"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 66" 417x40 stroke=#3f2319 1px r=3
+            frame "ENS Field" 417x65 col gap=-4 pad=0/0/0/0
+              frame "Frame 24" 91x29 row gap=4 pad=0/0/0/0
+                text "Nome ENS" 73x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nome ENS"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              frame "Input" 417x40
+                rectangle "Rectangle 67" 78x40 stroke=#3f2319 1px r=3
+                text ".eth" 37x15 fill=#f5f1eb [Roboto Mono 400 15/15] ".eth"
+                instance "Arrow-Down" 20x20 comp=9:1589
+                  vector "Vector 37 (Stroke)" 11x6 fill=#f5f1eb
+                rectangle "Rectangle 61" 329x40 stroke=#3f2319 1px r=3
+        frame "Save Wallet Button" 131x40 fill=#d28a4c r=3 row gap=0 pad=0/0/0/0
+          text "Salvar carteira" 127x16 fill=#140d0a [Roboto Mono 700 14/16] "Salvar carteira"
+        frame "Secondary Wallet" 862x43 col gap=12 pad=0/0/0/0
+          frame "Title Row" 862x16 row gap=0 pad=0/0/0/0
+            text "Carteira secundária" 194x16 fill=#f5f1eb [Roboto Mono 700 17/16] "Carteira secundária"
+            frame "Actions" 343x16
+              ellipse "Ellipse 22" 16x16 stroke=#d28a4c 1.5px
+              text "Igual à carteira principal" 219x16 fill=#f5f1eb [Roboto Mono 400 14/16] "Igual à carteira principal"
+              text "Adicionar" 87x16 fill=#e89b55 [Roboto Mono 500 16/16] "Adicionar"
+          text "Você ainda não adicionou uma carteira secundária." 413x15 fill=#cfb28c [Roboto Mono 400 14/15] "Você ainda não adicionou uma carteira secundária."

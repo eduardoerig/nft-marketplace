@@ -1,0 +1,166 @@
+frame "Desktop / Perfil do Colecionador" 1440x1080 fill=#140d0a col gap=96 pad=24/120/24/120
+  frame "Top" 1200x803 col gap=32 pad=0/0/0/0
+    instance "Header With Divider" 1200x45 col gap=0 pad=0/0/0/0 comp=70504:3017
+      instance "Header Row" 1200x45 row gap=0 pad=0/0/0/0 comp=70486:529
+        frame "Logo" 160x34
+          text "KURIO Wordmark" 48x18 fill=#f5f1eb [Roboto Mono 700 14/auto ls1.4] "KURIO"
+        frame "Nav" 401x45 row gap=40 pad=0/0/0/0
+          frame "Nav Item" 58x45 col gap=24 pad=0/0/0/0
+            text "Início" 58x21 fill=#e89b55 [Roboto Mono 700 16/auto] "Início"
+            line "Active Underline" 58x0 stroke=#d28a4c 3px
+          text "Mercado" 68x21 fill=#f5f1eb [Roboto Mono 400 16/auto] "Mercado"
+          text "Criadores" 87x21 fill=#f5f1eb [Roboto Mono 400 16/auto] "Criadores"
+          text "Aprenda" 68x21 fill=#f5f1eb [Roboto Mono 400 16/auto] "Aprenda"
+        frame "Header Actions" 207x35 row gap=28 pad=0/0/0/0
+          vector "Search Icon" 20x20 fill=#f5f1eb
+          group "Cart" 31x24
+            vector "Cart Icon" 24x24 fill=#f5f1eb
+            ellipse "Badge" 16x16 fill=#d28a4c stroke=#140d0a 2px
+            text "Badge Count" 7x13 fill=#140d0a [Roboto Mono 500 10/auto] "6"
+          group "Login" 100x35 r=6
+            frame "Login Button" 100x35 fill=#d28a4c r=6 col gap=10 pad=0/0/0/0
+              frame "Login Button Content" 82x21 row gap=4 pad=0/0/0/0
+                instance "Iconly/Curved/Logout" 20x20 comp=2:36
+                text "Entrar" 58x21 fill=#140d0a [Roboto Mono 500 16/auto] "Entrar"
+      line "Line 1" 1200x0 stroke=#d28a4c 0.30000001192092896px
+    frame "Body" 1200x726 row gap=28 pad=0/0/0/0
+      frame "Account Sidebar" 310x407 fill=#241612 col gap=0 pad=8/0/8/0
+        frame "Frame 457" 129x36 row gap=10 pad=10/10/10/10
+          text "Meu perfil" 109x16 fill=#f5f1eb [Roboto Mono 700 18/16] "Meu perfil"
+        frame "Frame 459" 310x45 stroke=#d28a4c 1px col gap=0 pad=0/16/0/16
+          frame "Frame 458" 278x45 row gap=16 pad=0/0/0/0
+            instance "User" 18x18 comp=9:1443
+              vector "Vector" 12x15 fill=#d28a4c
+            text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 136x45 fill=#e89b55 [Roboto Mono 400 15/45] "Dados do perfil"
+        frame "Frame 460" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Light-Outline/Location" 20x20 comp=9:1651
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 82x45 fill=#e89b55 [Roboto Mono 400 15/45] "Carteiras"
+        frame "Frame 461" 310x45 row gap=12 pad=0/16/0/16
+          frame "shopping 1" 18x18
+            vector "Vector" 18x18 fill=#b39463
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 82x45 fill=#e89b55 [Roboto Mono 400 15/45] "Atividade"
+        frame "Frame 462" 310x45 row gap=12 pad=0/16/0/16
+          frame "heart 1" 16x16
+            vector "Vector" 16x14 fill=#b39463
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 163x45 fill=#e89b55 [Roboto Mono 400 15/45] "Lista de interesse"
+        frame "Frame 463" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Curved/Activity" 18x18 comp=9:1467
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 64x45 fill=#e89b55 [Roboto Mono 400 15/45] "Ofertas"
+        frame "Frame 464" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Curved/Download" 18x18 comp=9:1477
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 154x45 fill=#e89b55 [Roboto Mono 400 15/45] "Arquivos baixados"
+        frame "Frame 465" 310x45 row gap=12 pad=0/16/0/16
+          instance "Iconly/Curved/Danger Triangle" 18x18 comp=9:1487
+          text "Profile Details
+Wallets
+Activity
+Watchlist
+Offers
+Downloads
+Support" 64x45 fill=#e89b55 [Roboto Mono 400 15/45] "Suporte"
+        line "Line 2" 310x0 stroke=#d28a4c 0.30000001192092896px
+        frame "Frame 38" 310x40 row gap=8 pad=0/16/0/16
+          instance "Iconly/Curved/Logout" 20x20 comp=2:36
+          text "Sair" 37x15 fill=#e89b55 [Roboto Mono 700 15/15] "Sair"
+      frame "Profile Form" 862x726 col gap=32 pad=0/0/0/0
+        text "Perfil do colecionador" 212x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Perfil do colecionador"
+        frame "Fields" 862x285 col gap=24 pad=0/0/0/0
+          frame "Field Row 1" 862x79 row gap=0 pad=0/0/0/0
+            frame "Display Name Field" 417x79 col gap=10 pad=0/0/0/0
+              frame "Frame 16" 159x29 row gap=0 pad=0/0/0/0
+                text "Nome de exibição" 145x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nome de exibição"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 59" 417x40 stroke=#3f2319 1px r=3
+            frame "Frame 454" 417x79 col gap=10 pad=0/0/0/0
+              frame "Username Field" 417x79 col gap=10 pad=0/0/0/0
+                frame "Label" 150x29 col gap=10 pad=0/0/0/0
+                  frame "Frame 453" 150x29 row gap=0 pad=0/0/0/0
+                    text "Nome de usuário" 136x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nome de usuário"
+                    frame "Frame 452" 14x29 row gap=10 pad=0/0/0/0
+                      text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+                rectangle "Rectangle 60" 417x40 stroke=#3f2319 1px r=3
+          frame "Field Row 2" 862x79 row gap=0 pad=0/0/0/0
+            frame "Bio Field" 417x79 col gap=10 pad=0/0/0/0
+              frame "Frame 17" 69x29 row gap=0 pad=0/0/0/0
+                text "E-mail" 55x15 fill=#f5f1eb [Roboto Mono 400 15/15] "E-mail"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 66" 417x40 stroke=#3f2319 1px r=3
+            frame "ENS Field" 417x79 col gap=10 pad=0/0/0/0
+              frame "Frame 455" 91x29 row gap=4 pad=0/0/0/0
+                text "Nome ENS" 73x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nome ENS"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              frame "ENS Input" 417x40
+                rectangle "Rectangle 67" 78x40 stroke=#3f2319 1px r=3
+                text ".eth" 37x15 fill=#f5f1eb [Roboto Mono 400 15/15] ".eth"
+                component "Arrow-Down" 20x20
+                  vector "Vector 37 (Stroke)" 11x6 fill=#f5f1eb
+                rectangle "Rectangle 61" 329x40 stroke=#3f2319 1px r=3
+          frame "Field Row 3" 862x79 row gap=0 pad=0/0/0/0
+            frame "Website Field" 417x79 col gap=10 pad=0/0/0/0
+              frame "Frame 18" 172x29 row gap=0 pad=0/0/0/0
+                text "Apelido da carteira" 172x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Apelido da carteira"
+                text "*" 14x29 fill=#f0805f [Roboto Mono 400 22/29] "*"
+              rectangle "Rectangle 62" 417x40 stroke=#3f2319 1px r=3
+            frame "Avatar Field" 417x75 col gap=10 pad=0/0/0/0
+              frame "Label" 55x15 col gap=10 pad=0/0/0/0
+                text "Avatar" 55x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Avatar"
+              frame "Avatar Controls" 251x50 row gap=10 pad=0/0/0/0
+                frame "Frame 456" 251x50 row gap=24 pad=0/0/0/0
+                  frame "Frame 32" 50x50 fill=#2f1d15 stroke=#3f2319 1px r=25 row gap=10 pad=12/12/12/12
+                    instance "Iconly/Curved/Image 2" 24x24 comp=9:1550
+                  frame "Frame 33" 177x40 row gap=20 pad=0/0/0/0
+                    rectangle "Rectangle 66" 98x40 fill=#d28a4c r=3
+                    text "Remover" 59x16 fill=#f5f1eb [Roboto Mono 400 14/16] "Remover"
+                    text "Alterar" 59x16 fill=#140d0a [Roboto Mono 700 14/16] "Alterar"
+        frame "Change Password" 862x289 col gap=24 pad=0/0/0/0
+          text "Alterar senha" 125x16 fill=#f5f1eb [Roboto Mono 500 16/16] "Alterar senha"
+          frame "Current Password Field" 417x67 col gap=12 pad=0/0/0/0
+            text "Senha atual" 100x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Senha atual"
+            instance "Password Input" 417x40 stroke=#3f2319 1px r=3 row gap=10 pad=0/16/0/16 comp=70504:2973
+              instance "Iconly/Light-Outline/Hide" 20x20 comp=9:1592
+          frame "New Password Field" 417x67 col gap=12 pad=0/0/0/0
+            text "Nova senha" 91x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Nova senha"
+            instance "Password Input" 417x40 stroke=#3f2319 1px r=3 row gap=10 pad=0/16/0/16 comp=70504:2973
+              instance "Iconly/Light-Outline/Hide" 20x20 comp=9:1592
+          frame "Confirm Password Field" 417x67 col gap=12 pad=0/0/0/0
+            text "Confirmar nova senha" 181x15 fill=#f5f1eb [Roboto Mono 400 15/15] "Confirmar nova senha"
+            instance "Password Input" 417x40 stroke=#3f2319 1px r=3 row gap=10 pad=0/16/0/16 comp=70504:2973
+              instance "Iconly/Light-Outline/Hide" 20x20 comp=9:1592
+        frame "Save Button" 131x40 fill=#d28a4c r=3 row gap=0 pad=0/0/0/0
+          text "Salvar" 51x16 fill=#140d0a [Roboto Mono 700 14/16] "Salvar"

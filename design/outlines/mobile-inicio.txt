@@ -1,0 +1,99 @@
+frame "Mobile / Início" 414x896 fill=#140d0a r=40 col gap=16 pad=40/24/0/24
+  frame "Search Bar" 366x45
+    frame "Frame 404" 313x45 fill=#241612 r=10 col gap=10 pad=12/129/12/12
+      frame "Frame 403" 173x22 row gap=8 pad=0/0/0/0
+        component "Search" 22x22
+          vector "Ellipse 2 (Stroke)" 18x18 fill=#b39463
+        text "Explorar coleções" 143x16 fill=#b39463 [Roboto Mono 700 14/16] "Explorar coleções"
+    frame "Frame 402" 45x45 fill=gradient_linear(#d28a4c73,#d28a4c) r=14 row gap=10 pad=12/12/12/12
+      instance "Iconly/Curved/Filter" 22x22 comp=15:5313
+  frame "Hero Banner" 366x190 r=12 col gap=10 pad=16/16/16/16
+    group "Mask Group" 366x190 r=0/0/0/0
+      rectangle "Rectangle 95" 366x190 fill=gradient_linear(#d28a4c33,#d28a4c1a) r=30
+      rectangle "Rectangle 94" 366x190 fill=#ededed r=30
+      ellipse "Ellipse 49" 248x248 fill=gradient_linear(#dd9a5f6e,#d28a4c0a)
+      ellipse "Ellipse 50" 248x248 fill=gradient_linear(#dd9a5f5e,#d28a4c00)
+    frame "Frame 407" 334x179 col gap=16 pad=0/0/0/0
+      frame "Frame 406" 334x156 row gap=8 pad=0/0/0/0
+        frame "Frame 405" 188x156 col gap=0 pad=0/0/0/0
+          frame "Frame 55" 188x140 col gap=6 pad=0/0/0/0
+            text "Bem-vindo à Kurio" 188x16 fill=#f5f1eb [Roboto Mono 500 12/16] "Bem-vindo à Kurio"
+            text "OWN DIGITAL
+CULTURE" 190x58 fill=#f5f1eb [Roboto Mono 700 18/29] "SEJA DONO DA\nCULTURA DIGITAL"
+            text "Descubra NFTs selecionados de criadores do mundo todo." 188x54 fill=#cfb28c [Roboto Mono 400 12/18] "Descubra NFTs selecionados de criadores do mundo todo."
+          frame "Frame 56" 82x16 row gap=8 pad=0/0/0/0
+            text "EXPLORAR" 58x14 fill=#e89b55 [Roboto Mono 700 12/14] "EXPLORAR"
+            instance "Iconly/Curved/Arrow - Right" 16x16 comp=5:100
+        group "Group 105" 138x146 r=16
+          rectangle "Mobile NFT Artwork 1" 138x138 fill=IMG r=16
+          rectangle "Mobile NFT Artwork 2" 58x58 fill=IMG r=16
+      frame "Frame 4" 33x7 row gap=6 pad=0/0/0/0
+        ellipse "Ellipse 4" 7x7 fill=#d28a4c
+        ellipse "Ellipse 2" 7x7 fill=#d28a4c
+        ellipse "Ellipse 3" 7x7 fill=#d28a4c
+  frame "Tabs" 366x20 col gap=4 pad=0/0/0/0
+    frame "Frame 409" 332x20 row gap=4 pad=0/0/0/0
+      frame "Frame 408" 110x20 col gap=4 pad=0/0/0/0
+        text "Todos os NFTs" 110x16 fill=#e89b55 [Roboto Mono 700 14/16] "Todos os NFTs"
+        line "Line 3" 110x0 stroke=#d28a4c 2px
+      frame "Frame 234" 218x16 row gap=16 pad=0/0/0/0
+        text "Novos lançamentos" 143x16 fill=#f5f1eb [Roboto Mono 400 14/16] "Novos lançamentos"
+        text "Em alta" 59x16 fill=#f5f1eb [Roboto Mono 400 14/16] "Em alta"
+  frame "Product Grid" 366x544 row gap=16 pad=0/0/0/0
+    frame "Column L" 175x513 col gap=24 pad=0/0/0/0
+      group "P-1" 175x244
+        frame "Frame 414" 175x244 col gap=8 pad=0/0/0/0
+          frame "Frame 412" 175x200 fill=gradient_linear(#241612,#2f1d15) r=20 row gap=10 pad=12/4/20/4
+            frame "Frame 411" 168x168 fill=IMG r=16 row gap=10 pad=0/8/140/133
+              frame "Frame 57" 28x28 row gap=0 pad=0/0/0/0
+                frame "Frame 410" 28x28 fill=#2f1d15 stroke=#3f2319 1px r=14 col gap=10 pad=0/0/0/0
+                  vector "Vector" 15x13 fill=#d28a4c
+          frame "Frame 413" 175x36 col gap=0 pad=0/0/0/8
+            text "Emerald Ape #042" 167x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Emerald Ape #042"
+            text "1.19 ETH" 167x16 fill=#e89b55 [Roboto Mono 700 16/16] "1.19 ETH"
+      group "P-3" 175x245 r=0/0/0/0
+        frame "Frame 418" 153x36 col gap=0 pad=0/0/0/8
+          text "Emerald Ape #042" 145x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Emerald Ape #042"
+          text "1.19 ETH" 145x16 fill=#e89b55 [Roboto Mono 700 16/16] "1.19 ETH"
+        frame "Frame 421" 175x200 fill=gradient_linear(#241612,#2f1d15) r=20 col gap=0 pad=0/0/0/0
+          frame "Frame 422" 175x168 row gap=10 pad=0/0/0/0
+            rectangle "Mobile NFT Artwork 5" 168x168 fill=IMG r=16
+          group "Group 61" 68x32
+            rectangle "Rectangle 9" 68x32 fill=#d28a4c
+            text "RARO" 51x18 fill=#140d0a [Roboto Mono 500 13/16] "RARO"
+    frame "Column R" 175x544 col gap=24 pad=32/0/0/0
+      group "P-2" 175x244
+        group "Group 58" 28x28
+          ellipse "Ellipse 38" 28x28 fill=#2f1d15 stroke=#3f2319 1px
+          vector "Vector" 15x13 fill=#d28a4c
+        frame "Frame 417" 175x244 col gap=8 pad=0/0/0/0
+          frame "Frame 416" 175x200 fill=gradient_linear(#241612,#2f1d15) r=20 row gap=10 pad=20/4/12/4
+            rectangle "Mobile NFT Artwork 4" 168x168 fill=IMG r=16
+          frame "Frame 415" 175x36 col gap=0 pad=0/0/0/8
+            text "Sage Nomad #009" 167x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Sage Nomad #009"
+            text "1.69 ETH" 167x16 fill=#e89b55 [Roboto Mono 700 16/16] "1.69 ETH"
+      group "P-4" 175x244
+        group "Group 60" 28x28
+          ellipse "Ellipse 38" 28x28 fill=#2f1d15 stroke=#3f2319 1px
+          vector "Vector" 15x13 fill=#d28a4c
+        frame "Frame 423" 175x244 col gap=8 pad=0/0/0/0
+          frame "Frame 420" 175x200 fill=gradient_linear(#241612,#2f1d15) r=20 row gap=10 pad=20/4/12/4
+            rectangle "Mobile NFT Artwork 6" 168x168 fill=IMG r=16
+          frame "Frame 419" 144x36 col gap=0 pad=0/0/0/8
+            text "Sage Nomad #009" 136x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Sage Nomad #009"
+            text "1.69 ETH" 136x16 fill=#e89b55 [Roboto Mono 700 16/16] "1.69 ETH"
+  frame "Tab Bar" 414x126
+    vector "Vector" 414x95 fill=#241612 fx=DROP_SHADOW #0a060473 x0 y-10 blur30 spread0
+    ellipse "Ellipse 39" 65x65 fill=gradient_linear(#d28a4c66,#d28a4c)
+    instance "Iconly/Bold/Home" 20x20 comp=15:5516
+    component "User" 20x20
+      vector "Vector" 13x17 fill=#cfb28c
+    component "Shop" 20x20
+      vector "Vector" 18x17 fill=#cfb28c
+    vector "Vector" 20x18 fill=#cfb28c
+    group "Group" 27x24
+      vector "Vector" 27x2 fill=#f5f1eb
+      vector "Vector" 10x10 fill=#f5f1eb
+      vector "Vector" 10x10 fill=#f5f1eb
+      vector "Vector" 10x10 fill=#f5f1eb
+      vector "Vector" 10x10 fill=#f5f1eb

@@ -1,0 +1,66 @@
+frame "Mobile / Detalhes do NFT" 414x896 fill=#140d0a r=40 col gap=-114 pad=0/0/0/0
+  frame "Hero" 414x506
+    rectangle "Rectangle 6" 414x506 fill=gradient_linear(#241612,#2f1d15)
+    group "Group 62" 56x7 r=0/0/0/0
+      ellipse "Ellipse 2" 7x7 fill=#d28a4c
+      ellipse "Ellipse 3" 7x7 fill=#d28a4c
+      rectangle "Rectangle 98" 28x7 fill=#d28a4c r=25
+    frame "Frame 427" 361x399 col gap=8 pad=0/0/0/0
+      frame "Frame 426" 361x35 row gap=291 pad=0/0/0/0
+        frame "Back" 35x35 col gap=10 pad=0/0/0/0
+          frame "Frame 424" 35x35 fill=#2f1d15 stroke=#3f2319 1px r=17.5 row gap=10 pad=8/8/8/8
+            instance "Iconly/Curved/Arrow - Left 2" 20x20 comp=15:5746
+        frame "Heart" 35x35 col gap=10 pad=0/0/0/0
+          frame "Frame 57" 35x35 col gap=10 pad=0/0/0/0
+            frame "Frame 425" 35x35 fill=#2f1d15 stroke=#3f2319 1px r=17.5 col gap=10 pad=0/0/0/0
+              vector "Vector" 16x14 fill=#e89b55
+      rectangle "Mobile NFT Hero Artwork" 361x356 fill=IMG r=24
+  frame "Details Sheet" 414x504 fill=#241612 r=31/31/0/0 col gap=12 pad=32/24/24/24
+    frame "Title Row" 366x27 row gap=0 pad=0/0/0/0
+      text "Emerald Ape #042" 193x16 fill=#f5f1eb [Roboto Mono 700 20/16] "Emerald Ape #042"
+      group "Review" 83x27 r=0/0/0/0
+        instance "Iconly/Bold/Star" 14x14 comp=11:1192
+        group "Group 63" 83x27 r=32
+          text "(19)" 34x16 fill=#cfb28c [Roboto Mono 400 14/16] "(19)"
+          text "4.8" 26x16 fill=#f5f1eb [Roboto Mono 500 14/16] "4.8"
+          rectangle "Rectangle 99" 80x27 stroke=#d28a4c 1px r=32
+    text "Um colecionável digital 1/50 finalizado à mão da coleção Kurio Editions, verificado na Ethereum." 361x71 fill=#cfb28c [Roboto Mono 400 14/24] "Um colecionável digital 1/50 finalizado à mão da coleção Kurio Editions, verificado na Eth…"
+    frame "Frame 66" 232x52 col gap=8 pad=0/0/0/0
+      text "Edição:" 64x16 fill=#f5f1eb [Roboto Mono 700 15/16] "Edição:"
+      frame "Frame 432" 232x28 row gap=12 pad=0/0/0/0
+        frame "Frame 428" 42x28 row gap=10 pad=0/0/0/0
+          ellipse "Ellipse 25" 42x28 stroke=#3f2319 1px
+          text "1/10" 34x16 fill=#cfb28c [Roboto Mono 400 14/16] "1/10"
+        frame "Frame 431" 42x28 row gap=10 pad=0/0/0/0
+          ellipse "Ellipse 25" 42x28 stroke=#3f2319 1px
+          text "1/10" 34x16 fill=#cfb28c [Roboto Mono 400 14/16] "1/10"
+        frame "Frame 429" 46x28 row gap=10 pad=0/0/0/0
+          ellipse "Ellipse 26" 46x28 stroke=#d28a4c 1px
+          text "1/50" 34x16 fill=#e89b55 [Roboto Mono 500 14/16] "1/50"
+        frame "Frame 430" 66x28 row gap=10 pad=0/0/0/0
+          ellipse "Ellipse 27" 66x28 stroke=#3f2319 1px
+          text "ABERTA" 51x16 fill=#cfb28c [Roboto Mono 400 14/16] "ABERTA"
+    frame "Token Info" 307x84 col gap=12 pad=0/0/0/0
+      text "ID do token: #0042" 163x20 fill=#b39463 [Roboto Mono 400 15/auto] "ID do token: #0042"
+      text "Coleção: Kurio Apes" 172x20 fill=#b39463 [Roboto Mono 400 15/auto] "Coleção: Kurio Apes"
+      text "Atributos: Óculos, Esmeralda, Raro" 307x20 fill=#b39463 [Roboto Mono 400 15/auto] "Atributos: Óculos, Esmeralda, Raro"
+  frame "Buy Bar" 414x164 fill=#241612 r=40/40/0/0 col gap=10 pad=20/24/36/24 fx=DROP_SHADOW #0a060473 x0 y0 blur20 spread0
+    frame "Frame 438" 366x110 col gap=20 pad=0/0/0/0
+      frame "Frame 434" 366x30 row gap=142 pad=0/0/0/0
+        frame "Frame 67" 120x30 row gap=8 pad=0/0/0/0
+          text "Qtd." 37x16 fill=#cfb28c [Roboto Mono 500 15/16] "Qtd."
+          frame "Frame 433" 75x30 row gap=12 pad=0/0/0/0
+            frame "Add Button" 20x30 fill=#d28a4c stroke=#140d0a 1px r=20 col gap=0 pad=0/0/0/0 fx=DROP_SHADOW #140d0a26 x0 y4 blur12 spread-2
+              frame "Frame" 16x16
+                vector "Vector" 9x1 fill=#000000
+            text "1" 11x25 fill=#f5f1eb [Roboto Mono 500 18/25] "1"
+            frame "Add Button" 20x30 fill=#d28a4c stroke=#140d0a 1px r=20 col gap=0 pad=0/0/0/0 fx=DROP_SHADOW #140d0a26 x0 y4 blur12 spread-2
+              frame "Frame" 16x16
+                vector "Vector" 9x9 fill=#000000
+        text "1.19 ETH" 97x16 fill=#e89b55 [Roboto Mono 700 20/16] "1.19 ETH"
+      frame "Frame 437" 268x60 row gap=12 pad=0/0/0/0
+        frame "Frame 435" 196x60 fill=gradient_linear(#d28a4c,#d28a4ccc) r=40 row gap=10 pad=20/44/20/48
+          text "Comprar NFT" 106x20 fill=#140d0a [Roboto Mono 700 16/20] "Comprar NFT"
+        frame "Frame 436" 60x60 fill=#2f1d15 stroke=#3f2319 1px r=40 row gap=10 pad=20/20/20/20
+          instance "Shop" 20x20 comp=15:5524
+            vector "Vector" 18x17 fill=#b39463

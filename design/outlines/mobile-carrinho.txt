@@ -1,0 +1,91 @@
+frame "Mobile / Carrinho de NFTs" 414x896 fill=#140d0a r=40 col gap=4 pad=32/0/0/0
+  frame "Content" 414x518 col gap=12 pad=0/28/0/28
+    frame "Screen Header" 358x44
+      group "Back" 35x35
+        ellipse "Ellipse 38" 35x35 fill=#2f1d15 stroke=#3f2319 1px
+        instance "Iconly/Curved/Arrow - Left 2" 20x20 comp=15:5746
+      text "Carrinho de NFTs" 193x16 fill=#f5f1eb [Roboto Mono 700 20/16] "Carrinho de NFTs"
+    frame "Cart Items" 358x462 col gap=20 pad=0/0/0/0
+      frame "Item 1" 358x100
+        rectangle "Rectangle 102" 358x100 fill=gradient_linear(#241612,#241612) r=14 fx=DROP_SHADOW #0a060473 x0 y6 blur20 spread0
+        rectangle "Rectangle 106" 100x100 fill=IMG r=14/0/0/14
+        rectangle "Mobile Cart NFT 2" 100x100 fill=IMG r=14
+        text "Emerald Ape #042" 145x16 fill=#f5f1eb [Roboto Mono 700 15/16] "Emerald Ape #042"
+        text "Edição: 1/50" 101x16 fill=#cfb28c [Roboto Mono 400 14/16] "Edição: 1/50"
+        text "1.19 ETH" 87x16 fill=#e89b55 [Roboto Mono 700 18/16] "1.19 ETH"
+        group "Group 81" 81x29 r=0/0/0/0
+          text "1" 10x22 fill=#f5f1eb [Roboto Mono 400 16/22] "1"
+          group "Group 65" 24x24 r=29
+            rectangle "Rectangle 79" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=29
+            line "Line 9" 9x0 stroke=#55321f 2px
+          group "Group 64" 24x24 r=31
+            rectangle "Rectangle 80" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=31
+            text "+" 12x14 fill=#f5f1eb [Roboto Mono 400 21/16] "+"
+      frame "Item 2" 358x100
+        rectangle "Rectangle 107" 358x100 fill=gradient_linear(#241612,#241612) r=14 fx=DROP_SHADOW #0a060473 x0 y6 blur20 spread0
+        rectangle "Rectangle 108" 100x100 fill=IMG r=14/0/0/14
+        rectangle "Mobile Cart NFT 3" 100x100 fill=IMG r=14
+        text "Violet Nomad #314" 154x16 fill=#f5f1eb [Roboto Mono 700 15/16] "Violet Nomad #314"
+        text "Edição: 1/1" 93x16 fill=#cfb28c [Roboto Mono 400 14/16] "Edição: 1/1"
+        text "1.39 ETH" 87x16 fill=#e89b55 [Roboto Mono 700 18/16] "1.39 ETH"
+        group "Group 85" 81x29 r=0/0/0/0
+          text "1" 10x22 fill=#f5f1eb [Roboto Mono 400 16/22] "1"
+          group "Group 65" 24x24 r=29
+            rectangle "Rectangle 79" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=29
+            line "Line 9" 9x0 stroke=#55321f 2px
+          group "Group 64" 24x24 r=31
+            rectangle "Rectangle 80" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=31
+            text "+" 12x14 fill=#f5f1eb [Roboto Mono 400 21/16] "+"
+      group "Item 3" 358x102 r=0/0/0/0
+        rectangle "Rectangle 109" 358x100 fill=gradient_linear(#241612,#241612) r=14 fx=DROP_SHADOW #0a060473 x0 y6 blur20 spread0
+        rectangle "Rectangle 110" 100x100 fill=IMG r=14/0/0/14
+        group "Group 83" 81x29 r=0/0/0/0
+          text "2" 10x22 fill=#f5f1eb [Roboto Mono 400 16/22] "2"
+          group "Group 72" 24x24 r=29
+            rectangle "Rectangle 79" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=29
+            line "Line 9" 9x0 stroke=#f5f1eb 2px
+          group "Group 73" 24x24 r=31
+            rectangle "Rectangle 80" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=31
+            text "+" 12x14 fill=#f5f1eb [Roboto Mono 400 21/16] "+"
+        text "Ivory Baron #088" 145x16 fill=#f5f1eb [Roboto Mono 700 15/16] "Ivory Baron #088"
+        text "Edição: 1/10" 101x16 fill=#cfb28c [Roboto Mono 400 14/16] "Edição: 1/10"
+        text "3.58 ETH" 87x16 fill=#e89b55 [Roboto Mono 700 18/16] "3.58 ETH"
+        rectangle "Mobile Cart NFT 4" 100x100 fill=IMG r=14
+        instance "Iconly/Curved/Delete" 24x24 comp=11:2030
+      frame "Item 4" 358x100
+        rectangle "Rectangle 111" 358x100 fill=gradient_linear(#241612,#241612) r=14 fx=DROP_SHADOW #0a060473 x0 y6 blur20 spread0
+        rectangle "Rectangle 112" 100x100 fill=IMG r=14/0/0/14
+        rectangle "Mobile Cart NFT 1" 100x100 fill=IMG r=14
+        text "Golden Beat #207" 145x16 fill=#f5f1eb [Roboto Mono 700 15/16] "Golden Beat #207"
+        text "Edição: 1/50" 101x16 fill=#cfb28c [Roboto Mono 400 14/16] "Edição: 1/50"
+        text "1.98 ETH" 87x16 fill=#e89b55 [Roboto Mono 700 18/16] "1.98 ETH"
+        group "Group 86" 81x29 r=0/0/0/0
+          text "2" 10x22 fill=#f5f1eb [Roboto Mono 400 16/22] "2"
+          group "Group 72" 24x24 r=29
+            rectangle "Rectangle 79" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=29
+            line "Line 9" 9x0 stroke=#f5f1eb 2px
+          group "Group 73" 24x24 r=31
+            rectangle "Rectangle 80" 24x24 fill=#2f1d15 stroke=#3f2319 1px r=31
+            text "+" 12x14 fill=#f5f1eb [Roboto Mono 400 21/16] "+"
+  frame "Payment Summary" 414x342 fill=#241612 r=40/40/0/0 col gap=12 pad=24/24/36/24
+    frame "Frame 441" 366x190 col gap=12 pad=0/0/0/0
+      frame "Promo Input" 366x50 fill=#241612 stroke=#3f2319 1px r=40 row gap=0 pad=0/0/0/16 fx=DROP_SHADOW #0a060473 x0 y6 blur20 spread0
+        text "Digite o código promocional..." 253x22 fill=#b39463 [Roboto Mono 400 13/22] "Digite o código promocional..."
+        frame "Frame 439" 97x50 fill=gradient_linear(#d28a4c8a,#d28a4c) r=40 row gap=10 pad=0/0/0/0
+          text "Aplicar" 64x16 fill=#f5f1eb [Roboto Mono 700 15/16] "Aplicar"
+      frame "Subtotal" 366x20 row gap=0 pad=0/0/0/0
+        text "Subtotal" 73x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Subtotal"
+        text "8.92 ETH" 77x16 fill=#f5f1eb [Roboto Mono 400 16/16] "8.92 ETH"
+      frame "Discount" 366x20 row gap=0 pad=0/0/0/0
+        text "Desconto do lançamento" 199x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Desconto do lançamento"
+        text "(-) 00.00" 82x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "(-) 00.00"
+      frame "Network Fee" 366x36 col gap=0 pad=0/0/0/0
+        frame "Frame 440" 366x20 row gap=162 pad=0/0/0/0
+          text "Taxa de rede" 109x20 fill=#f5f1eb [Roboto Mono 400 15/auto] "Taxa de rede"
+          text "0.016 ETH" 87x16 fill=#f5f1eb [Roboto Mono 400 16/16] "0.016 ETH"
+        text "Taxa estimada" 94x16 fill=#e89b55 [Roboto Mono 400 12/16] "Taxa estimada"
+      frame "Total" 366x16 row gap=0 pad=0/0/0/0
+        text "Total" 49x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Total"
+        text "8.936 ETH" 98x16 fill=#e89b55 [Roboto Mono 700 18/16] "8.936 ETH"
+    frame "Checkout Button" 366x60 fill=gradient_linear(#d28a4c,#d28a4ccc) r=40 row gap=0 pad=0/0/0/0
+      text "Conectar e finalizar" 193x16 fill=#140d0a [Roboto Mono 700 16/16] "Conectar e finalizar"

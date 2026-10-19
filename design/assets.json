@@ -1,0 +1,343 @@
+{
+  "images": [
+    {
+      "file": "images/nft-art-1.png",
+      "bytes": 1885435,
+      "imageRef": "8459204731e6eba9d474cbc8ebc37071360d3ba5",
+      "usedBy": [
+        "desktop-inicio: Frame 136",
+        "desktop-inicio: NFT Artwork 03",
+        "desktop-inicio: NFT Artwork 17",
+        "desktop-inicio: Image",
+        "mobile-inicio: Mobile NFT Artwork 1",
+        "mobile-inicio: Frame 411",
+        "desktop-detalhe: NFT Collection Artwork 04",
+        "desktop-detalhe: NFT Collection Artwork 02",
+        "desktop-detalhe: NFT Collection Artwork 05",
+        "desktop-detalhe: NFT Collection Artwork 03",
+        "desktop-detalhe: NFT Collection Artwork 01",
+        "mobile-detalhe: Mobile NFT Hero Artwork",
+        "desktop-carrinho: NFT Cart Artwork 6",
+        "mobile-carrinho: Rectangle 106",
+        "mobile-carrinho: Mobile Cart NFT 2",
+        "desktop-pagamento: NFT Receipt Artwork 1",
+        "desktop-confirmacao: NFT Receipt Artwork 1",
+        "desktop-confirmacao: NFT Receipt Artwork 4",
+        "desktop-login: NFT Auth Artwork 1",
+        "desktop-login: NFT Auth Artwork 2",
+        "desktop-login: NFT Auth Artwork 5",
+        "desktop-login: NFT Auth Artwork 9",
+        "desktop-cadastro: NFT Auth Artwork 1",
+        "desktop-cadastro: NFT Auth Artwork 2",
+        "desktop-cadastro: NFT Auth Artwork 5",
+        "desktop-cadastro: NFT Auth Artwork 9"
+      ],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "file": "images/nft-art-2.png",
+      "bytes": 2068526,
+      "imageRef": "2986a7cb16d09de8970824d2dd58bf0bb021702c",
+      "usedBy": [
+        "desktop-inicio: NFT Artwork 18",
+        "desktop-inicio: NFT Artwork 04",
+        "desktop-inicio: NFT Artwork 06",
+        "desktop-inicio: NFT Artwork 07",
+        "desktop-inicio: Image",
+        "mobile-inicio: Mobile NFT Artwork 2",
+        "mobile-inicio: Mobile NFT Artwork 4",
+        "desktop-detalhe: NFT Collection Artwork 06",
+        "desktop-detalhe: NFT Collection Artwork 07",
+        "desktop-carrinho: NFT Cart Artwork 7",
+        "desktop-carrinho: NFT Cart Artwork 1",
+        "desktop-carrinho: NFT Cart Artwork 2",
+        "mobile-carrinho: Rectangle 108",
+        "mobile-carrinho: Mobile Cart NFT 3",
+        "desktop-pagamento: NFT Receipt Artwork 2",
+        "desktop-confirmacao: NFT Receipt Artwork 2",
+        "desktop-confirmacao: NFT Receipt Artwork 5",
+        "desktop-login: NFT Auth Artwork 6",
+        "desktop-login: NFT Auth Artwork 10",
+        "desktop-cadastro: NFT Auth Artwork 6",
+        "desktop-cadastro: NFT Auth Artwork 10"
+      ],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "file": "images/nft-art-3.png",
+      "bytes": 2027336,
+      "imageRef": "9df2ff42dd27ba657621c304557d1a855a4be6a5",
+      "usedBy": [
+        "desktop-inicio: NFT Artwork 05",
+        "desktop-inicio: NFT Artwork 08",
+        "desktop-inicio: NFT Artwork 16",
+        "desktop-inicio: Image",
+        "mobile-inicio: Mobile NFT Artwork 5",
+        "desktop-detalhe: NFT Collection Artwork 08",
+        "desktop-carrinho: NFT Cart Artwork 8",
+        "desktop-carrinho: NFT Cart Artwork 3",
+        "mobile-carrinho: Rectangle 110",
+        "mobile-carrinho: Mobile Cart NFT 4",
+        "desktop-pagamento: NFT Receipt Artwork 3",
+        "desktop-confirmacao: NFT Receipt Artwork 3",
+        "desktop-confirmacao: NFT Receipt Artwork 6",
+        "desktop-login: NFT Auth Artwork 4",
+        "desktop-login: NFT Auth Artwork 8",
+        "desktop-cadastro: NFT Auth Artwork 4",
+        "desktop-cadastro: NFT Auth Artwork 8"
+      ],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "file": "images/nft-art-4.png",
+      "bytes": 1978600,
+      "imageRef": "87580f2def9af0ce13f4b6f6ce17bb2449bcfc16",
+      "usedBy": [
+        "desktop-inicio: NFT Artwork 09",
+        "desktop-inicio: NFT Artwork 10",
+        "desktop-inicio: NFT Artwork 11",
+        "desktop-inicio: Image",
+        "mobile-inicio: Mobile NFT Artwork 6",
+        "desktop-detalhe: NFT Collection Artwork 09",
+        "desktop-detalhe: NFT Collection Artwork 10",
+        "desktop-carrinho: NFT Cart Artwork 4",
+        "desktop-carrinho: NFT Cart Artwork 5",
+        "mobile-carrinho: Rectangle 112",
+        "mobile-carrinho: Mobile Cart NFT 1",
+        "desktop-login: NFT Auth Artwork 3",
+        "desktop-login: NFT Auth Artwork 7",
+        "desktop-login: NFT Auth Artwork 11",
+        "desktop-cadastro: NFT Auth Artwork 3",
+        "desktop-cadastro: NFT Auth Artwork 7",
+        "desktop-cadastro: NFT Auth Artwork 11"
+      ],
+      "width": 1254,
+      "height": 1254
+    }
+  ],
+  "icons": [
+    {
+      "file": "icons/logo.svg",
+      "nodeId": "I70522:3240;70504:3015;70486:509",
+      "name": "Logo"
+    },
+    {
+      "file": "icons/search-icon.svg",
+      "nodeId": "I70522:3240;70504:3015;70486:519",
+      "name": "Search Icon"
+    },
+    {
+      "file": "icons/cart-icon.svg",
+      "nodeId": "I70522:3240;70504:3015;70486:521",
+      "name": "Cart Icon"
+    },
+    {
+      "file": "icons/curved-logout.svg",
+      "nodeId": "I70522:3240;70504:3015;70486:527",
+      "name": "Iconly/Curved/Logout"
+    },
+    {
+      "file": "icons/logout.svg",
+      "nodeId": "I70522:3240;70504:3015;70486:527;29221:4777",
+      "name": "Logout"
+    },
+    {
+      "file": "icons/two-tone-arrow-down-2.svg",
+      "nodeId": "4:152",
+      "name": "Iconly/Two-tone/Arrow - Down 2"
+    },
+    {
+      "file": "icons/curved-arrow-right-2.svg",
+      "nodeId": "4:392",
+      "name": "Iconly/Curved/Arrow - Right 2"
+    },
+    {
+      "file": "icons/curved-arrow-right.svg",
+      "nodeId": "5:99",
+      "name": "Iconly/Curved/Arrow - Right"
+    },
+    {
+      "file": "icons/curved-filter.svg",
+      "nodeId": "15:5488",
+      "name": "Iconly/Curved/Filter"
+    },
+    {
+      "file": "icons/bold-home.svg",
+      "nodeId": "15:5519",
+      "name": "Iconly/Bold/Home"
+    },
+    {
+      "file": "icons/bold-star.svg",
+      "nodeId": "11:1195",
+      "name": "Iconly/Bold/Star"
+    },
+    {
+      "file": "icons/curved-arrow-left-2.svg",
+      "nodeId": "15:5745",
+      "name": "Iconly/Curved/Arrow - Left 2"
+    },
+    {
+      "file": "icons/curved-delete.svg",
+      "nodeId": "11:2029",
+      "name": "Iconly/Curved/Delete"
+    },
+    {
+      "file": "icons/curved-wallet.svg",
+      "nodeId": "23:1379",
+      "name": "Iconly/Curved/Wallet"
+    },
+    {
+      "file": "icons/curved-hide.svg",
+      "nodeId": "9:963",
+      "name": "Iconly/Curved/Hide"
+    },
+    {
+      "file": "icons/light-outline-location.svg",
+      "nodeId": "70420:4544",
+      "name": "Iconly/Light-Outline/Location"
+    },
+    {
+      "file": "icons/curved-activity.svg",
+      "nodeId": "70420:4555",
+      "name": "Iconly/Curved/Activity"
+    },
+    {
+      "file": "icons/curved-download.svg",
+      "nodeId": "70420:4558",
+      "name": "Iconly/Curved/Download"
+    },
+    {
+      "file": "icons/curved-danger-triangle.svg",
+      "nodeId": "70420:4561",
+      "name": "Iconly/Curved/Danger Triangle"
+    },
+    {
+      "file": "icons/curved-image-2.svg",
+      "nodeId": "9:1560",
+      "name": "Iconly/Curved/Image 2"
+    },
+    {
+      "file": "icons/light-outline-hide.svg",
+      "nodeId": "I70522:3144;70504:2972",
+      "name": "Iconly/Light-Outline/Hide"
+    },
+    {
+      "file": "icons/social-facebook.svg",
+      "nodeId": "I70492:696;70491:1270",
+      "name": "social-facebook"
+    },
+    {
+      "file": "icons/social-instagram.svg",
+      "nodeId": "I70492:696;70491:1272",
+      "name": "social-instagram"
+    },
+    {
+      "file": "icons/social-twitter.svg",
+      "nodeId": "I70492:696;70491:1274",
+      "name": "social-twitter"
+    },
+    {
+      "file": "icons/social-linkedin.svg",
+      "nodeId": "I70492:696;70491:1276",
+      "name": "social-linkedin"
+    },
+    {
+      "file": "icons/social-youtube.svg",
+      "nodeId": "I70492:696;70491:1278",
+      "name": "social-youtube"
+    },
+    {
+      "file": "icons/heart.svg",
+      "nodeId": "70410:3940",
+      "name": "heart"
+    },
+    {
+      "file": "icons/heart-mobile.svg",
+      "nodeId": "15:5755",
+      "name": "heart-mobile"
+    },
+    {
+      "file": "icons/message.svg",
+      "nodeId": "11:1248",
+      "name": "message"
+    },
+    {
+      "file": "icons/close.svg",
+      "nodeId": "9:947",
+      "name": "close"
+    },
+    {
+      "file": "icons/google.svg",
+      "nodeId": "I70484:260;70483:242",
+      "name": "google"
+    },
+    {
+      "file": "icons/facebook.svg",
+      "nodeId": "I70484:240;70483:259",
+      "name": "facebook"
+    },
+    {
+      "file": "icons/thank-you.svg",
+      "nodeId": "11:5150",
+      "name": "thank-you"
+    },
+    {
+      "file": "icons/shop.svg",
+      "nodeId": "15:5524",
+      "name": "shop"
+    },
+    {
+      "file": "icons/user.svg",
+      "nodeId": "15:5522",
+      "name": "user"
+    },
+    {
+      "file": "icons/search-mobile.svg",
+      "nodeId": "15:5331",
+      "name": "search-mobile"
+    },
+    {
+      "file": "icons/scan.svg",
+      "nodeId": "15:5529",
+      "name": "scan"
+    },
+    {
+      "file": "icons/shopping.svg",
+      "nodeId": "I70522:3671;70504:3284",
+      "name": "shopping"
+    },
+    {
+      "file": "icons/chevron-down.svg",
+      "nodeId": "9:1589",
+      "name": "chevron-down"
+    },
+    {
+      "file": "icons/minus-mobile.svg",
+      "nodeId": "16:399",
+      "name": "minus-mobile"
+    },
+    {
+      "file": "icons/plus-mobile.svg",
+      "nodeId": "16:402",
+      "name": "plus-mobile"
+    },
+    {
+      "file": "icons/kebab.svg",
+      "nodeId": "16:990",
+      "name": "kebab"
+    },
+    {
+      "file": "icons/card-favorite.svg",
+      "nodeId": "15:5465",
+      "name": "card-favorite"
+    },
+    {
+      "file": "icons/carousel-dots.svg",
+      "nodeId": "70364:240",
+      "name": "carousel-dots"
+    }
+  ]
+}

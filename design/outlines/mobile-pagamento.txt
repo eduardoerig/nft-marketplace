@@ -1,0 +1,61 @@
+frame "Mobile / Pagamento" 414x896 fill=#140d0a r=40 col gap=0 pad=32/28/32/28
+  frame "Content" 358x832 col gap=16 pad=0/0/0/0
+    frame "Frame 442" 358x605 col gap=16 pad=0/0/0/0
+      frame "Screen Header" 358x44
+        group "Back" 35x35
+          ellipse "Ellipse 38" 35x35 fill=#2f1d15 stroke=#3f2319 1px
+          instance "Iconly/Curved/Arrow - Left 2" 20x20 comp=15:5746
+        text "Pagamento com carteira" 265x16 fill=#f5f1eb [Roboto Mono 700 20/16] "Pagamento com carteira"
+      frame "Frame 2" 358x16 row gap=122 pad=0/0/0/0
+        text "Carteira conectada" 173x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Carteira conectada"
+        text "Trocar carteira" 127x16 fill=#e89b55 [Roboto Mono 700 14/16] "Trocar carteira"
+      frame "Wallet Cards" 358x206 col gap=20 pad=0/0/0/0
+        frame "Wallet Card — Reserva" 358x93
+          rectangle "Rectangle 102" 358x93 fill=#241612 r=14 fx=DROP_SHADOW #0a060473 x0 y20 blur20 spread0
+          text "Reserva" 68x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Reserva"
+          text "nova.kurio.eth Rede Polygon" 201x44 fill=#cfb28c [Roboto Mono 400 14/22] "nova.kurio.eth\nRede Polygon"
+          group "Group 87" 3x15
+            ellipse "Ellipse 46" 3x3 fill=#b39463
+            ellipse "Ellipse 47" 3x3 fill=#b39463
+            ellipse "Ellipse 48" 3x3 fill=#b39463
+          group "Group 90" 16x16
+            ellipse "Ellipse 34" 16x16 stroke=#d28a4c 1.2000000476837158px
+            ellipse "Ellipse 35" 8x8 fill=#d28a4c
+        frame "Wallet Card — Principal" 358x93
+          rectangle "Rectangle 106" 358x93 fill=#241612 r=14
+          text "Principal" 87x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Principal"
+          text "0xA91F…E82C
+Ethereum Mainnet" 203x44 fill=#cfb28c [Roboto Mono 400 14/22] "0xA91F…E82C\nRede principal Ethereum"
+          group "Group 88" 3x15
+            ellipse "Ellipse 46" 3x3 fill=#b39463
+            ellipse "Ellipse 47" 3x3 fill=#b39463
+            ellipse "Ellipse 48" 3x3 fill=#b39463
+          ellipse "Ellipse 46" 16x16 stroke=#55321f 1.2000000476837158px
+      frame "Wallet Options" 359x259 col gap=16 pad=0/0/0/0
+        text "Carteira e rede" 145x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Carteira e rede"
+        frame "Option — WalletConnect" 359x65
+          rectangle "Rectangle 105" 359x65 fill=#241612 r=15 fx=DROP_SHADOW #0a060473 x0 y0 blur20 spread0
+          ellipse "Ellipse 44" 40x40 fill=#2f1d15 stroke=#3f2319 1px
+          text "WalletConnect" 110x16 fill=#f5f1eb [Roboto Mono 400 14/16] "WalletConnect"
+          ellipse "Ellipse 45" 16x16 stroke=#55321f 1.2000000476837158px
+          text "Wallet mark W" 9x18 fill=#e89b55 [Roboto Mono 700 14/auto] "W"
+        frame "Option — MetaMask" 359x65
+          rectangle "Rectangle 104" 359x65 fill=#241612 r=15 fx=DROP_SHADOW #0a060473 x0 y0 blur20 spread0
+          ellipse "Ellipse 42" 40x40 fill=#2f1d15 stroke=#3f2319 1px
+          text "MetaMask" 68x16 fill=#f5f1eb [Roboto Mono 400 14/16] "MetaMask"
+          ellipse "Ellipse 43" 16x16 stroke=#55321f 1.2000000476837158px
+          text "Wallet mark M" 9x18 fill=#e89b55 [Roboto Mono 700 14/auto] "M"
+        frame "Option — Coinbase" 359x65
+          rectangle "Rectangle 88" 359x65 fill=#241612 r=15 fx=DROP_SHADOW #0a060473 x0 y0 blur40 spread0
+          ellipse "Ellipse 40" 40x40 fill=#2f1d15 stroke=#3f2319 1px
+          text "Coinbase Wallet" 127x16 fill=#f5f1eb [Roboto Mono 400 14/16] "Coinbase Wallet"
+          group "Group 89" 16x16
+            ellipse "Ellipse 34" 16x16 stroke=#d28a4c 1.2000000476837158px
+            ellipse "Ellipse 35" 8x8 fill=#d28a4c
+          instance "Iconly/Curved/Wallet" 24x24 comp=23:1373
+      frame "Total Row" 358x16 row gap=0 pad=0/0/0/0
+        frame "Frame 3" 184x16 row gap=28 pad=0/0/0/0
+          text "Total:" 58x16 fill=#f5f1eb [Roboto Mono 700 16/16] "Total:"
+          text "8.936 ETH" 98x16 fill=#e89b55 [Roboto Mono 700 18/16] "8.936 ETH"
+    frame "Confirm Button" 358x60 fill=gradient_linear(#d28a4c,#d28a4ccc) r=40 row gap=0 pad=0/0/0/0
+      text "Confirmar compra" 145x16 fill=#140d0a [Roboto Mono 700 15/16] "Confirmar compra"

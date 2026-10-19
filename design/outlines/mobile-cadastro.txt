@@ -1,0 +1,52 @@
+frame "Mobile / Cadastro" 414x896 fill=#140d0a r=40 col gap=40 pad=80/28/24/28
+  frame "Logo" 358x136 row gap=0 pad=0/0/0/0
+    text "KURIO Wordmark" 109x42 fill=#f5f1eb [Roboto Mono 700 32/auto ls3.2] "KURIO"
+  frame "Title" 358x16 row gap=0 pad=0/0/0/0
+    text "Criar perfil de colecionador" 303x16 fill=#f5f1eb [Roboto Mono 700 18/16] "Criar perfil de colecionador"
+  frame "Form" 358x236 col gap=12 pad=0/0/0/0
+    frame "Container" 358x50 stroke=#3f2319 1px r=10 row gap=10 pad=0/16/0/16
+      text "User Name" 127x16 fill=#b39463 [Roboto Mono 400 14/16] "Nome de usuário"
+    frame "Frame 447" 358x50 stroke=#3f2319 1px r=10 row gap=10 pad=0/16/0/16
+      text "Digite seu e-mail" 143x16 fill=#b39463 [Roboto Mono 400 14/16] "Digite seu e-mail"
+    frame "Frame 449" 358x50 col gap=10 pad=0/16/0/16
+      rectangle "Rectangle 49" 358x50 stroke=#3f2319 1px r=10
+      frame "Frame 448" 326x18 row gap=269 pad=0/0/0/0
+        text "Senha" 43x16 fill=#b39463 [Roboto Mono 400 14/16] "Senha"
+        instance "Iconly/Curved/Hide" 18x18 r=10 comp=9:964
+    frame "Frame 451" 358x50 col gap=0 pad=0/16/0/16
+      group "Group 98" 358x50 r=10
+        rectangle "Rectangle 49" 358x50 stroke=#3f2319 1px r=10
+      frame "Frame 450" 326x18 row gap=185 pad=0/0/0/0
+        text "Confirmar senha" 127x16 fill=#b39463 [Roboto Mono 400 14/16] "Confirmar senha"
+        instance "Iconly/Curved/Hide" 18x18 r=10 comp=9:964
+  frame "Create Profile Button" 358x60 fill=#d28a4c r=10 row gap=0 pad=0/0/0/0
+    text "Criar perfil" 116x16 fill=#140d0a [Roboto Mono 700 16/16] "Criar perfil"
+  instance "Mobile Social Block" 358x124 col gap=12 pad=0/0/0/0 comp=70504:2994
+    frame "Frame 4" 358x16 row gap=10 pad=0/0/0/0
+      line "Line 7" 110x0 stroke=#3f2319 1px
+      text "Ou continue com" 118x16 fill=#f5f1eb [Roboto Mono 400 13/16] "Ou continue com"
+      line "Line 8" 110x0 stroke=#3f2319 1px
+    frame "Frame 370" 358x96 col gap=16 pad=0/0/0/0
+      instance "Social Button" 358x40 stroke=#3f2319 1px r=5 row gap=0 pad=0/0/0/0 comp=70483:256
+        frame "Content" 189x20 row gap=12 pad=0/0/0/0
+          frame "google 1" 20x20
+            group "Group" 20x20
+              vector "Vector" 15x8 fill=#59c36a
+              vector "Vector" 6x6 fill=#00a66c
+              group "Connected_Home_1_" 5x10
+                group "Group" 5x10
+                  group "Group" 5x10
+                    group "Group" 5x10
+                      vector "Vector" 5x10 fill=#ffda2d
+              vector "Vector" 11x10 fill=#4086f4
+              vector "Vector" 10x10 fill=#4175df
+              vector "Vector" 15x8 fill=#ff641a
+              vector "Vector" 7x6 fill=#f0805f
+          text "Continuar com Google" 157x16 fill=#cfb28c [Roboto Mono 500 13/16] "Continuar com Google"
+      instance "Social Button" 358x40 stroke=#3f2319 1px r=5 row gap=0 pad=0/0/0/0 comp=70483:262
+        frame "Content" 204x20 row gap=12 pad=0/0/0/0
+          frame "facebook 1" 20x20
+            vector "Vector" 10x20 fill=#3b5999
+          text "Continuar com Facebook" 172x16 fill=#cfb28c [Roboto Mono 500 13/16] "Continuar com Facebook"
+  frame "Login Link" 358x20 row gap=0 pad=0/0/0/0
+    text "Já tem uma conta? Entre" 208x20 fill=#cfb28c [Roboto Mono 400 15/auto] "Já tem uma conta? Entre"
