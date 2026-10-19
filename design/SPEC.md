@@ -106,11 +106,13 @@ Só existem frames em **1440** (desktop) e **414** (mobile). Os requisitos pedem
 | Desktop / Carteiras | `9:1670` | `desktop-carteiras.png` | `/account/wallets` |
 
 Observações de composição:
-- **Login e Cadastro no desktop são um modal** (500px, abas "Entrar | Criar conta") sobre a Início.
+- **Login e Cadastro no desktop são um modal** (500px, abas "Entrar | Criar conta") sobre a Início,
+  com overlay leve ao fundo (ver "Modal" no inventário).
   Decisão: as rotas `/login` e `/register` renderizam o modal sobre a Início (acesso direto funciona);
   no mobile são telas cheias.
 - **Confirmação no desktop também é um modal** (578px) sobre a página de pagamento esmaecida.
-  Decisão: `/orders/$orderId` mostra o recibo como cartão centralizado com o mesmo visual; o "X" volta ao início.
+  Decisão: `/orders/$orderId` mostra o recibo como modal com o mesmo overlay leve sobre a página;
+  o "X" volta ao início.
 - Perfil, Carteiras e Confirmação não têm frame mobile → adaptar empilhando colunas.
 
 ## Inventário de componentes
@@ -135,6 +137,9 @@ Observações de composição:
   ícone de mostrar/ocultar. Input mobile: 50px, raio ~10.
 - **Radio**: círculo 16px com borda `primary`; marcado = ponto `primary`.
 - **Modal**: `card`, sombra overlay, "X" `primary` no canto, faixa inferior 10px `primary`.
+  **Overlay leve ao fundo** (pedido do usuário; no Figma não há overlay): `#0A0604` com 40% de
+  opacidade cobrindo a página, sem blur — a página de trás continua legível. Vale para Login,
+  Cadastro e Confirmação no desktop. Clicar no overlay ou `Esc` fecha (mesmo comportamento do "X").
 
 ### Início
 - Hero desktop (texto + CTA "EXPLORAR" + imagem 450×450 r=24 + indicador de 3 pontos).
