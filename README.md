@@ -12,3 +12,5 @@ Em desenvolvimento. Instruções de instalação, execução e testes serão adi
 
 - Enunciado: [`docs/CHALLENGE.md`](docs/CHALLENGE.md)
 - Plano de implementação: [`docs/PLAN.md`](docs/PLAN.md)
+- Passos de implementação: [`docs/steps/`](docs/steps/README.md)
+- Checklist de validação: [`docs/VALIDACAO.md`](docs/VALIDACAO.md)
