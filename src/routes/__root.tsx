@@ -1,4 +1,5 @@
-import { createRootRoute, HeadContent, Link, Outlet } from '@tanstack/react-router'
+import type { QueryClient } from '@tanstack/react-query'
+import { createRootRouteWithContext, HeadContent, Link, Outlet } from '@tanstack/react-router'
 import { MobileTabBar } from '@/components/layout/mobile-tab-bar'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { SiteHeader } from '@/components/layout/site-header'
@@ -6,7 +7,9 @@ import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
-export const Route = createRootRoute({
+type RouterContext = { queryClient: QueryClient }
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({ meta: [{ title: 'Kurio — Marketplace de NFTs' }] }),
   component: RootLayout,
   notFoundComponent: NotFound,
