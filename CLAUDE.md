@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 05** — `docs/steps/05-mocks-base.md`.
+- [ ] **Próximo: passo 06** — `docs/steps/06-inicio-catalogo.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -36,6 +36,12 @@ Passos concluídos (marque com o hash do commit):
   `CONFLICT`/`QUOTE_STALE`); o cliente lança `ApiError` (tipo padrão de `error` no Query). Chaves
   privadas usam `owner` (id do usuário ou `guest:<cartId>`). Contas de ETH só via `src/lib/money.ts`.
   Contratos documentados em `docs/API.md` — mocks do passo 05 devem segui-lo.
+- [x] passo 05 — mocks e Playwright (446c5c3). **MSW 3**: a opção é `onUnhandledFrame` (não
+  `onUnhandledRequest`). Banco em `localStorage['mock-db']`, lido/gravado a cada requisição
+  (`readDb`/`updateDb`); mude `SCHEMA_VERSION` em `db.ts` ao alterar o formato. Handlers usam
+  `networkDelay()` + `ok()`/`fail()` de `handlers/respond.ts`. Testes: importe `test`/`expect` de
+  `tests/e2e/fixtures.ts` (reset automático); chamadas à API nos testes saem da página
+  (`mockApi.getJson`), senão não passam pelo MSW. Testes têm tsconfig próprio (`tsconfig.e2e.json`).
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
