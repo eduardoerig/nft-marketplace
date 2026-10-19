@@ -16,10 +16,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </StrictMode>,
-)
+// A API simulada (MSW) liga por configuração — ver .env. O import dinâmico mantém os mocks
+// fora do bundle quando desligados; o app só renderiza depois que o worker está pronto.
+async function enableMocks() {
+  if (import.meta.env.VITE_ENABLE_MOCKS !== 'true') return
+  const { startMocks } = await import('./mocks/browser')
+  await startMocks()
+}
+
+enableMocks().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StrictMode>,
+  )
+})
