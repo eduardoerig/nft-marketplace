@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 03** — `docs/steps/03-rotas-layout.md`.
+- [ ] **Próximo: passo 04** — `docs/steps/04-contratos-api.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -29,6 +29,9 @@ Passos concluídos (marque com o hash do commit):
   suporta o 7); shadcn atual usa o pacote `cn` e trocou `Form` por `Field` (use `Field` +
   react-hook-form); `pnpm dlx` falha nesta máquina — use `npx shadcn@latest add …`.
   Tokens em `src/index.css` (`text-highlight`, `text-placeholder`, `bg-overlay`, `max-w-page`, `skeleton-shimmer`).
+- [x] passo 03 — rotas e layout (61cbaa4). Rotas privadas ficam em `src/routes/_auth/` (o `beforeLoad`
+  de `_auth.tsx` recebe a proteção no passo 08). Layout em `src/components/layout/`; itens fora do
+  escopo usam `<ComingSoon>`. Cada tela substitui seu `<PagePlaceholder>`; o último a sair apaga o arquivo.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
