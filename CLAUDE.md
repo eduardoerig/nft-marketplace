@@ -20,9 +20,11 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 01** — `docs/steps/01-design.md`.
+- [ ] **Próximo: passo 02** — `docs/steps/02-scaffold.md`.
 
 Passos concluídos (marque com o hash do commit):
+- [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
+  chamadas); tudo que os próximos passos precisam está em `design/` — **não consulte o Figma de novo**.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
