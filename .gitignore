@@ -1,0 +1,18 @@
+# deps / build
+node_modules
+dist
+*.local
+
+# testes e relatórios
+test-results
+playwright-report
+blob-report
+lighthouse/reports/*.tmp
+
+# editor / sistema
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.log
+.claude
