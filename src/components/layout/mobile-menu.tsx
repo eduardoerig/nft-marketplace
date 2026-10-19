@@ -19,7 +19,15 @@ export function MobileMenu({ pathname }: { pathname: string }) {
           <MenuIcon className="size-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="gap-8 p-6">
+      <SheetContent
+        className="gap-8 p-6"
+        // O Radix foca o 1º item focável que NÃO é link — aqui seria "Criadores" (Em breve),
+        // abrindo o tooltip sozinho. Focamos o 1º link ("Início") no lugar.
+        onOpenAutoFocus={(event) => {
+          event.preventDefault()
+          if (event.currentTarget instanceof HTMLElement) event.currentTarget.querySelector('a')?.focus()
+        }}
+      >
         <div className="flex flex-col gap-1">
           <SheetTitle className="text-sm font-bold tracking-[0.1em]">KURIO</SheetTitle>
           <SheetDescription className="sr-only">Navegação principal</SheetDescription>
