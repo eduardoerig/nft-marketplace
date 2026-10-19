@@ -37,14 +37,14 @@ const SOCIALS = [
   { label: 'YouTube', icon: 'social-youtube', width: 19, height: 14 },
 ]
 
-const columnTitle = 'text-lg/4 font-bold'
-const columnList = 'flex flex-col text-sm/[30px]'
+const columnTitle = 'text-base/4 font-bold md:text-lg/4'
+const columnList = 'flex flex-col text-sm/7 md:text-sm/[30px]'
 
 export function SiteFooter() {
   return (
-    <footer className="mx-auto mt-24 w-full max-w-page px-4 pb-32 md:pb-6 lg:px-0">
-      {/* Benefícios + newsletter */}
-      <div className="grid gap-8 bg-card p-8 md:grid-cols-2 lg:grid-cols-[repeat(3,1fr)_1.35fr] lg:gap-0">
+    <footer className="mx-auto mt-12 w-full max-w-page px-4 pb-32 md:mt-24 md:pb-6 lg:px-0">
+      {/* Benefícios + newsletter — só a partir de tablet: no celular o footer fica enxuto. */}
+      <div className="hidden gap-8 bg-card p-8 md:grid md:grid-cols-2 lg:grid-cols-[repeat(3,1fr)_1.35fr] lg:gap-0">
         {FEATURES.map((f) => (
           <div key={f.mark} className="flex flex-col gap-3 border-primary lg:border-r lg:px-4">
             <span
@@ -81,11 +81,13 @@ export function SiteFooter() {
       </div>
 
       {/* Faixa de contato */}
-      <div className="grid gap-4 bg-surface-dark p-8 text-sm/[22px] sm:grid-cols-2 lg:grid-cols-4 lg:items-center">
-        <Link to="/" className="font-bold tracking-[0.1em]">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1 bg-surface-dark p-5 text-sm/[22px] md:gap-4 md:p-8 lg:grid-cols-4 lg:items-center">
+        <Link to="/" className="font-bold tracking-[0.1em] max-md:col-span-2 max-md:mb-1">
           KURIO
         </Link>
-        <p className="whitespace-pre-line">{'Feito para colecionadores,\ncriadores e cultura'}</p>
+        <p className="whitespace-pre-line max-md:hidden">
+          {'Feito para colecionadores,\ncriadores e cultura'}
+        </p>
         <a href="mailto:contato@email.com" className="hover:text-highlight">
           contato@email.com
         </a>
@@ -95,7 +97,8 @@ export function SiteFooter() {
       </div>
 
       {/* Links */}
-      <div className="grid gap-10 bg-card p-8 sm:grid-cols-2 lg:grid-cols-4">
+      {/* No celular ficam só os links que levam a telas reais; os "Em breve" aparecem a partir de tablet. */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-6 bg-card p-5 md:gap-10 md:p-8 lg:grid-cols-4">
         <nav aria-labelledby="footer-perfil" className="flex flex-col gap-2">
           <h2 id="footer-perfil" className={columnTitle}>
             Meu perfil
@@ -107,13 +110,13 @@ export function SiteFooter() {
               </Link>
             </li>
             {PROFILE_LINKS.map((label) => (
-              <li key={label}>
+              <li key={label} className="max-md:hidden">
                 <ComingSoon>{label}</ComingSoon>
               </li>
             ))}
           </ul>
         </nav>
-        <nav aria-labelledby="footer-ajuda" className="flex flex-col gap-2">
+        <nav aria-labelledby="footer-ajuda" className="flex flex-col gap-2 max-md:hidden">
           <h2 id="footer-ajuda" className={columnTitle}>
             Central de ajuda
           </h2>
@@ -144,8 +147,8 @@ export function SiteFooter() {
             ))}
           </ul>
         </nav>
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6 max-md:col-span-2 max-md:flex-row max-md:flex-wrap max-md:justify-between md:gap-8">
+          <div className="flex flex-col gap-3 md:gap-5">
             <h2 className={columnTitle}>Redes sociais</h2>
             <ul className="flex gap-2.5">
               {SOCIALS.map((s) => (
