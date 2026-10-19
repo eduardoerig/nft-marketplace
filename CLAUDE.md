@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 04** — `docs/steps/04-contratos-api.md`.
+- [ ] **Próximo: passo 05** — `docs/steps/05-mocks-base.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -32,6 +32,10 @@ Passos concluídos (marque com o hash do commit):
 - [x] passo 03 — rotas e layout (61cbaa4). Rotas privadas ficam em `src/routes/_auth/` (o `beforeLoad`
   de `_auth.tsx` recebe a proteção no passo 08). Layout em `src/components/layout/`; itens fora do
   escopo usam `<ComingSoon>`. Cada tela substitui seu `<PagePlaceholder>`; o último a sair apaga o arquivo.
+- [x] passo 04 — contratos (1ff5076). Tipos em `src/api/types.ts` (erros = `code` + `reason`, ex.:
+  `CONFLICT`/`QUOTE_STALE`); o cliente lança `ApiError` (tipo padrão de `error` no Query). Chaves
+  privadas usam `owner` (id do usuário ou `guest:<cartId>`). Contas de ETH só via `src/lib/money.ts`.
+  Contratos documentados em `docs/API.md` — mocks do passo 05 devem segui-lo.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
