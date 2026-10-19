@@ -9,3 +9,6 @@ React · TypeScript · TanStack Router · TanStack Query · Axios · Socket.IO �
 ## Status
 
 Em desenvolvimento. Instruções de instalação, execução e testes serão adicionadas aqui.
+
+- Enunciado: [`docs/CHALLENGE.md`](docs/CHALLENGE.md)
+- Plano de implementação: [`docs/PLAN.md`](docs/PLAN.md)
