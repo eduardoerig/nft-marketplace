@@ -7,7 +7,13 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  globalIgnores(['dist', 'test-results', 'playwright-report', 'public/mockServiceWorker.js']),
+  globalIgnores([
+    'dist',
+    'src/routeTree.gen.ts',
+    'test-results',
+    'playwright-report',
+    'public/mockServiceWorker.js',
+  ]),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -23,8 +29,8 @@ export default defineConfig([
     },
   },
   {
-    // Componentes do shadcn exportam variantes junto com o componente.
-    files: ['src/components/ui/**/*.tsx'],
+    // shadcn exporta variantes junto com o componente; rotas exportam `Route` (o plugin do router cuida do HMR).
+    files: ['src/components/ui/**/*.tsx', 'src/routes/**/*.tsx'],
     rules: { 'react-refresh/only-export-components': 'off' },
   },
 ])

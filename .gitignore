@@ -16,3 +16,4 @@ lighthouse/reports/*.tmp
 .DS_Store
 *.log
 .claude
+.tanstack

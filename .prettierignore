@@ -6,3 +6,4 @@ docs
 test-results
 playwright-report
 *.md
+src/routeTree.gen.ts
