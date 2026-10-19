@@ -4,18 +4,23 @@ Este repositório é a solução de um desafio de entrevista: marketplace de NFT
 O trabalho será continuado por outro agente/conta. Leia nesta ordem:
 
 1. `docs/CHALLENGE.md` — enunciado completo (fonte da verdade dos requisitos e critérios).
-2. `docs/PLAN.md` — plano aprovado: stack, estrutura, decisões técnicas e ondas de subagentes.
+2. `docs/PLAN.md` — plano aprovado: stack, estrutura, decisões técnicas e os 36 passos.
 3. Este arquivo — status atual e regras.
 
-## Status atual
-- [x] Plano aprovado e versionado (`docs/PLAN.md`).
-- [x] README inicial.
-- [ ] **Próximo passo: Onda 0** (extração do design do Figma → `design/SPEC.md`, tokens, assets em `public/`, screenshots em `design/`).
-- [ ] Onda 1 — fundação (scaffold Vite + pnpm, Tailwind, shadcn, Router, Query, Axios, `api/types.ts`, mocks base, Playwright, Lighthouse).
-- [ ] Ondas 2–5 — ver `docs/PLAN.md`.
-- Deploy na Vercel: **adiado** pelo usuário; deixar `vercel.json` pronto.
+## Como trabalhar: UM PASSO POR VEZ
+O usuário quer controle total. O trabalho está dividido em 36 passos pequenos em
+`docs/PLAN.md` → "Execução em passos pequenos". Siga o **ritual** descrito lá:
+faça **só** o passo pedido ("faça o passo N"), commit `passo N: ...`, push, marque abaixo,
+explique como validar e **pare**. Nunca adiante passos sem o usuário pedir.
 
-Atualize esta seção ao concluir cada onda.
+## Status atual
+- [x] Plano aprovado e versionado; README inicial.
+- [ ] **Próximo: passo 1** — tokens do Figma em `design/SPEC.md`.
+
+Passos concluídos (marque com o hash do commit):
+<!-- ex.: - [x] passo 1 — tokens (abc1234) -->
+
+Deploy na Vercel: **adiado** pelo usuário (passo 36).
 
 ## Regras obrigatórias
 - **Código simples e fácil de manter** (pedido explícito do usuário): poucas abstrações, arquivos
@@ -39,6 +44,6 @@ Atualize esta seção ao concluir cada onda.
 - Node IDs dos frames: tabela em `docs/PLAN.md` → "Insumos confirmados".
 - Antes de `get_design_context`, carregue a skill `figma-design-to-code`.
 
-## Comandos (a criar na Onda 1)
+## Comandos (criados nos passos 5–10)
 `pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm typecheck` · `pnpm lint` ·
 `pnpm test:e2e` · `pnpm test:e2e:update` · `pnpm lighthouse`
