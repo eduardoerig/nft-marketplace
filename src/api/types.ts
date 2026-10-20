@@ -30,6 +30,8 @@ export type ApiErrorReason =
   | 'IDEMPOTENCY_MISMATCH' // pedido: mesma chave com corpo diferente (409)
   | 'COUPON_INVALID' // cotação (422)
   | 'COUPON_EXPIRED' // cotação (422)
+  | 'WALLET_REJECTED' // conectar carteira: a pessoa recusou na carteira (409)
+  | 'WALLET_DISCONNECTED' // pedido: a carteira caiu antes de assinar (409)
   | 'TIMEOUT' // só no cliente
   | 'OFFLINE' // só no cliente
 
@@ -116,6 +118,9 @@ export type Wallet = {
   provider: WalletProvider
   ensName: string | null
 }
+
+/** Resultado de "Conectar carteira" (simulado). */
+export type WalletConnection = { walletId: string; provider: WalletProvider; address: string }
 
 export type WalletInput = Omit<Wallet, 'id'>
 export type WalletUpdate = Partial<Omit<Wallet, 'id' | 'kind'>>
@@ -275,7 +280,8 @@ export type Buyer = {
 
 /** Corpo de POST /orders. Vai junto o header Idempotency-Key. */
 export type OrderInput = {
-  quoteId: string
+  quoteId: string // a cotação revisada; se não bater com a atual → 409 QUOTE_STALE
+  couponCode?: string // o mesmo cupom da cotação revisada
   walletId: string
   network: Network
   buyer: Buyer

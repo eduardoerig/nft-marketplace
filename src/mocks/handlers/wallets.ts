@@ -2,6 +2,7 @@
 import { http } from 'msw'
 import { NETWORKS, type Wallet, type WalletInput, type WalletUpdate } from '@/api/types'
 import { readDb, updateDb } from '../db'
+import { getScenario } from '../scenarios'
 import type { MockWallet } from '../fixtures/users'
 import { requireUser } from './auth'
 import { fail, networkDelay, ok } from './respond'
@@ -91,5 +92,24 @@ export const walletHandlers = [
       })
       return ok(toWallet(wallet))
     })
+  }),
+
+  // "Conectar carteira" (simulado). Cenário wallet-reject: a pessoa recusa na carteira.
+  http.post('/api/wallets/:id/connect', async ({ request, params }) => {
+    await networkDelay()
+    const { provider } = (await request.json().catch(() => ({}))) as { provider?: string }
+    if (!PROVIDERS.includes(provider ?? '')) {
+      return fail('VALIDATION', 'Escolha a carteira.', { fields: { provider: 'Escolha a carteira.' } })
+    }
+    const db = readDb()
+    const user = requireUser(db, request)
+    if (user instanceof Response) return user
+    const wallet = db.wallets.find((w) => w.id === params.id)
+    if (!wallet) return fail('NOT_FOUND', 'Carteira não encontrada.')
+    if (wallet.userId !== user.id) return fail('FORBIDDEN', 'Esta carteira não é sua.')
+    if (getScenario().rejectWallet) {
+      return fail('CONFLICT', 'A conexão foi recusada na carteira.', { reason: 'WALLET_REJECTED' })
+    }
+    return ok({ walletId: wallet.id, provider, address: wallet.address })
   }),
 ]

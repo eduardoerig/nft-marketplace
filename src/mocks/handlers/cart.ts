@@ -27,7 +27,7 @@ function cartOwner(db: Db, request: Request) {
   return { userId: null, guestId: request.headers.get('X-Cart-Id') }
 }
 
-function findCart(db: Db, owner: { userId: string | null; guestId: string | null }) {
+export function findCart(db: Db, owner: { userId: string | null; guestId: string | null }) {
   if (owner.userId) return db.carts.find((c) => c.userId === owner.userId)
   if (owner.guestId) return db.carts.find((c) => c.userId === null && c.id === owner.guestId)
   return undefined
@@ -45,7 +45,7 @@ function findOrCreateCart(db: Db, owner: { userId: string | null; guestId: strin
   return cart
 }
 
-function lookup(db: Db, nftId: string, editionId: string) {
+export function lookup(db: Db, nftId: string, editionId: string) {
   const nft = db.nfts.find((n) => n.id === nftId)
   const edition = nft?.editions.find((e) => e.id === editionId)
   return nft && edition ? { nft, edition } : null
@@ -98,6 +98,73 @@ function quoteIdOf(content: unknown) {
   let hash = 5381
   for (const char of JSON.stringify(content)) hash = (hash * 33) ^ char.charCodeAt(0)
   return `q_${(hash >>> 0).toString(36)}`
+}
+
+/**
+ * Calcula a cotação do carrinho (também usada pelo pedido, para revalidar). Devolve a resposta de
+ * erro pronta quando o carrinho está vazio, falta estoque ou o cupom não vale.
+ */
+export function buildQuote(db: Db, mockCart: MockCart | undefined, couponCode?: string): Quote | Response {
+  const cart = toCart(db, mockCart)
+  if (!mockCart || cart.items.length === 0) return fail('VALIDATION', 'O carrinho está vazio.')
+  for (const item of cart.items) {
+    const limit = Math.min(item.available, item.maxPerOrder)
+    if (item.quantity > limit) return outOfStock(item.name, limit)
+  }
+
+  let coupon: Quote['coupon'] = null
+  const code = couponCode?.trim().toUpperCase()
+  if (code) {
+    const found = db.coupons.find((c) => c.code === code)
+    if (!found) {
+      return fail('VALIDATION', 'Cupom inválido.', {
+        reason: 'COUPON_INVALID',
+        fields: { couponCode: 'Este cupom não existe.' },
+      })
+    }
+    if (new Date(found.expiresAt).getTime() <= Date.now()) {
+      return fail('VALIDATION', 'Cupom expirado.', {
+        reason: 'COUPON_EXPIRED',
+        fields: { couponCode: 'Este cupom expirou.' },
+      })
+    }
+    coupon = { code: found.code, percent: found.percent }
+  }
+
+  const items = cart.items.map(
+    ({ nftId, editionId, name, tokenId, image, editionName, unitPrice, quantity, lineTotal }) => ({
+      nftId,
+      editionId,
+      name,
+      tokenId,
+      image,
+      editionName,
+      unitPrice,
+      quantity,
+      lineTotal,
+    }),
+  )
+  const discount = coupon ? percentOf(cart.subtotal, coupon.percent) : '0'
+  const networkFee = mul(NETWORK_FEE_PER_ITEM, items.length)
+  const total = add(sub(cart.subtotal, discount), networkFee)
+  const quoteId = quoteIdOf({ items, coupon, networkFee })
+  // A versão sobe a cada cotação diferente para este carrinho.
+  const version =
+    mockCart.lastQuote?.id === quoteId ? mockCart.lastQuote.version : (mockCart.lastQuote?.version ?? 0) + 1
+  mockCart.lastQuote = { id: quoteId, version }
+
+  const quote: Quote = {
+    quoteId,
+    version,
+    items,
+    subtotal: cart.subtotal,
+    coupon,
+    discount,
+    networkFee,
+    total,
+    expiresAt: new Date(Date.now() + QUOTE_TTL_MS).toISOString(),
+  }
+  return quote
 }
 
 export const cartHandlers = [
@@ -207,68 +274,8 @@ export const cartHandlers = [
       const owner = cartOwner(db, request)
       if (owner instanceof Response) return owner
       const mockCart = findCart(db, owner)
-      const cart = toCart(db, mockCart)
-      if (!mockCart || cart.items.length === 0) return fail('VALIDATION', 'O carrinho está vazio.')
-      for (const item of cart.items) {
-        const limit = Math.min(item.available, item.maxPerOrder)
-        if (item.quantity > limit) return outOfStock(item.name, limit)
-      }
-
-      let coupon: Quote['coupon'] = null
-      const code = input.couponCode?.trim().toUpperCase()
-      if (code) {
-        const found = db.coupons.find((c) => c.code === code)
-        if (!found) {
-          return fail('VALIDATION', 'Cupom inválido.', {
-            reason: 'COUPON_INVALID',
-            fields: { couponCode: 'Este cupom não existe.' },
-          })
-        }
-        if (new Date(found.expiresAt).getTime() <= Date.now()) {
-          return fail('VALIDATION', 'Cupom expirado.', {
-            reason: 'COUPON_EXPIRED',
-            fields: { couponCode: 'Este cupom expirou.' },
-          })
-        }
-        coupon = { code: found.code, percent: found.percent }
-      }
-
-      const items = cart.items.map(
-        ({ nftId, editionId, name, tokenId, image, editionName, unitPrice, quantity, lineTotal }) => ({
-          nftId,
-          editionId,
-          name,
-          tokenId,
-          image,
-          editionName,
-          unitPrice,
-          quantity,
-          lineTotal,
-        }),
-      )
-      const discount = coupon ? percentOf(cart.subtotal, coupon.percent) : '0'
-      const networkFee = mul(NETWORK_FEE_PER_ITEM, items.length)
-      const total = add(sub(cart.subtotal, discount), networkFee)
-      const quoteId = quoteIdOf({ items, coupon, networkFee })
-      // A versão sobe a cada cotação diferente para este carrinho.
-      const version =
-        mockCart.lastQuote?.id === quoteId
-          ? mockCart.lastQuote.version
-          : (mockCart.lastQuote?.version ?? 0) + 1
-      mockCart.lastQuote = { id: quoteId, version }
-
-      const quote: Quote = {
-        quoteId,
-        version,
-        items,
-        subtotal: cart.subtotal,
-        coupon,
-        discount,
-        networkFee,
-        total,
-        expiresAt: new Date(Date.now() + QUOTE_TTL_MS).toISOString(),
-      }
-      return ok(quote)
+      const quote = buildQuote(db, mockCart, input.couponCode)
+      return quote instanceof Response ? quote : ok(quote)
     })
   }),
 ]

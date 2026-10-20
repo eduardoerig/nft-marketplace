@@ -4,6 +4,8 @@ export type Scenario = {
   description: string
   latencyMs: number // atraso de toda resposta
   failFavorites?: boolean // favoritar/desfavoritar responde 503 (demonstra o rollback otimista)
+  rejectWallet?: boolean // "Conectar carteira" é recusado (409 WALLET_REJECTED)
+  disconnectWallet?: boolean // o pedido falha porque a carteira caiu (409 WALLET_DISCONNECTED)
 }
 
 export const scenarios = {
@@ -12,6 +14,16 @@ export const scenarios = {
     description: 'Favoritar e desfavoritar falham: o coração volta ao estado anterior com um aviso.',
     latencyMs: 400,
     failFavorites: true,
+  },
+  'wallet-reject': {
+    description: 'A carteira recusa a conexão no pagamento.',
+    latencyMs: 250,
+    rejectWallet: true,
+  },
+  'wallet-disconnect': {
+    description: 'A carteira conecta, mas cai na hora de confirmar o pedido.',
+    latencyMs: 250,
+    disconnectWallet: true,
   },
 } satisfies Record<string, Scenario>
 

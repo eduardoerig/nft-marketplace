@@ -93,10 +93,22 @@ e aba **Console** (sem erros vermelhos).
 - [ ] Confira no código: o evento chega pelo `socket.io-client` (nada de chamar o cache direto do mock — eliminatório).
 
 ## 13 — Pagamento
-- [ ] Campos vazios/inválidos mostram erro.
-- [ ] Simule recusa de carteira (cenário `wallet-reject`) → mensagem coerente.
-- [ ] Clique várias vezes em confirmar → **1 pedido só**.
-- [ ] Mude o preço antes de confirmar → o app pede para confirmar de novo.
+Preparação: entre como `ana@example.com`, ponha 2 NFTs no carrinho e clique em "Conectar e finalizar".
+- [ ] Os dados do colecionador vêm preenchidos do perfil. Apague o nome e escreva `ana@` no e-mail →
+      "Confirmar compra" mostra o erro embaixo de cada campo.
+- [ ] "Confirmar compra" sem conectar → aviso "Conecte a carteira…" e o foco vai para o botão de conectar.
+- [ ] Conectar → "Carteira conectada: 0xA91F…E82C". Trocar de carteira ou de app volta a pedir conexão.
+- [ ] `?scenario=wallet-reject` (reseta os dados: entre de novo) → "A conexão foi recusada na carteira." + "Tentar novamente".
+- [ ] `?scenario=wallet-disconnect` → ao confirmar, "A carteira desconectou…" e nenhum pedido é criado.
+      Volte com `?scenario=default`.
+- [ ] Revisão: itens, cupom, taxa e total iguais aos do carrinho. Com a revisão aberta, mude o preço pelo console
+      (`/api/__mock/nft-update`, ver passo 12) → aparece "Os valores mudaram…" com antes → depois e o botão
+      vira "Aceitar os novos valores".
+- [ ] Clique várias vezes seguidas em "Confirmar e pagar" → **1 pedido só** (DevTools → Application →
+      Local Storage → `mock-db` → `orders`).
+- [ ] Cupom: aplique `DESCONTO10` no carrinho → "Conectar e finalizar" leva o cupom (`/checkout?cupom=DESCONTO10`).
+- [ ] Sessão expirada no meio: escreva uma observação, vença a sessão no `mock-db` (`sessions[].expiresAt` no
+      passado) e clique em conectar → login → volta ao pagamento com a observação preenchida.
 
 ## 14 — Status e recibo
 - [ ] Compra completa: catálogo → detalhe → carrinho → pagamento → "pendente" → "confirmado".

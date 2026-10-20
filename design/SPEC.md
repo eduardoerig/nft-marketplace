@@ -271,3 +271,10 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
   Figma no resumo (8.92) não fecham com os itens; o app mostra a soma real vinda da cotação.
 - **Avisos de tempo real no carrinho** (sem frame no Figma): faixa acima da tabela, borda dourada,
   com "O preço de X (1/50) mudou de A para B." ou "X esgotou." e um botão para dispensar; no máximo 3.
+- **Pagamento**: o formulário do Figma repete campos da conta (endereço, tipo, ENS, "Nome do perfil",
+  "Código de indicação", "Usar outra carteira?") que o pedido não usa. Aqui ficam só os dados do comprador
+  (nome, usuário, e-mail, rede, observação) e a escolha entre as **carteiras cadastradas** em cartões (como no
+  frame mobile); "Trocar carteira" leva às carteiras da conta. "Carteira e rede" escolhe o app da conexão
+  (simulada) e ganha o botão "Conectar …" com os estados conectando/conectada/recusada/desconectada. Antes de
+  enviar há um diálogo "Revise seu pedido" (exigência do desafio). No mobile os dados do comprador vêm antes
+  das carteiras: mudar só a ordem visual deixaria a ordem do Tab diferente da ordem da tela.

@@ -24,7 +24,7 @@ type Props = {
  * (o app não recalcula nada). Desktop: coluna à direita. Mobile: bloco no fim da tela, como no Figma.
  */
 export function CartSummary(props: Props) {
-  const { quote, error, isLoading, isRefreshing, onRetry, canCheckout } = props
+  const { quote, error, isLoading, isRefreshing, onRetry, canCheckout, couponCode } = props
 
   return (
     <section
@@ -77,7 +77,9 @@ export function CartSummary(props: Props) {
             asChild
             className="h-[60px] w-full rounded-[40px] text-base font-bold lg:h-10 lg:rounded-md"
           >
-            <Link to="/checkout">Conectar e finalizar</Link>
+            <Link to="/checkout" search={{ cupom: couponCode }}>
+              Conectar e finalizar
+            </Link>
           </Button>
         ) : (
           <Button

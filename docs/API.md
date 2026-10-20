@@ -131,11 +131,20 @@ O `quoteId` muda sempre que preço, disponibilidade, cupom ou taxa mudam — é 
 
 | Método e rota | Corpo | Resposta | Erros |
 |---|---|---|---|
-| `POST /orders` + `Idempotency-Key` | `OrderInput { quoteId, walletId, network, buyer }` | 201 `Order` (`pending`) | 401, 404 (carteira), 409 `QUOTE_STALE` / `OUT_OF_STOCK` / `IDEMPOTENCY_MISMATCH`, 422, 503 |
+| `POST /orders` + `Idempotency-Key` | `OrderInput { quoteId, couponCode?, walletId, network, buyer }` | 201 `Order` (`pending`) | 401, 404 (carteira), 409 `QUOTE_STALE` / `OUT_OF_STOCK` / `IDEMPOTENCY_MISMATCH`, 422, 503 |
 | `GET /orders/:id` | — | 200 `Order` | 401, 403, 404 |
 
 - **Idempotência:** mesma chave + mesmo corpo → mesmo pedido (200, sem duplicar).
   Mesma chave + corpo diferente → 409 `IDEMPOTENCY_MISMATCH`.
+  No cliente ([`src/lib/idempotency.ts`](../src/lib/idempotency.ts)) a chave sai do conteúdo do pedido e
+  fica no sessionStorage: cliques repetidos e reenvios usam a mesma; conteúdo diferente gera outra; ela
+  é apagada quando o pedido é criado. Falha de rede no envio → o app reenvia sozinho com a mesma chave.
+- **Revalidação:** o servidor recalcula a cotação (com o `couponCode`) e compara com o `quoteId` revisado.
+  Se mudou → 409 `QUOTE_STALE`; o app busca a cotação nova, mostra o que mudou na revisão e só envia
+  depois de "Aceitar os novos valores" + nova confirmação. Falta de estoque → 409 `OUT_OF_STOCK`.
+- **Carteira:** 404/403 se a carteira não existe ou é de outro usuário; 409 `WALLET_DISCONNECTED` no
+  cenário `wallet-disconnect` (a carteira "caiu" antes de assinar).
+- **Cupom:** vem da URL do carrinho (`/checkout?cupom=DESCONTO10`).
 - **Estados:** `pending → confirmed | rejected` (os dois últimos são terminais).
 - O pedido guarda um **snapshot** (itens, valores, carteira): o recibo não muda se o catálogo mudar.
 - `transaction { hash, explorerUrl }` só existe em `confirmed`; `failureReason` só em `rejected`.
@@ -157,6 +166,7 @@ O `quoteId` muda sempre que preço, disponibilidade, cupom ou taxa mudam — é 
 | `GET /wallets` | — | 200 `Wallet[]` | 401 |
 | `POST /wallets` | `WalletInput` | 201 `Wallet` | 401, 422, 409 (já existe carteira desse `kind`) |
 | `PATCH /wallets/:id` | `WalletUpdate` | 200 `Wallet` | 401, 403, 404, 422 |
+| `POST /wallets/:id/connect` | `{ provider }` | 200 `WalletConnection { walletId, provider, address }` | 401, 403, 404, 422, 409 `WALLET_REJECTED` (cenário `wallet-reject`) |
 
 `Wallet = { id, kind: 'primary' | 'secondary', label, address, network, provider, ensName }`.
 
