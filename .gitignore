@@ -20,3 +20,6 @@ lighthouse/reports/*
 *.log
 .claude
 .tanstack
+
+# Vercel CLI (ligação local com o projeto)
+.vercel
