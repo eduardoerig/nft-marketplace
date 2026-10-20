@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~1h30 · **Desafio:** §6 (cenários determinísticos)
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: `favorites-fail` já existe (flag `failFavorites`); migre-o para o `applyScenario`. Trocar de cenário reseta o banco.
+
 ## O que fazer
 1. Completar `src/mocks/scenarios.ts` — uma tabela simples, cada cenário com nome e descrição:
    `default`, `empty`, `slow` (2s), `variable-latency` (determinística por seed), `out-of-order`,

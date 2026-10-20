@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~2h · **Desafio:** §8, §10
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: o code-splitting por rota já está ligado; o mobile não tem header (tablet e desktop têm).
+
 ## O que fazer
 1. **A11y**: navegar todas as telas só com teclado; foco visível; foco preso e devolvido em Dialog/Sheet;
    labels e erros associados; `alt` nas imagens; contraste ≥ 4.5:1; estados com texto/ícone além de cor;

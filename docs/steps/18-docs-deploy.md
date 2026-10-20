@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~1h30 · **Desafio:** §12
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: os desvios do Figma já registrados estão em `design/SPEC.md` → "Desvios do Figma"; as regras de sessão, cache e otimista, em `docs/API.md`.
+
 ## O que fazer
 1. **README.md**: o que é, setup (`pnpm i`, `pnpm dev`), variáveis (`VITE_ENABLE_MOCKS`), credenciais fictícias,
    como escolher/resetar cenários (`?scenario=`, painel de dev), como reproduzir cada falha, todos os comandos,

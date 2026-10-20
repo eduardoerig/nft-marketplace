@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~2h · **Desafio:** §9
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: há duas falhas intermitentes já vistas (ver "Problemas conhecidos") e helpers de login em `tests/e2e/auth-helpers.ts`.
+
 ## O que fazer
 1. Conferir a lista do §9 de `docs/CHALLENGE.md` item a item contra `tests/e2e/` e criar o que faltar
    (um arquivo por área: `catalog`, `nft-detail`, `auth`, `favorites`, `cart`, `checkout`, `realtime`, `account`, `a11y`, `network`).

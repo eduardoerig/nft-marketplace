@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~2h · **Desafio:** §3 Pagamento, §5 (idempotência)
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: o login já é o modal `?auth=login&redirect=` e a sessão expirada já leva até ele; falta só preservar os dados do formulário. Topo mobile com `MobilePageHeader` ("Pagamento com carteira").
+
 ## O que fazer
 1. Tela Pagamento (`Desktop / Pagamento` + mobile): dados do colecionador (validados), seleção de carteira
    cadastrada e rede, botão "Conectar carteira" simulado (estados: conectando, conectada, recusada, desconectada —

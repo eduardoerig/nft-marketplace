@@ -6,7 +6,8 @@ O trabalho será continuado por outro agente/conta. Leia nesta ordem:
 1. `docs/CHALLENGE.md` — enunciado completo (fonte da verdade dos requisitos e critérios).
 2. `docs/PLAN.md` — plano aprovado: stack, estrutura e decisões técnicas.
 3. `docs/steps/NN-*.md` — o passo que o usuário pediu.
-4. Este arquivo — status atual e regras.
+4. Este arquivo — status atual, regras e **decisões que valem acima dos arquivos de passo**
+   (seção "Decisões já tomadas que mudam os passos 11–18").
 
 ## Como trabalhar: UM PASSO POR VEZ (prazo: quarta)
 O usuário quer controle total. O trabalho está dividido em **18 passos**, um arquivo por passo em
@@ -17,6 +18,21 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 4. Marque o passo abaixo com o hash do commit.
 5. Responda com o que foi feito e aponte a seção do passo em `docs/VALIDACAO.md`
    (checklist que o **usuário** usa para validar). **Pare** e espere.
+
+### Como o usuário gosta de receber cada passo (pedidos explícitos dele)
+- **Explique de forma didática, em português**, o que foi feito e como a estrutura funciona
+  (ele está aprendendo com o projeto): pastas/arquivos novos, o "porquê" de cada decisão, bugs achados.
+- **Mostre sempre os testes que rodou**: o comando, a saída real (passou/falhou, números) e uma lista
+  do que **não** foi testado. Falha intermitente também se relata, mesmo sem causa achada.
+- Prove que um teste novo pega o bug (rode-o contra o código sem a correção e mostre que falha).
+- **Commits**: revise o diff, adicione arquivos **pelo nome** (nunca `git add -A`: o usuário marca
+  itens em `docs/VALIDACAO.md` na mesma pasta e isso já vazou num commit uma vez). Um assunto por
+  commit, mensagem com corpo. Ajustes pedidos fora de passo: `ajuste de UI: …` ou `passo NN: ajuste — …`.
+  O commit separado `passo NN: marca status no CLAUDE.md` **continua** (o usuário decidiu manter).
+  Nunca `force push` sem ele pedir.
+- **Fidelidade ao Figma importa muito**: ele confere detalhes (hover, curvas, textos, mobile). Antes de
+  dar uma tela por pronta, compare com `design/screens/*.png` e `design/outlines/*.txt`; quando faltar
+  medida no outline, meça no PNG (ex.: o recorte da barra inferior foi medido pixel a pixel).
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
@@ -75,6 +91,18 @@ Passos concluídos (marque com o hash do commit):
   Cenários de mock: `failFavorites` em `src/mocks/scenarios.ts` (o passo 15 acrescenta os demais).
   Card: botões ficam ao lado do `<Link>` (não dentro) — o passo 11 põe o "carrinho" do hover ali.
   Tela de favoritos ("Lista de interesse"/aba Favoritos) não está no escopo do passo: segue "Em breve".
+- [x] ajustes pedidos pelo usuário depois do passo 10 (todos com E2E):
+  - `f0e540a`/`39611fb` card do catálogo (desktop): fileira carrinho · favoritar · ver só no hover ou
+    foco de **teclado** (`group-has-focus-visible`) — `:focus-within` deixava a fileira presa após clique.
+  - `b5ff67b` hero troca de destaque a cada 6 s; pausa no hover/foco, botão pausar, respeita
+    "reduzir movimento" (WCAG 2.2.2). Teste usa `page.clock`.
+  - `d542d57` **mobile sem header do site** (nenhum frame mobile tem): abaixo de 768px a navegação é a
+    `MobileTabBar`; telas internas usam `MobilePageHeader` (voltar + título) e `BackButton`
+    (`src/components/layout/`). Tablet (768–1023) mantém header + menu ☰.
+  - `e07dd4f` hero mobile com os círculos dourados e o texto curto do frame mobile.
+  - `c8b07a7` recorte da barra inferior em SVG (curva medida no PNG do Figma).
+  - antes disso: `5693653` o MSW "morria" com a aba em segundo plano (Chrome desliga o service worker);
+    `src/mocks/browser.ts` religa ao voltar para a aba. `74a41fd`: resposta não-JSON vira `ApiError`.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
@@ -96,6 +124,45 @@ Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 - Componentes/hooks/axios **nunca** importam `src/mocks/` — mocks só na camada de rede (MSW).
 - Valores em ETH sempre como string decimal (big.js em `src/lib/money.ts`).
 
+## Decisões já tomadas que mudam os passos 11–18 (leia antes de cada passo)
+Os arquivos de `docs/steps/` foram escritos antes destas decisões; onde divergirem, **vale isto aqui**.
+- **Login**: não existe tela `/login` própria. Para pedir login, navegue para a página atual com
+  `search: (prev) => ({ ...prev, auth: 'login' })` (ex.: `FavoriteButton`). Rota privada sem sessão já
+  vai para `/?auth=login&redirect=<url>` (`src/routes/_auth.tsx`) e a sessão expirada faz o mesmo
+  sozinha (`src/features/auth/session-expiry.ts`, registrado no `main.tsx`). Passo 13 ("login com
+  `redirect=/checkout`"): isso já acontece — falta só preservar os dados do formulário (sessionStorage).
+- **Login limpa o cache privado** (`startSession` → `clearPrivateData` em `src/features/auth/queries.ts`).
+  Passo 11: o merge do carrinho de visitante (`POST /cart/merge`) precisa do `guest-cart-id` **antes**
+  dessa limpeza — encaixe no `onSuccess` de `useLogin`/`useRegister` e só depois invalide `['cart']`.
+- **Mobile não tem header**: o badge de quantidade do carrinho (passo 11) vai no header (≥768px) **e** no
+  ícone de carrinho da `MobileTabBar`. `MobileTabBar` some em `/nfts`, `/cart`, `/checkout`, `/orders`
+  (no Figma essas telas são cheias). Carrinho e Pagamento mobile: use `MobilePageHeader` com o título do
+  Figma ("Carrinho de NFTs", "Pagamento com carteira").
+- **Lugares com "Em breve" que o passo 11 deve trocar pelo carrinho real**: botão de carrinho da fileira
+  de hover do card (`src/features/catalog/components/nft-card.tsx`), "Comprar"/"Comprar NFT" e o botão
+  de carrinho da barra de compra mobile no detalhe (`src/features/nft/components/nft-detail.tsx`).
+- **Logout** (`useLogout`): no passo 12, desconecte o socket ali também.
+- **Cenários do mock** (passo 15): `src/mocks/scenarios.ts` já tem `default` e `favorites-fail`
+  (flag `failFavorites` lida no handler). Ao criar `applyScenario`, migre esse caso para ele.
+  Trocar de cenário com `?scenario=` **reseta o banco** (é preciso logar de novo).
+- **Code-splitting por rota já está ligado** (`autoCodeSplitting` no `vite.config.ts`) — passo 17.
+- **Textos do hero**: desktop e mobile usam o texto do seu próprio frame (decisão revista em `design/SPEC.md`).
+- **Desvios do Figma** decididos até aqui estão em `design/SPEC.md` → "Desvios do Figma" (passo 18 leva
+  para o ARCHITECTURE.md). Registre lá todo desvio novo.
+
+## Problemas conhecidos e dicas do ambiente
+- **Falhas intermitentes já vistas (1 vez cada, sem reproduzir depois)**: `tests/e2e/mocks.spec.ts`
+  (religar o MSW, ~1 em 230 execuções sob carga) e `account.spec.ts` "perfil: editar nome" (mobile).
+  Investigar no passo 16 se reaparecerem. Rode suítes novas com `--repeat-each=3`.
+- **Corridas comuns nos testes**: esperar o dado carregar antes de agir (ex.: valor no campo, não só o
+  título); esperar o servidor salvar antes de `reload()` (o otimista mostra antes da API responder).
+- **Dev server**: depois de editar, a aba às vezes fica com o módulo antigo em cache — Ctrl+F5. Pasta nova
+  do Tailwind pode exigir reiniciar o `pnpm dev`. Os E2E rodam no build (`pnpm build && preview`), sem isso.
+- **Máquina do usuário (Windows)**: não há `python`; `pnpm dlx` falha (use `npx`). Para editar arquivos,
+  prefira as ferramentas de edição a scripts de shell com aspas aninhadas (já quebraram várias vezes).
+- **Ainda não verificado**: largura de tablet (768px) e zoom 200% — passo 17. `pnpm lighthouse` ainda não
+  existe (criado no passo 17).
+
 ## Figma
 - Arquivo com acesso via MCP (cópia do usuário): fileKey `5Ma6UpJeqdO7vTTFPduSPB`
   (https://www.figma.com/design/5Ma6UpJeqdO7vTTFPduSPB/Frontend-Challenge--c%C3%B3pia-?node-id=0-1).
@@ -105,4 +172,7 @@ Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
 ## Comandos (criados nos passos 02 e 05)
 `pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm typecheck` · `pnpm lint` ·
-`pnpm test:e2e` · `pnpm test:e2e:update` · `pnpm lighthouse`
+`pnpm test:e2e` · `pnpm test:e2e:update` · `pnpm lighthouse` (este só a partir do passo 17)
+
+Contas de teste: `ana@example.com` (principal + secundária) e `bruno@example.com` (só principal),
+senha `Senha@123`. Cenário de falha: `?scenario=favorites-fail`; volta com `?scenario=default`.

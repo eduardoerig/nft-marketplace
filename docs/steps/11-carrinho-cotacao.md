@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~2h · **Desafio:** §3 Carrinho
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: merge do carrinho de visitante x limpeza do cache no login; badge também na barra inferior mobile (não há header no mobile); botões "Em breve" a trocar no card e no detalhe; topo mobile com `MobilePageHeader`.
+
 ## O que fazer
 1. Handlers `/api/cart*`: carrinho por usuário ou por `X-Cart-Id` (visitante, id gerado no cliente e salvo em `localStorage`).
    Validar disponibilidade por edição (409 `OUT_OF_STOCK`). `POST /cart/merge` junta o carrinho do visitante ao logar

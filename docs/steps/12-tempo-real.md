@@ -2,6 +2,8 @@
 
 **Tempo alvo:** ~2h · **Desafio:** §6 (eventos via MSW), §7
 
+> **Antes de começar:** leia em `CLAUDE.md` a seção "Decisões já tomadas que mudam os passos 11–18". Para este passo: desconectar o socket dentro de `useLogout` (`src/features/auth/queries.ts`).
+
 ## Objetivo
 Mudanças de preço/disponibilidade chegam pelo socket.io-client e atualizam catálogo, detalhe e carrinho.
 
