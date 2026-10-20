@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { Quote } from '@/api/types'
+import { useReturnFocus } from '@/lib/use-return-focus'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog'
 import { describeQuoteChanges } from '../queries'
@@ -29,12 +30,16 @@ type Props = {
 export function ReviewDialog(props: Props) {
   const { open, onOpenChange, reviewed, latest, onConfirm, onAcceptChanges, isSubmitting, error, blocked } =
     props
+  const returnFocus = useReturnFocus()
   const changed = latest && latest.quoteId !== reviewed.quoteId ? describeQuoteChanges(reviewed, latest) : []
   const shown = changed.length > 0 && latest ? latest : reviewed
 
   return (
     <Dialog open={open} onOpenChange={(next) => !isSubmitting && onOpenChange(next)}>
-      <DialogContent className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-[560px]">
+      <DialogContent
+        onCloseAutoFocus={returnFocus}
+        className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-[560px]"
+      >
         <DialogTitle className="text-xl font-bold">Revise seu pedido</DialogTitle>
         <DialogDescription>
           Confira os itens e os valores. O pagamento usa exatamente esta cotação.

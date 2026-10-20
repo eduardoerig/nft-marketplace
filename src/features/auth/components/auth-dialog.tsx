@@ -1,6 +1,7 @@
 import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import type { Session } from '@/api/types'
+import { useReturnFocus } from '@/lib/use-return-focus'
 import { cn } from '@/lib/utils'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { ComingSoonButton } from '@/components/layout/coming-soon'
@@ -31,6 +32,7 @@ export function AuthDialog({ mode, redirect }: { mode: AuthMode; redirect?: stri
   const navigate = useNavigate()
   const copy = COPY[mode]
   const other: AuthMode = mode === 'login' ? 'register' : 'login'
+  const returnFocus = useReturnFocus()
 
   function close() {
     navigate({
@@ -50,6 +52,7 @@ export function AuthDialog({ mode, redirect }: { mode: AuthMode; redirect?: stri
   return (
     <Dialog open onOpenChange={(open) => !open && close()}>
       <DialogContent
+        onCloseAutoFocus={returnFocus}
         className={cn(
           'flex flex-col gap-0 p-0 sm:max-w-[500px] sm:rounded-lg',
           // Mobile: tela cheia, fundo da página, sem a faixa inferior do modal.
