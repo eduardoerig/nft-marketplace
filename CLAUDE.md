@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 17** — `docs/steps/17-a11y-responsivo-lighthouse.md`.
+- [ ] **Próximo: passo 18** — `docs/steps/18-docs-deploy.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -140,6 +140,12 @@ Passos concluídos (marque com o hash do commit):
   do painel e use movimento reduzido). Diálogos sem DialogTrigger usam `useReturnFocus` (`src/lib/`). Tabela §9 →
   arquivo no README. `mocks.spec.ts` tem `retries: 2` (CDP fecha a aba às vezes); o flake do account não reapareceu
   em 100 execuções.
+- [x] passo 17 — a11y, responsivo, Lighthouse (34a4ac5). axe em `a11y.spec.ts` (falha em serious/critical);
+  `responsive.spec.ts` (320–1440, sem rolagem horizontal). App renderiza antes do MSW: chamadas esperam
+  `apiReady` (`src/lib/api-ready.ts`). Parâmetros de URL sem zod (`src/lib/search-params.ts` + `SearchSchemaInput`);
+  AuthDialog lazy. Artes em WebP (`-800`/`-400`, `src/lib/images.ts`). `pnpm lighthouse [--runs=1 --profile=mobile]`;
+  resultados em `lighthouse/RESULTS.md` (desktop 98, mobile ~73 justificado). **Não** use `taskkill /IM chrome.exe`:
+  mata o Chrome do usuário — encerre só os PIDs do Lighthouse/preview.
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
@@ -193,8 +199,6 @@ Os arquivos de `docs/steps/` foram escritos antes destas decisões; onde divergi
   do Tailwind pode exigir reiniciar o `pnpm dev`. Os E2E rodam no build (`pnpm build && preview`), sem isso.
 - **Máquina do usuário (Windows)**: não há `python`; `pnpm dlx` falha (use `npx`). Para editar arquivos,
   prefira as ferramentas de edição a scripts de shell com aspas aninhadas (já quebraram várias vezes).
-- **Ainda não verificado**: largura de tablet (768px) e zoom 200% — passo 17. `pnpm lighthouse` ainda não
-  existe (criado no passo 17).
 
 ## Figma
 - Arquivo com acesso via MCP (cópia do usuário): fileKey `5Ma6UpJeqdO7vTTFPduSPB`
@@ -205,7 +209,7 @@ Os arquivos de `docs/steps/` foram escritos antes destas decisões; onde divergi
 
 ## Comandos (criados nos passos 02 e 05)
 `pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm typecheck` · `pnpm lint` ·
-`pnpm test:e2e` · `pnpm test:e2e:update` · `pnpm lighthouse` (este só a partir do passo 17)
+`pnpm test:e2e` · `pnpm test:e2e:update` · `pnpm lighthouse`
 
 Contas de teste: `ana@example.com` (principal + secundária) e `bruno@example.com` (só principal),
 senha `Senha@123`. Cenário de falha: `?scenario=favorites-fail`; volta com `?scenario=default`.
