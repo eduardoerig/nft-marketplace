@@ -245,8 +245,8 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
 ### Substituições e lacunas
 - Os textos de alguns layers do Figma estão em inglês no nome, mas o conteúdo renderizado é em
   português — vale o conteúdo (ver outlines/screenshots).
-- O frame Início usa "Seja dono do futuro da arte digital"; o mobile usa "Seja dono da cultura digital".
-  Usar o texto do desktop nos dois.
+- O frame Início usa "Seja dono do futuro da arte digital"; o mobile usa "Seja dono da cultura digital"
+  e uma descrição curta. Cada tamanho usa o texto do seu frame (o hero mobile fica compacto, 366×190).
 - Os ícones de +/− do desktop são formas simples (círculo `primary` + traço) — fazer com CSS/lucide.
 - Ícones sem equivalente no Figma (menu, alerta, check, spinner) → `lucide-react`, que já vem com o shadcn.
 - O Figma só desenha avatar como ícone genérico (`curved-image-2.svg`); avatares de usuário das

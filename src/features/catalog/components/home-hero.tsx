@@ -38,19 +38,35 @@ export function HomeHero() {
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget)) setHolding(false)
       }}
-      className="relative flex items-center gap-2 overflow-hidden rounded-[30px] bg-linear-to-br from-primary/20 to-primary/10 p-4 md:h-[450px] md:justify-between md:rounded-none md:bg-none md:p-0 md:pl-10"
+      className="relative isolate flex items-center gap-2 overflow-hidden rounded-[30px] bg-linear-to-br from-primary/20 to-primary/10 p-4 pb-10 md:h-[450px] md:justify-between md:rounded-none md:bg-none md:p-0 md:pl-10"
     >
+      {/* Mobile (Figma): dois círculos dourados translúcidos ao fundo do card. */}
+      <span
+        aria-hidden="true"
+        className="absolute -top-24 -left-20 -z-10 size-[248px] rounded-full bg-linear-to-br from-[#dd9a5f]/43 to-primary/4 md:hidden"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute -right-16 -bottom-28 -z-10 size-[248px] rounded-full bg-linear-to-br from-[#dd9a5f]/37 to-primary/0 md:hidden"
+      />
       <div className="flex max-w-[600px] flex-1 flex-col gap-4 md:gap-11">
         <div className="flex flex-col gap-1.5 md:gap-8">
           <div className="flex flex-col gap-1.5 md:gap-2">
             <p className="text-xs font-medium md:text-sm md:tracking-[0.1em]">Bem-vindo à Kurio</p>
             <h1 id="hero-titulo" className="text-lg/[29px] font-bold uppercase md:text-[43px]/[70px]">
-              Seja dono do futuro <br className="max-md:hidden" />
-              da arte digital
+              {/* Textos do Figma: o mobile tem uma versão curta. */}
+              <span className="md:hidden">Seja dono da cultura digital</span>
+              <span className="max-md:hidden">
+                Seja dono do futuro <br />
+                da arte digital
+              </span>
             </h1>
             <p className="text-xs/[18px] text-muted-foreground md:max-w-[557px] md:text-sm/6">
-              Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte digital rara,
-              apoie artistas e tenha uma parte da cultura da internet.
+              <span className="md:hidden">Descubra NFTs selecionados de criadores do mundo todo.</span>
+              <span className="max-md:hidden">
+                Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte digital rara,
+                apoie artistas e tenha uma parte da cultura da internet.
+              </span>
             </p>
           </div>
           <Button asChild className="hidden w-fit uppercase md:inline-flex">
@@ -71,7 +87,8 @@ export function HomeHero() {
         </div>
 
         {featured && featured.length > 1 && (
-          <div className="flex items-center gap-1.5 md:justify-end md:gap-4">
+          // Mobile: pontos centralizados no pé do card (Figma); desktop: à direita, abaixo do texto.
+          <div className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1.5 md:static md:justify-end md:gap-4">
             {featured.map((nft, i) => (
               <button
                 key={nft.id}
