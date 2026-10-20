@@ -112,3 +112,18 @@ test('sessão expirada numa tela privada volta ao login guardando o caminho', as
   await fillLogin(page, 'ana@example.com')
   await expect(page).toHaveURL('/account/profile')
 })
+
+test('sessão vence pelo relógio (2 h depois do login): a próxima ação pede login de novo', async ({
+  page,
+}) => {
+  await page.clock.install() // o relógio da página (app e API simulada) passa a ser controlado pelo teste
+  await login(page, 'ana@example.com')
+  await page.goto('/account/profile')
+  await expect(page.getByLabel('Nome de exibição')).toHaveValue('Ana Souza')
+  await page.waitForLoadState('networkidle')
+
+  await page.clock.fastForward('02:00:01') // a sessão do mock dura 2 h
+  await page.getByRole('button', { name: 'Salvar', exact: true }).click()
+  await expect(page).toHaveURL('/?auth=login&redirect=%2Faccount%2Fprofile')
+  await expect(page.getByText('Sua sessão expirou. Entre novamente.')).toBeVisible()
+})

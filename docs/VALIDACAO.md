@@ -139,9 +139,13 @@ Tabela completa de cenários em `docs/API.md` → "Cenários da API simulada".
 - [ ] Repita um cenário duas vezes: o resultado é o mesmo (determinístico).
 
 ## 16 — Testes
-- [ ] `pnpm test:e2e` verde em desktop e mobile.
-- [ ] Tabela no README liga cada item do §9 do desafio a um arquivo de teste — confira se nenhum falta.
-- [ ] Existem imagens de baseline versionadas para Início, Detalhe, Carrinho e Pagamento.
+- [ ] `pnpm test:e2e` verde em desktop e mobile (≈4 min). Depois: `npx playwright show-report` abre o relatório HTML.
+- [ ] Tabela no README ("Cobertura de testes") liga cada item do §9 a um arquivo — confira se nenhum falta.
+- [ ] Regressão visual: abra `tests/e2e/visual.spec.ts-snapshots/` e confira as 8 imagens (Início, Detalhe,
+      Carrinho, Pagamento × desktop/mobile). Mude uma cor em `src/index.css`, rode `pnpm test:e2e visual` → falha
+      com a diferença no relatório; desfaça a mudança.
+- [ ] Teclado (sem mouse): Tab na Início → 1º foco é "Pular para o conteúdo"; Enter no "Entrar" abre o login com o
+      foco no e-mail, Tab não sai do diálogo e Esc fecha **devolvendo o foco** ao "Entrar".
 
 ## 17 — Qualidade
 - [ ] Use o app só com `Tab`/`Enter`/`Esc`: dá para comprar sem mouse, foco sempre visível.

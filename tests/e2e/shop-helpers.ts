@@ -32,6 +32,8 @@ export async function startCheckout(page: Page, lines: Line[] = [EMERALD_APE], s
   await addToCart(page, lines)
   await page.goto(`/checkout${search}`)
   await expect(page.getByLabel('Nome de exibição')).toHaveValue('Ana Souza')
+  // A cotação chegou (o botão fica desabilitado até lá — e o Enter não envia o formulário).
+  await expect(page.getByRole('button', { name: 'Confirmar compra' })).toBeEnabled()
 }
 
 export async function connectWallet(page: Page) {
