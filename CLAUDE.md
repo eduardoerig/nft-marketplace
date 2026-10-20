@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 14** — `docs/steps/14-status-recibo.md`.
+- [ ] **Próximo: passo 15** — `docs/steps/15-cenarios-rede.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -125,6 +125,11 @@ Passos concluídos (marque com o hash do commit):
   Chave de idempotência em `src/lib/idempotency.ts` (por conteúdo, sessionStorage). `useCreateOrder` já reenvia
   sozinho em falha de rede com a mesma chave (base do cenário `order-timeout`). Cenários novos: `wallet-reject`,
   `wallet-disconnect`. Testes de compra usam `tests/e2e/shop-helpers.ts` (`startCheckout`, `connectWallet`…).
+- [x] passo 14 — status e recibo (9b76c92). Feature em `src/features/orders/` (`useOrder`, `OrderReceipt`); a rota
+  abre o recibo como Dialog sempre aberto (fechar → início). Mock resolve o pedido por `resolveAt` (timer na aba +
+  `GET` que resolve/reagenda) e emite `order.updated` com `userId`. Cenários novos: `payment-rejected`,
+  `order-timeout` (flags `rejectPayment`, `loseOrderResponse`). `SCHEMA_VERSION` = 3. `PagePlaceholder` removido.
+  Testes que vencem a sessão no meio de uma tela esperam `networkidle` antes (corrida de 401 em voo).
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
