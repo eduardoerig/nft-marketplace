@@ -9,7 +9,17 @@ import { routeTree } from './routeTree.gen'
 import './index.css'
 
 // O queryClient vai no contexto do router para os loaders das rotas usarem o mesmo cache.
-const router = createRouter({ routeTree, context: { queryClient }, scrollRestoration: true })
+// - defaultPreload 'intent': passar o mouse (ou focar) num link já roda o loader da rota de destino
+//   (ex.: o detalhe do NFT começa a carregar antes do clique).
+// - defaultPreloadStaleTime 0: quem decide se o dado está fresco é o TanStack Query (staleTime de cada
+//   query), não o cache do router — recomendação da doc do router para cache externo.
+const router = createRouter({
+  routeTree,
+  context: { queryClient },
+  scrollRestoration: true,
+  defaultPreload: 'intent',
+  defaultPreloadStaleTime: 0,
+})
 
 listenForSessionExpiry(router, queryClient)
 
