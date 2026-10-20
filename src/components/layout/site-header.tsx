@@ -20,7 +20,7 @@ export function SiteHeader() {
             {NAV_ITEMS.map((item) => {
               const active = item.isActive?.(pathname) ?? false
               return (
-                <li key={item.label} className="flex h-full items-start">
+                <li key={item.label} className="flex h-full items-center">
                   {item.to ? (
                     <Link
                       to={item.to}
@@ -28,8 +28,10 @@ export function SiteHeader() {
                       activeOptions={{ includeHash: true }}
                       aria-current={active ? 'page' : undefined}
                       className={cn(
-                        'flex h-full flex-col border-b-3 border-transparent text-base',
-                        active && 'border-primary font-bold text-highlight',
+                        // Borda transparente em cima e embaixo: o texto fica centrado na barra (alinhado ao
+                        // logo e aos ícones) e o sublinhado do ativo encosta na linha divisória.
+                        'flex h-full items-center border-y-3 border-transparent text-base',
+                        active && 'border-b-primary font-bold text-highlight',
                       )}
                     >
                       {item.label}
