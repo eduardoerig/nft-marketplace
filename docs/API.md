@@ -148,7 +148,17 @@ O `quoteId` muda sempre que preço, disponibilidade, cupom ou taxa mudam — é 
 - **Estados:** `pending → confirmed | rejected` (os dois últimos são terminais).
 - O pedido guarda um **snapshot** (itens, valores, carteira): o recibo não muda se o catálogo mudar.
 - `transaction { hash, explorerUrl }` só existe em `confirmed`; `failureReason` só em `rejected`.
-- Ao confirmar, o servidor remove do carrinho **apenas** os itens e quantidades comprados.
+- Ao confirmar, o servidor remove do carrinho **apenas** os itens e quantidades comprados e baixa o estoque
+  das edições (o que emite `nft.updated`).
+- **Resolução (mock):** cerca de 2 s depois de criado, o pedido vira `confirmed` (com `transaction.hash` e um
+  link de explorer fictícios) ou `rejected` no cenário `payment-rejected`, com `version` 2, e o servidor emite
+  `order.updated` **só para o dono**. O prazo fica gravado no pedido (`resolveAt`): depois de um refresh, o
+  `GET` resolve na hora se já passou e reagenda o timer se ainda não.
+- **No app** (`useOrder`, `src/features/orders/`): REST + `order.updated` (aplicado com `setQueriesData` só se a
+  versão for maior: um estado terminal nunca volta a `pending`). Enquanto pendente, uma consulta a cada 10 s é
+  só rede de segurança; a reconexão do socket também busca de novo.
+- **Cenário `order-timeout`:** o 1º envio de cada chave cria o pedido, mas a resposta se perde (o cliente vê
+  falha de rede, como num timeout). O app reenvia sozinho com a **mesma** chave e recebe o mesmo pedido.
 
 ### Perfil — `src/api/profile.ts` (autenticado)
 

@@ -8,7 +8,7 @@ import { userFixtures, walletFixtures, type MockUser, type MockWallet } from './
 import { setScenarioName, type ScenarioName } from './scenarios'
 
 const DB_KEY = 'mock-db'
-const SCHEMA_VERSION = 2 // aumente quando o formato mudar: estados antigos são descartados
+const SCHEMA_VERSION = 3 // aumente quando o formato mudar: estados antigos são descartados
 
 export type MockSession = { token: string; userId: string; expiresAt: string }
 
@@ -20,7 +20,12 @@ export type MockCart = {
   lastQuote?: { id: string; version: number } // última cotação emitida (a versão sobe quando muda)
 }
 
-export type MockOrder = Order & { userId: string; idempotencyKey: string; requestHash: string }
+export type MockOrder = Order & {
+  userId: string
+  idempotencyKey: string
+  requestHash: string
+  resolveAt: string // quando a "rede" confirma ou recusa o pagamento
+}
 
 export type Db = {
   schemaVersion: number

@@ -111,11 +111,17 @@ Preparação: entre como `ana@example.com`, ponha 2 NFTs no carrinho e clique em
       passado) e clique em conectar → login → volta ao pagamento com a observação preenchida.
 
 ## 14 — Status e recibo
-- [ ] Compra completa: catálogo → detalhe → carrinho → pagamento → "pendente" → "confirmado".
-- [ ] Refresh enquanto pendente → continua acompanhando o mesmo pedido.
-- [ ] `?scenario=payment-rejected` → tela de recusa e itens continuam no carrinho.
-- [ ] Depois de confirmado, mude o preço do NFT: o recibo **não muda**.
-- [ ] Só os itens comprados saíram do carrinho.
+- [ ] Compra completa: catálogo → detalhe → carrinho → pagamento → modal "Confirmando seu pedido" (girando)
+      → ~2 s depois, sozinho, "Seus NFTs agora estão na sua carteira" (layout do Figma: ID da transação, data,
+      total, carteira, itens, taxa, total, "Ver no Etherscan").
+- [ ] Refresh enquanto pendente → continua no mesmo pedido e chega ao "confirmado".
+- [ ] `?scenario=payment-rejected` → "Pagamento recusado" com o motivo; "Voltar ao carrinho" mostra os itens lá.
+- [ ] `?scenario=order-timeout` → a confirmação demora ~1 s a mais (o app reenviou), mas termina com **1 pedido só**.
+- [ ] Depois de confirmado, mude o preço do NFT (console, `/api/__mock/nft-update`) e recarregue: o recibo **não muda**.
+- [ ] Só os itens comprados saíram do carrinho (ponha outro item no carrinho enquanto o pedido está pendente: ele fica).
+- [ ] Fechar o modal (X, Esc ou clique fora) volta ao início; a URL do pedido continua abrindo o recibo.
+- [ ] Entre como `bruno@example.com` e abra a URL do pedido da Ana → "Pedido não encontrado".
+- [ ] Leitor de tela: ao confirmar, anuncia "Pagamento confirmado." (região `role=status`).
 
 ## 15 — Cenários de rede
 - [ ] O painel de dev troca cenários e reseta dados.

@@ -118,6 +118,8 @@ test('sessão expirada no pagamento: login e volta com os dados preenchidos', as
   await startCheckout(page)
   await page.getByLabel('Observação do colecionador (opcional)').fill('Presente para a Bia')
   await page.getByLabel('Nome de exibição').fill('Ana S.')
+  // Nenhuma requisição pode estar em voo quando a sessão vencer: ela levaria o 401 antes do clique.
+  await page.waitForLoadState('networkidle')
 
   await page.evaluate(() => {
     const db = JSON.parse(localStorage.getItem('mock-db')!)

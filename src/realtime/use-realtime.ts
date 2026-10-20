@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useQueryClient, type QueryClient } from '@tanstack/react-query'
 import type { Socket } from 'socket.io-client'
 import { getToken } from '@/api/client'
-import type { Nft, NftUpdatedEvent, RealtimeEvent } from '@/api/types'
+import type { Nft, NftUpdatedEvent, Order, OrderUpdatedEvent, RealtimeEvent } from '@/api/types'
 import { useSession } from '@/features/auth/queries'
 import { queryKeys } from '@/lib/queryKeys'
 import { connectSocket } from './socket'
@@ -46,6 +46,21 @@ function applyNftUpdated(queryClient: QueryClient, event: NftUpdatedEvent) {
   void queryClient.invalidateQueries({ queryKey: ['quote'] })
 }
 
+function applyOrderUpdated(queryClient: QueryClient, event: OrderUpdatedEvent) {
+  // Só o dono recebe este evento (o servidor filtra por userId). Atualiza o pedido na hora, sem
+  // regredir: um estado terminal (versão maior) nunca volta a "pending".
+  queryClient.setQueriesData<Order>({ queryKey: ['order'] }, (order) =>
+    order && order.id === event.resourceId && order.version < event.version
+      ? { ...order, ...event.payload, version: event.version }
+      : order,
+  )
+  // Confirmado: os itens comprados saíram do carrinho no servidor.
+  if (event.payload.status === 'confirmed') {
+    void queryClient.invalidateQueries({ queryKey: ['cart'] })
+    void queryClient.invalidateQueries({ queryKey: ['quote'] })
+  }
+}
+
 /**
  * Liga o app ao Socket.IO (montado uma vez no layout raiz). Reconecta como outro usuário quando a
  * sessão muda. Depois de uma reconexão, eventos podem ter se perdido: recarrega do REST tudo que
@@ -67,6 +82,9 @@ export function useRealtime() {
     const onNftUpdated = (event: NftUpdatedEvent) => {
       if (isNew(event)) applyNftUpdated(queryClient, event)
     }
+    const onOrderUpdated = (event: OrderUpdatedEvent) => {
+      if (isNew(event)) applyOrderUpdated(queryClient, event)
+    }
 
     let unmounted = false
     let socket: Socket | null = null
@@ -76,11 +94,13 @@ export function useRealtime() {
       connectedBefore = s.connected
       s.on('connect', onConnect)
       s.on('nft.updated', onNftUpdated)
+      s.on('order.updated', onOrderUpdated)
     })
     return () => {
       unmounted = true
       socket?.off('connect', onConnect)
       socket?.off('nft.updated', onNftUpdated)
+      socket?.off('order.updated', onOrderUpdated)
     }
   }, [queryClient, ready, userId])
 }

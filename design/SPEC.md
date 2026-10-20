@@ -278,3 +278,8 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
   (simulada) e ganha o botão "Conectar …" com os estados conectando/conectada/recusada/desconectada. Antes de
   enviar há um diálogo "Revise seu pedido" (exigência do desafio). No mobile os dados do comprador vêm antes
   das carteiras: mudar só a ordem visual deixaria a ordem do Tab diferente da ordem da tela.
+- **Pedido** (`/orders/$orderId`): o modal do Figma mostra só o "confirmado". Os estados "Confirmando seu pedido"
+  (indicador girando, sem animação com "reduzir movimento") e "Pagamento recusado" (ícone de alerta, motivo,
+  "Voltar ao carrinho" e "Tentar de novo") usam o mesmo modal. Atrás dele fica a página vazia (não a de
+  pagamento, como no Figma): o pedido abre também por link direto. No mobile (sem frame) o modal ocupa a
+  largura da tela com rolagem. Desconto aparece no recibo só quando houve cupom.
