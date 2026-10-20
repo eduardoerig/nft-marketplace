@@ -4,7 +4,7 @@ Roteiro para testar a entrega inteira **na ordem do enunciado** (`docs/CHALLENGE
 e o que deve acontecer. Marque `[x]` ao conferir.
 
 **Antes de começar**
-- Abra a **URL pública da Vercel** (ver README → "Tutorial de deploy na Vercel") no Chrome, com o DevTools aberto
+- Abra a **URL pública** (no topo do README) no Chrome, com o DevTools aberto
   (abas **Console**, **Network** e **Application**). Sem o deploy, use a máquina local: `pnpm install` e
   `pnpm dev` → http://localhost:5173. O comportamento é o mesmo.
 - Contas: `ana@example.com` e `bruno@example.com`, senha `Senha@123`.
@@ -231,11 +231,9 @@ Painel de testes: escolha o cenário → "Aplicar cenário" (reseta os dados). L
   ```bash
   git log --format='%an %ae%n%b' | grep -iE '^(co-authored-by:.*claude|claude-session:|claude )|generated with \[claude code\]'
   ```
-- [ ] ⚠️ **Deploy público (obrigatório no §12) ainda não feito.** Ao liberar:
-  1. Importe o repositório na Vercel: build `pnpm build`, saída `dist`, variável `VITE_ENABLE_MOCKS=true`.
-  2. Na URL pública, confira:
-     - refresh em `/nfts/1`, `/cart` e `/checkout`;
-     - uma compra completa;
-     - mudança de preço pelo painel;
-     - "Derrubar socket" com reconexão.
-  3. Ponha a URL no README.
+- [ ] ⚠️ **Deploy público (obrigatório no §12):** a URL pública está no topo do README e corresponde ao último
+  commit da `main`. Nela:
+  - refresh em `/nfts/1`, `/cart` e `/checkout` abre a tela certa;
+  - uma compra completa termina no recibo;
+  - a mudança de preço pelo painel aparece sem recarregar;
+  - "Derrubar socket" reconecta sozinho.

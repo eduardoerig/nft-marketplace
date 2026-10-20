@@ -3,24 +3,27 @@
 Solução para o **Frontend Challenge**: um marketplace de NFTs com fluxos de descoberta, compra e conta do
 colecionador, em versões desktop e mobile.
 
-**Aplicação publicada:** _(a URL da Vercel entra aqui depois do deploy — ver [Tutorial de deploy](#tutorial-de-deploy-na-vercel))_
+| | |
+|---|---|
+| **Aplicação publicada** | _URL pública da Vercel (preencher após o deploy)_ |
+| **Repositório** | https://github.com/eduardoerig/nft-marketplace |
+| **Rodar em localhost** | [`README-LOCAL.md`](README-LOCAL.md) — instalação, comandos, testes e auditoria na sua máquina |
 
 ## Sumário
 
 1. [Sobre o projeto](#sobre-o-projeto)
-2. [Usando a aplicação publicada](#usando-a-aplicação-publicada)
-3. [Tutorial de deploy na Vercel](#tutorial-de-deploy-na-vercel)
-   - [Passo a passo pelo painel](#passo-a-passo-pelo-painel)
-   - [Alternativa: pela linha de comando](#alternativa-pela-linha-de-comando)
-   - [Conferindo o deploy](#conferindo-o-deploy)
-   - [Problemas comuns](#problemas-comuns)
-4. [Contas e cupons de teste](#contas-e-cupons-de-teste)
-5. [Cenários da API simulada e falhas](#cenários-da-api-simulada-e-falhas)
-6. [Variáveis de ambiente](#variáveis-de-ambiente)
-7. [Comandos do projeto](#comandos-do-projeto)
-8. [Lighthouse](#lighthouse-10)
-9. [Cobertura de testes](#cobertura-de-testes-9-do-desafio)
-10. [Documentação](#documentação)
+2. [Como avaliar na URL pública](#como-avaliar-na-url-pública)
+   - [Antes de começar](#antes-de-começar)
+   - [Roteiro sugerido](#roteiro-sugerido)
+   - [Rotas para acesso direto](#rotas-para-acesso-direto)
+   - [O que observar no DevTools](#o-que-observar-no-devtools)
+3. [Contas e cupons de teste](#contas-e-cupons-de-teste)
+4. [Cenários da API simulada e falhas](#cenários-da-api-simulada-e-falhas)
+5. [Variáveis de ambiente](#variáveis-de-ambiente)
+6. [Rodar localmente (resumo)](#rodar-localmente-resumo)
+7. [Lighthouse](#lighthouse-10)
+8. [Cobertura de testes](#cobertura-de-testes-9-do-desafio)
+9. [Documentação](#documentação)
 
 ## Sobre o projeto
 
@@ -28,95 +31,87 @@ colecionador, em versões desktop e mobile.
 Playwright · Lighthouse.
 
 Não há backend: a API REST e os eventos Socket.IO são simulados **dentro do navegador** pelo MSW (um service
-worker), com dados salvos no `localStorage` e cenários de falha determinísticos. Por isso a aplicação publicada é
-um site estático (os arquivos do `dist/`) e funciona completa — login, carrinho, pagamento, pedidos e tempo real —
-sem nenhum servidor além da hospedagem.
+worker), com dados salvos no `localStorage` e cenários de falha determinísticos. A versão publicada é o mesmo
+build de produção dos testes (`pnpm build`, com `VITE_ENABLE_MOCKS=true`): login, carrinho, pagamento, pedidos e
+tempo real funcionam completos na URL pública, sem nenhum servidor além da hospedagem.
 
-## Usando a aplicação publicada
+## Como avaliar na URL pública
 
-1. Abra a URL pública. Na primeira visita o navegador registra a API simulada (leva um instante); os dados
-   ficam salvos **só no seu navegador**.
-2. Entre com uma das [contas de teste](#contas-e-cupons-de-teste) ou crie uma conta pelo cadastro.
-3. Faça uma compra: catálogo → detalhe → "COMPRAR" → carrinho (cupom `DESCONTO10`) → "Conectar e finalizar" →
-   conectar a carteira → "Confirmar compra" → revisão → "Confirmar e pagar" → recibo (~2 s depois).
-4. **Painel de testes** (botão com o frasco, no canto inferior esquerdo): troca o cenário (lentidão, erros,
-   pagamento recusado…), reseta os dados, muda preços ao vivo e derruba o socket para ver a reconexão.
-5. Para começar do zero a qualquer momento: painel → "Resetar dados", ou abra `/?scenario=default`.
+### Antes de começar
+- Use Chrome ou Edge atualizado. Uma **janela anônima** garante um estado limpo.
+- Na primeira visita o navegador instala a API simulada (leva um instante). Os dados ficam **no seu
+  navegador**: cada avaliador tem o seu banco, e nada do que você faz aparece para outra pessoa.
+- **Painel de testes:** botão com o frasco, no canto inferior esquerdo. Por ele você:
+  - troca o cenário (lentidão, erros, pagamento recusado…);
+  - reseta os dados;
+  - muda preço ou disponibilidade de um NFT ao vivo;
+  - derruba o socket para ver a reconexão.
+- **Voltar ao estado inicial:** painel → "Resetar dados", ou abra `/?scenario=default`.
+- **Contas:** `ana@example.com` / `Senha@123` e `bruno@example.com` / `Senha@123` (ver
+  [contas e cupons](#contas-e-cupons-de-teste)).
 
-O roteiro completo de validação, item por item do enunciado, está em
-[`docs/CHECKLIST-FINAL.md`](docs/CHECKLIST-FINAL.md).
+### Roteiro sugerido
+Cerca de 15 minutos, cobrindo os fluxos e os pontos de avaliação do enunciado. O roteiro completo, item por item,
+está em [`docs/CHECKLIST-FINAL.md`](docs/CHECKLIST-FINAL.md).
 
-## Tutorial de deploy na Vercel
+1. **Catálogo:**
+   - busque "Ape", combine coleção, rede e preço, mude a ordenação e a página;
+   - a URL guarda tudo: refresh mantém e voltar/avançar do navegador desfaz e refaz;
+   - mudar um filtro volta para a página 1.
+2. **Detalhe:**
+   - abra `/nfts/1` direto na barra;
+   - `/nfts/999` mostra "NFT não encontrado";
+   - edições esgotadas aparecem desabilitadas e a quantidade para no limite da edição.
+3. **Login e retorno:** deslogado, clique no coração de um NFT. O login abre por cima da página e, depois de
+   entrar, você continua onde estava.
+4. **Carrinho de visitante:**
+   1. Saia da conta e clique em "COMPRAR" no Golden Beat #207 (`/nfts/7`).
+   2. Entre como Ana: o item continua no carrinho.
+   3. Teste os cupons `DESCONTO10`, `EXPIRADO` e `XYZ`.
+5. **Tempo real no carrinho:** com o Golden Beat no carrinho, abra o painel e emita a mudança (NFT `7`, edição
+   `1/50`, preço `1.5`). O carrinho avisa "O preço … mudou de … para …" e o resumo se atualiza sem recarregar.
+6. **Pagamento:**
+   1. "Conectar e finalizar" → conecte a carteira → "Confirmar compra".
+   2. Com a revisão aberta, mude o preço pelo painel: o diálogo mostra o antes → depois e exige nova confirmação.
+   3. Clique várias vezes em "Confirmar e pagar": o resultado é **um** pedido.
+7. **Pedido:**
+   - "Confirmando seu pedido" vira o recibo em ~2 s;
+   - recarregue no meio: o pedido continua;
+   - depois de confirmado, mude o preço: o recibo não muda (snapshot);
+   - no carrinho, só os itens comprados saíram.
+8. **Conta:** edite o perfil, troque o avatar e a senha (a atual errada dá erro no campo), cadastre e edite as
+   carteiras principal e secundária. Recarregue: tudo persiste.
+9. **Isolamento:** saia e entre como Bruno. Nada da Ana aparece (carrinho, favoritos, perfil); a URL de um pedido
+   da Ana mostra "Pedido não encontrado".
+10. **Falhas:** use os [cenários](#cenários-da-api-simulada-e-falhas) pela URL ou pelo painel (ex.:
+    `/?scenario=payment-rejected`, `/?scenario=offline`).
+11. **Responsividade e teclado:**
+    - DevTools → modo responsivo em 390, 768 e 1440 px;
+    - navegue só com Tab, Enter e Esc: o 1º Tab é "Pular para o conteúdo", e os diálogos prendem e devolvem o
+      foco.
 
-O projeto já vem pronto para a Vercel:
+### Rotas para acesso direto
+Todas abrem direto pela barra de endereço e aguentam refresh:
 
-| Peça | Para quê |
+| Rota | Tela |
 |---|---|
-| [`vercel.json`](vercel.json) | Reescreve qualquer rota para o `index.html` (acesso direto e refresh em `/nfts/1`, `/checkout`…), sem reescrever o service worker do MSW (`mockServiceWorker.js`), os assets e o `robots.txt` |
-| [`.env`](.env) | `VITE_ENABLE_MOCKS=true`: liga a API simulada no build |
-| `pnpm-lock.yaml` + `packageManager` | A Vercel instala com o mesmo pnpm e as mesmas versões |
+| `/` | Início (catálogo; filtros na URL, ex.: `/?sort=price-asc&page=2`) |
+| `/nfts/1` | Detalhe do NFT |
+| `/cart` | Carrinho (`/cart?cupom=DESCONTO10` já aplica o cupom) |
+| `/checkout` | Pagamento (pede login) |
+| `/orders/<id>` | Status do pedido e recibo (pede login) |
+| `/account/profile` | Perfil do colecionador (pede login) |
+| `/account/wallets` | Carteiras (pede login) |
+| `/?auth=login` | Login sobre a página atual (também `/login` e `/register`) |
+| `/qualquer-coisa` | Página 404 |
 
-### Passo a passo pelo painel
-
-1. Entre em [vercel.com](https://vercel.com) com a conta do GitHub.
-2. **Add New… → Project** e escolha o repositório `nft-marketplace` (**Import**).
-3. Em **Configure Project**, confira (a Vercel detecta quase tudo sozinha):
-
-   | Campo | Valor |
-   |---|---|
-   | Framework Preset | `Vite` |
-   | Root Directory | `./` |
-   | Install Command | `pnpm install` |
-   | Build Command | `pnpm build` |
-   | Output Directory | `dist` |
-
-4. Em **Environment Variables**, adicione `VITE_ENABLE_MOCKS` = `true` (Production e Preview). O `.env` do
-   repositório já tem esse valor; deixar explícito na Vercel evita surpresa se o `.env` mudar.
-5. Em **Settings → General → Node.js Version**, escolha **22.x** (o projeto pede Node 22+).
-6. Clique em **Deploy**. Em ~1 minuto a Vercel mostra a URL (ex.: `https://nft-marketplace-xxxx.vercel.app`).
-7. Copie a URL para o topo deste README ("Aplicação publicada").
-
-A partir daí, cada push na `main` publica uma nova versão de produção, e cada pull request ganha uma URL de
-pré-visualização própria.
-
-### Alternativa: pela linha de comando
-
-```bash
-npx vercel login
-```
-
-```bash
-npx vercel link
-```
-
-```bash
-npx vercel env add VITE_ENABLE_MOCKS production
-```
-
-```bash
-npx vercel --prod
-```
-
-`vercel link` liga a pasta ao projeto (cria um novo na primeira vez); no `env add`, responda `true`.
-
-### Conferindo o deploy
-
-Na URL pública, numa janela anônima:
-- [ ] Refresh em `/nfts/1`, `/cart` e `/checkout` abre a tela certa (não dá 404).
-- [ ] O Console do navegador mostra `[MSW] Mocking enabled` e o catálogo carrega.
-- [ ] Login com `ana@example.com` / `Senha@123` e uma compra completa até o recibo.
-- [ ] Painel de testes → "Emitir nft.updated" muda o preço do NFT 7 sem recarregar.
-- [ ] Painel de testes → "Derrubar socket": o app reconecta sozinho.
-- [ ] `/?scenario=slow` mostra os skeletons; `/?scenario=default` volta ao normal.
-
-### Problemas comuns
-
-| Sintoma | Causa e solução |
-|---|---|
-| 404 ao recarregar uma rota interna | O `vercel.json` não foi lido: confira se ele está na raiz e se o Root Directory é `./`. |
-| Telas de erro "Sem conexão" logo de cara | A API simulada não ligou. Confira se `VITE_ENABLE_MOCKS=true` estava definido **no build** (é lido na hora do build; mudou a variável → faça um novo deploy) e se `https://<url>/mockServiceWorker.js` abre como JavaScript. |
-| Dados "estranhos" depois de testar cenários | Os dados ficam no seu navegador: painel → "Resetar dados" ou `/?scenario=default`. |
-| Build falha na instalação | Selecione Node 22.x; se a versão do pnpm for o problema, adicione a variável `ENABLE_EXPERIMENTAL_COREPACK=1` para a Vercel usar exatamente o pnpm do `packageManager`. |
+### O que observar no DevTools
+- **Console:** cada requisição à API simulada aparece numa linha `[MSW]`. Os quadros Socket.IO aparecem como
+  `⬇ 42["nft.updated",…]` e `42["order.updated",…]`. Eles **não** aparecem em Network → WS, porque o socket é
+  simulado dentro da página (detalhes em [`docs/API.md`](docs/API.md)).
+- **Application → Local Storage → `mock-db`:** o banco simulado. Lá dá para ver os pedidos (um por compra, mesmo
+  com cliques repetidos) e as senhas guardadas só como hash + salt.
+- **Network → Img:** as artes são WebP (~13 KB nos cards, ~40 KB no detalhe).
 
 ## Contas e cupons de teste
 
@@ -130,7 +125,7 @@ Cupons: `DESCONTO10` (10%) e `EXPIRADO` (vencido). Contas novas podem ser criada
 ## Cenários da API simulada e falhas
 
 Escolha um cenário de três formas (trocar de cenário **reseta os dados** — entre de novo):
-- pela URL: `https://<sua-url>/?scenario=slow` (fica salvo até trocar);
+- pela URL: `<URL pública>/?scenario=slow` (fica salvo até trocar);
 - pelo **painel de testes** (botão com o frasco no canto inferior esquerdo), que também reseta os dados, muda
   preços ao vivo e derruba o socket;
 - pela API de controle: `POST /api/__mock/reset { "scenario": "slow" }`.
@@ -169,12 +164,15 @@ fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: 
 |---|---|---|
 | `VITE_ENABLE_MOCKS` | `true` | Liga a API e o Socket.IO simulados (MSW) no dev, no preview e no build. Com `false`, o app chama `/api` de verdade (não existe backend neste desafio) e os mocks ficam fora do bundle. |
 
-Na Vercel, a mesma variável vai em **Settings → Environment Variables** (ver o tutorial acima).
+A versão publicada é gerada com `VITE_ENABLE_MOCKS=true` — por isso a API simulada e o tempo real funcionam nela.
 
-## Comandos do projeto
+## Rodar localmente (resumo)
 
-Para desenvolver, rodar os testes ou a auditoria na sua máquina (Node 22+ e pnpm 10; `corepack enable` instala o
-pnpm certo). A API simulada funciona igual à da versão publicada.
+O guia completo para a sua máquina está em **[`README-LOCAL.md`](README-LOCAL.md)**. Ele cobre os cenários em
+localhost, o tempo real pelo console, os testes, o Lighthouse e os problemas comuns.
+
+Resumo: o projeto roda a partir de um checkout limpo, sem serviço privado nem backend. Requisitos: Node 22+ e
+pnpm 10 (`corepack enable`). Depois de instalar e subir o servidor, abra http://localhost:5173.
 
 ```bash
 pnpm install
@@ -184,7 +182,7 @@ pnpm install
 pnpm dev
 ```
 
-Os testes E2E precisam do Chromium do Playwright uma vez (`npx playwright install chromium`).
+Os testes E2E precisam do Chromium do Playwright uma vez: `npx playwright install chromium`.
 
 | Comando | O que faz |
 |---|---|
@@ -250,3 +248,4 @@ Relatório HTML em `playwright-report/` (`npx playwright show-report`); traces e
 | [`docs/VALIDACAO.md`](docs/VALIDACAO.md) | Checklist manual de validação, passo a passo |
 | [`docs/CHALLENGE.md`](docs/CHALLENGE.md) | Enunciado do desafio |
 | [`docs/CHECKLIST-FINAL.md`](docs/CHECKLIST-FINAL.md) | Roteiro completo de validação, na ordem do enunciado |
+| [`README-LOCAL.md`](README-LOCAL.md) | Como rodar, testar e auditar em localhost |
