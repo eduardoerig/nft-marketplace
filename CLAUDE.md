@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 12** — `docs/steps/12-tempo-real.md`.
+- [ ] **Próximo: passo 13** — `docs/steps/13-pagamento-pedido.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -110,6 +110,15 @@ Passos concluídos (marque com o hash do commit):
   finalizar" passar `cupom` para `/checkout`). Mock em `src/mocks/handlers/cart.ts` (`toCart`, `limitOf`,
   quoteId por hash do conteúdo). `NftShelf` (catalog) substituiu o `RelatedNfts`.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
+- [x] passo 12 — tempo real (6bac067). Servidor simulado em `src/mocks/realtime.ts` (`updateNft` grava e emite;
+  `emit` respeita `userId` — o passo 14 só precisa chamar `emit` com `order.updated` e `userId`). Cliente em
+  `src/realtime/` (`connectSocket`, `useRealtime` no `__root`): para `order.updated`, acrescente um listener
+  ali com o mesmo `isNew`. Rotas de controle: `/api/__mock/nft-update|replay|disconnect|connections`; nos
+  testes, `mockApi.postJson` e `mockApi.waitForSocket()` (espere o socket antes de disparar evento).
+  **Armadilhas:** o socket usa `path: '/realtime/'` (o MSW tira `/socket.io/` da URL e colidiria com o
+  WebSocket do Vite) e o `socket.io-client` é importado sob demanda (guarda o `WebSocket` no import, antes
+  do MSW). O aviso do carrinho (`useCartChanges`) compara dados, não eventos. Passo 13 ("preço muda durante
+  o checkout"): `/api/__mock/nft-update` já serve para o teste.
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
