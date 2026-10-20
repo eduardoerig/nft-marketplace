@@ -64,13 +64,14 @@ const actionClass = 'flex size-[42px] items-center justify-center rounded-[4px] 
 
 /**
  * Desktop (Figma): carrinho · favoritar · ver, centralizados na borda de baixo da imagem.
- * Aparecem no hover e no foco do teclado; ficam visíveis se o NFT já é favorito.
+ * Aparecem só no hover do mouse e no foco do TECLADO (:focus-visible) — um clique com o mouse
+ * deixa o foco no botão, e com :focus-within a fileira ficaria aberta depois que o mouse sai.
  * A camada tem o tamanho da moldura da imagem só para posicionar a fileira.
  */
 function HoverActions({ nft }: { nft: Nft }) {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 aspect-258/300 max-md:hidden">
-      <div className="pointer-events-auto absolute bottom-2.5 left-1/2 flex -translate-x-1/2 gap-3 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 has-[[aria-pressed=true]]:opacity-100 motion-reduce:transition-none">
+      <div className="pointer-events-auto absolute bottom-2.5 left-1/2 flex -translate-x-1/2 gap-3 opacity-0 transition-opacity group-hover:opacity-100 group-has-focus-visible:opacity-100 motion-reduce:transition-none">
         {/* O carrinho chega no passo 11. */}
         <ComingSoonButton className={cn(actionClass, 'opacity-100')}>
           <img src="/icons/cart-icon.svg" alt="" width={22} height={21} />

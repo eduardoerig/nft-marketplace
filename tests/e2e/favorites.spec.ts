@@ -54,3 +54,32 @@ test('falha ao favoritar: o coração acende, volta sozinho e aparece o aviso', 
   await expect(page.getByText('Não foi possível favoritar. Tente de novo.')).toBeVisible()
   expect(await cardHeart.getAttribute('aria-pressed')).toBe('false')
 })
+
+test('ações do card só aparecem no hover ou no foco do teclado', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'a fileira de ações do hover só existe no desktop')
+  await login(page, 'ana@example.com')
+  await page.goto('/')
+  const card = page
+    .getByRole('listitem')
+    .filter({ has: page.getByRole('heading', { name: 'Violet Nomad #314' }) })
+  const actions = card.locator('.pointer-events-auto')
+  const heart = card.getByRole('button', { name: 'Favoritar Violet Nomad #314' })
+  await expect(actions).toHaveCSS('opacity', '0')
+
+  // Clique com o mouse e tira o mouse de cima: o foco fica no botão, mas a fileira some.
+  await heart.click()
+  await expect(heart).toHaveAttribute('aria-pressed', 'true')
+  await page.mouse.move(0, 0)
+  await expect(actions).toHaveCSS('opacity', '0')
+  // Favoritado também não deixa a fileira aberta.
+  await page.reload()
+  await expect(heart).toHaveAttribute('aria-pressed', 'true')
+  await expect(actions).toHaveCSS('opacity', '0')
+
+  // Pelo teclado ela aparece (quem navega com Tab precisa ver o botão focado).
+  await heart.focus()
+  await page.keyboard.press('Shift+Tab')
+  await page.keyboard.press('Tab')
+  await expect(heart).toBeFocused()
+  await expect(actions).toHaveCSS('opacity', '1')
+})
