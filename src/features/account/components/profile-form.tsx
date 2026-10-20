@@ -61,7 +61,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
   return (
     <form noValidate onSubmit={onSubmit} aria-labelledby="perfil-titulo" className="flex flex-col gap-6">
-      <div className="grid gap-x-7 gap-y-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-6 md:grid-cols-2">
         <FormField id="perfil-nome" label="Nome de exibição" required error={errors.displayName?.message}>
           {(a11y) => <Input {...a11y} {...register('displayName')} autoComplete="name" />}
         </FormField>

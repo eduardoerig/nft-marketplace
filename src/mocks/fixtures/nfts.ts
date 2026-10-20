@@ -6,10 +6,10 @@ import { mul } from '@/lib/money'
 // As 4 artes do Figma (public/images): 1 macaco de óculos, 2 gorila de chapéu,
 // 3 macaco de terno, 4 macaco com fones.
 const ART = [
-  '/images/nft-art-1.png',
-  '/images/nft-art-2.png',
-  '/images/nft-art-3.png',
-  '/images/nft-art-4.png',
+  '/images/nft-art-1-800.webp',
+  '/images/nft-art-2-800.webp',
+  '/images/nft-art-3-800.webp',
+  '/images/nft-art-4-800.webp',
 ]
 
 type Seed = {

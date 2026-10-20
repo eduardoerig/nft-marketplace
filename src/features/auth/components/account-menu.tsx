@@ -33,12 +33,13 @@ export function AccountMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          aria-label={`Conta de ${user.displayName}`}
-          className="hidden items-center gap-2 rounded-full lg:flex"
-        >
-          <UserAvatar user={user} />
+        {/* Nome acessível "Conta de Ana Souza" montado pelo conteúdo, contendo o texto visível
+            (WCAG 2.5.3); a letra do avatar é decorativa. */}
+        <button type="button" className="hidden items-center gap-2 rounded-full lg:flex">
+          <span aria-hidden="true">
+            <UserAvatar user={user} />
+          </span>
+          <span className="sr-only">Conta de </span>
           <span className="max-w-32 truncate text-sm font-medium">{user.displayName}</span>
           <ChevronDownIcon className="size-4" aria-hidden="true" />
         </button>

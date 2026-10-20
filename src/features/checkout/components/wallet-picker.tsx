@@ -38,7 +38,7 @@ export function WalletPicker({ wallets, field, error }: Props) {
           Você ainda não tem carteira cadastrada. Use "Trocar carteira" para adicionar uma.
         </p>
       )}
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {wallets.map((wallet) => (
           <label
             key={wallet.id}

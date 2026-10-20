@@ -1,14 +1,15 @@
 // Conexão Socket.IO do app: uma por sessão. Com login, vai o token em `auth.token` (o servidor
 // manda também os eventos privados daquele usuário); sem login, recebe só os eventos públicos.
 import type { Socket } from 'socket.io-client'
+import { apiReady } from '@/lib/api-ready'
 
 let current: { token: string | null; socket: Promise<Socket> } | null = null
 
 /**
  * Devolve o socket da sessão atual, criando um novo se o usuário mudou.
- * - O socket.io-client é importado só aqui (import dinâmico): ele guarda o `WebSocket` do navegador
- *   no momento em que é carregado, e precisa ver o que o MSW instala ao ligar. Também tira ~30 kB
- *   do bundle inicial.
+ * - O socket.io-client é importado só aqui (import dinâmico), depois de `apiReady`: ele guarda o
+ *   `WebSocket` do navegador no momento em que é carregado, e precisa ver o que o MSW instala ao
+ *   ligar. Também tira ~30 kB do bundle inicial.
  * - `transports: ['websocket']`: o MSW só intercepta WebSocket, não o long-polling HTTP que o
  *   Socket.IO tenta primeiro por padrão.
  * - `path: '/realtime/'`: ver src/mocks/realtime.ts.
@@ -16,9 +17,9 @@ let current: { token: string | null; socket: Promise<Socket> } | null = null
 export function connectSocket(token: string | null): Promise<Socket> {
   if (current?.token === token) return current.socket
   disconnectSocket()
-  const socket = import('socket.io-client').then(({ io }) =>
-    io({ path: '/realtime/', transports: ['websocket'], auth: token ? { token } : {} }),
-  )
+  const socket = apiReady
+    .then(() => import('socket.io-client'))
+    .then(({ io }) => io({ path: '/realtime/', transports: ['websocket'], auth: token ? { token } : {} }))
   current = { token, socket }
   return socket
 }

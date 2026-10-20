@@ -44,7 +44,7 @@ export function AvatarField({ profile }: { profile: Profile }) {
       <p id="avatar-titulo" className="text-[15px]">
         Avatar
       </p>
-      <div className="flex items-center gap-6">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <span className="flex size-[50px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-input bg-surface-dark">
           {profile.avatarUrl ? (
             <img src={profile.avatarUrl} alt="Seu avatar" className="size-full object-cover" />

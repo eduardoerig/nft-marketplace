@@ -27,7 +27,7 @@ export function AccountNav() {
       <h2 id="conta-titulo" className="px-2.5 pb-2 text-lg font-bold max-lg:sr-only">
         Meu perfil
       </h2>
-      <ul className="flex justify-between lg:flex-col">
+      <ul className="flex flex-wrap justify-between gap-x-4 lg:flex-col">
         <li>
           <AccountLink to="/account/profile" icon="user">
             Dados do perfil

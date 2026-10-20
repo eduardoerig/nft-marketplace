@@ -214,17 +214,18 @@ erro com "Tentar novamente", toasts (`card` + borda `primary`), mensagens de err
 Todos locais em `public/` (manifesto completo em `design/assets.json`).
 
 ### Imagens (`public/images/`)
-O Figma usa só **4 artes**, repetidas em todas as telas (1254×1254 PNG, ~2 MB cada):
+O Figma usa só **4 artes**, repetidas em todas as telas. Os PNGs originais (1254×1254, ~2 MB cada) foram
+convertidos no passo 17 para WebP em dois tamanhos: `nft-art-N-800.webp` (~40 KB, a URL da API) e
+`nft-art-N-400.webp` (~13 KB, cards e listas — ver `src/lib/images.ts`):
 
 | Arquivo | Personagem |
 |---|---|
-| `nft-art-1.png` | Macaco marrom de óculos, jaqueta verde (hero, Emerald Ape) |
-| `nft-art-2.png` | Gorila de chapéu e moletom roxo (Sage/Violet Nomad, destaque) |
-| `nft-art-3.png` | Macaco preto de terno bege (Neon Vessel, Ivory Baron) |
-| `nft-art-4.png` | Macaco laranja com fones (Golden Beat/Signal) |
+| `nft-art-1-800.webp` / `-400.webp` | Macaco marrom de óculos, jaqueta verde (hero, Emerald Ape) |
+| `nft-art-2-800.webp` / `-400.webp` | Gorila de chapéu e moletom roxo (Sage/Violet Nomad, destaque) |
+| `nft-art-3-800.webp` / `-400.webp` | Macaco preto de terno bege (Neon Vessel, Ivory Baron) |
+| `nft-art-4-800.webp` / `-400.webp` | Macaco laranja com fones (Golden Beat/Signal) |
 
-Os ~60 NFTs das fixtures vão reutilizar essas 4 artes. Os PNGs originais pesam ~2 MB: gerar
-versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Lighthouse.
+Os NFTs das fixtures reutilizam essas 4 artes.
 
 ### Ícones (`public/icons/`, SVG)
 - Header/nav: `logo.svg`, `search-icon.svg`, `search-mobile.svg`, `cart-icon.svg`, `logout.svg`, `curved-logout.svg`
@@ -283,3 +284,7 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
   "Voltar ao carrinho" e "Tentar de novo") usam o mesmo modal. Atrás dele fica a página vazia (não a de
   pagamento, como no Figma): o pedido abre também por link direto. No mobile (sem frame) o modal ocupa a
   largura da tela com rolagem. Desconto aparece no recibo só quando houve cupom.
+- **Detalhe no tablet (768–1023 px)**: o Figma só tem desktop (2 colunas) e mobile. No tablet a galeria de 573 px
+  não deixa espaço ao lado, então ela fica em cima e as informações embaixo; as 2 colunas começam em 1024 px.
+- **Telas estreitas (320 px)**: as abas do catálogo e do detalhe e o menu da conta quebram linha em vez de
+  estourar a largura (WCAG 1.4.10). Acima de ~360 px ficam numa linha, como no Figma.

@@ -18,9 +18,13 @@ export function PriceSummary({ subtotal, discount, networkFee, total, couponCode
         label={couponCode ? `Desconto do lançamento (${couponCode})` : 'Desconto do lançamento'}
         value={`(-) ${formatEth(discount)}`}
       />
-      <div className="flex flex-col gap-1">
-        <Row label="Taxa de rede" value={formatEth(networkFee)} />
-        <p className="text-right text-xs text-highlight">Taxa estimada</p>
+      {/* "Taxa estimada" fica dentro do <dd>: um <dl> só pode ter pares <dt>/<dd>. */}
+      <div className="flex items-start justify-between gap-4">
+        <dt className="text-[15px]">Taxa de rede</dt>
+        <dd className="flex flex-col items-end gap-1 text-[15px] md:text-lg/4">
+          <span>{formatEth(networkFee)}</span>
+          <span className="text-xs text-highlight">Taxa estimada</span>
+        </dd>
       </div>
       <div className="flex items-center justify-between gap-4 border-t border-primary/30 pt-4 font-bold">
         <dt className="text-base">Total</dt>

@@ -10,7 +10,10 @@ export function NftInfoTabs({ nft }: { nft: Nft }) {
   const network = NETWORK_LABELS[nft.network]
   return (
     <Tabs defaultValue="detalhes" className="gap-3">
-      <TabsList variant="line" className="h-auto w-full justify-start gap-8 border-b border-primary/30 p-0">
+      <TabsList
+        variant="line"
+        className="h-auto w-full flex-wrap justify-start gap-x-8 gap-y-3 border-b border-primary/30 p-0"
+      >
         <TabsTrigger value="detalhes" className={trigger}>
           Detalhes do NFT
         </TabsTrigger>

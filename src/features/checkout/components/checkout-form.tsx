@@ -178,7 +178,7 @@ export function CheckoutForm({ profile, wallets, quote, quoteLoading, couponCode
         <h2 id="comprador-titulo" className="text-[17px]/4 font-bold">
           Perfil do colecionador
         </h2>
-        <div className="grid gap-x-6 gap-y-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
           <FormField id="checkout-nome" label="Nome de exibição" required error={errors.displayName?.message}>
             {(a11y) => <Input {...a11y} {...register('displayName')} autoComplete="name" />}
           </FormField>
@@ -251,7 +251,7 @@ export function CheckoutForm({ profile, wallets, quote, quoteLoading, couponCode
               ) : (
                 <>
                   Tem um código promocional?{' '}
-                  <Link to="/cart" className="text-highlight hover:underline">
+                  <Link to="/cart" className="text-highlight underline underline-offset-2">
                     Aplique no carrinho
                   </Link>
                 </>

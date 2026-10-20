@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useFeaturedNfts } from '../queries'
+import { imageSrcSet, smallImage } from '@/lib/images'
 
 const ROTATE_MS = 6000
 
@@ -88,7 +89,8 @@ export function HomeHero() {
 
         {featured && featured.length > 1 && (
           // Mobile: pontos centralizados no pé do card (Figma); desktop: à direita, abaixo do texto.
-          <div className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1.5 md:static md:justify-end md:gap-4">
+          // Cada ponto é um botão de 24×24 px (área de toque mínima, WCAG 2.5.8) com o ponto dentro.
+          <div className="absolute inset-x-0 bottom-1 flex items-center justify-center md:static md:justify-end md:gap-4">
             {featured.map((nft, i) => (
               <button
                 key={nft.id}
@@ -96,11 +98,15 @@ export function HomeHero() {
                 onClick={() => setActive(i)}
                 aria-label={`Destaque ${i + 1} de ${featured.length}: ${nft.name}`}
                 aria-pressed={i === active}
-                className={cn(
-                  'size-[7px] rounded-full bg-primary md:size-2',
-                  i !== active && 'opacity-40 hover:opacity-80',
-                )}
-              />
+                className="group flex size-6 items-center justify-center md:size-2"
+              >
+                <span
+                  className={cn(
+                    'size-[7px] rounded-full bg-primary md:size-2',
+                    i !== active && 'opacity-40 group-hover:opacity-80',
+                  )}
+                />
+              </button>
             ))}
             <button
               type="button"
@@ -126,6 +132,8 @@ export function HomeHero() {
             <img
               key={current.id}
               src={current.images[0]}
+              srcSet={imageSrcSet(current.images[0])}
+              sizes="(min-width: 768px) 450px, 40vw"
               alt={current.name}
               width={450}
               height={450}
@@ -138,7 +146,7 @@ export function HomeHero() {
         )}
         {secondary && secondary !== current && (
           <img
-            src={secondary.images[0]}
+            src={smallImage(secondary.images[0])}
             alt=""
             width={58}
             height={58}

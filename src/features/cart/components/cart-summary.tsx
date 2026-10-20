@@ -60,9 +60,13 @@ export function CartSummary(props: Props) {
         <dl aria-busy={isRefreshing} className={cn('flex flex-col gap-3', isRefreshing && 'opacity-60')}>
           <Row label="Subtotal" value={formatEth(quote.subtotal)} />
           <Row label="Desconto do lançamento" value={`(-) ${formatEth(quote.discount)}`} small />
-          <div className="flex flex-col gap-1">
-            <Row label="Taxa de rede" value={formatEth(quote.networkFee)} />
-            <p className="text-right text-xs text-highlight">Taxa estimada</p>
+          {/* "Taxa estimada" fica dentro do <dd>: um <dl> só pode ter pares <dt>/<dd>. */}
+          <div className="flex items-start justify-between gap-4">
+            <dt className="text-[15px]">Taxa de rede</dt>
+            <dd className="flex flex-col items-end gap-1 text-lg/4">
+              <span>{formatEth(quote.networkFee)}</span>
+              <span className="text-xs text-highlight">Taxa estimada</span>
+            </dd>
           </div>
           <div className="mt-3 flex items-center justify-between font-bold">
             <dt className="text-base">Total</dt>

@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useFeaturedNfts } from '../queries'
+import { imageSrcSet } from '@/lib/images'
 
 // "NFT em destaque — oferta limitada", abaixo dos filtros (só desktop, como no Figma).
 export function FeaturedBanner() {
@@ -22,6 +23,8 @@ export function FeaturedBanner() {
         <Link to="/nfts/$nftId" params={{ nftId: nft.id }} aria-label={`Ver ${nft.name} em destaque`}>
           <img
             src={nft.images[0]}
+            srcSet={imageSrcSet(nft.images[0])}
+            sizes="310px"
             alt={nft.name}
             width={310}
             height={368}

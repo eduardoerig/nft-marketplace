@@ -4,10 +4,10 @@ import { HomeBlog } from '@/features/catalog/components/home-blog'
 import { HomeHero } from '@/features/catalog/components/home-hero'
 import { HomePromos } from '@/features/catalog/components/home-promos'
 import { SearchBar } from '@/features/catalog/components/search-bar'
-import { catalogSearchDefaults, catalogSearchSchema } from '@/features/catalog/search'
+import { catalogSearchDefaults, validateCatalogSearch } from '@/features/catalog/search'
 
 export const Route = createFileRoute('/')({
-  validateSearch: catalogSearchSchema,
+  validateSearch: validateCatalogSearch,
   search: { middlewares: [stripSearchParams(catalogSearchDefaults)] },
   head: () => ({ meta: [{ title: 'Kurio — Marketplace de NFTs' }] }),
   component: HomePage,

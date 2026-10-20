@@ -7,11 +7,16 @@ import { SiteHeader } from '@/components/layout/site-header'
 import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { AuthDialog } from '@/features/auth/components/auth-dialog'
-import { authSearchSchema } from '@/features/auth/routing'
+import { validateAuthSearch } from '@/features/auth/routing'
 import { useRealtime } from '@/realtime/use-realtime'
 
 type RouterContext = { queryClient: QueryClient }
+
+// O modal de login/cadastro só é baixado quando `?auth=` aparece (formulários e validação ficam
+// fora do carregamento inicial).
+const AuthDialog = lazy(() =>
+  import('@/features/auth/components/auth-dialog').then((m) => ({ default: m.AuthDialog })),
+)
 
 // Painel de testes da API simulada: só com os mocks ligados, e fora do bundle principal.
 const DevPanel =
@@ -19,7 +24,7 @@ const DevPanel =
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   // `?auth=login|register` abre o modal de login/cadastro sobre qualquer página.
-  validateSearch: authSearchSchema,
+  validateSearch: validateAuthSearch,
   head: () => ({ meta: [{ title: 'Kurio — Marketplace de NFTs' }] }),
   component: RootLayout,
   notFoundComponent: NotFound,
@@ -39,17 +44,23 @@ function RootLayout() {
       </a>
       <div className="flex min-h-dvh flex-col">
         <SiteHeader />
+        {/* min-h-dvh: o rodapé fica sempre abaixo da 1ª tela; enquanto os dados carregam a página é curta e
+            ele "pularia" para baixo quando o conteúdo chega (CLS). */}
         <main
           id="conteudo"
           tabIndex={-1}
-          className="mx-auto w-full max-w-page flex-1 px-4 outline-none lg:px-0"
+          className="mx-auto min-h-dvh w-full max-w-page flex-1 px-4 outline-none lg:px-0"
         >
           <Outlet />
         </main>
         <SiteFooter />
         <MobileTabBar />
       </div>
-      {auth && <AuthDialog mode={auth} redirect={redirect} />}
+      {auth && (
+        <Suspense fallback={null}>
+          <AuthDialog mode={auth} redirect={redirect} />
+        </Suspense>
+      )}
       <Toaster />
       {DevPanel && (
         <Suspense fallback={null}>

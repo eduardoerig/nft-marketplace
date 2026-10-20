@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { z } from 'zod'
+import { createFileRoute, Link, type SearchSchemaInput } from '@tanstack/react-router'
 import { errorHint } from '@/lib/error-hint'
+import { text } from '@/lib/search-params'
 import { MobilePageHeader } from '@/components/layout/mobile-page-header'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -9,12 +9,9 @@ import { useCart, useQuote } from '@/features/cart/queries'
 import { CheckoutForm } from '@/features/checkout/components/checkout-form'
 
 // O cupom vem do carrinho (/cart?cupom=…) e entra na mesma cotação aqui.
-const checkoutSearchSchema = z.object({
-  cupom: z.string().optional().catch(undefined),
-})
 
 export const Route = createFileRoute('/_auth/checkout')({
-  validateSearch: checkoutSearchSchema,
+  validateSearch: (search: { cupom?: string } & SearchSchemaInput) => ({ cupom: text(search.cupom) }),
   head: () => ({ meta: [{ title: 'Pagamento — Kurio' }] }),
   component: CheckoutPage,
 })

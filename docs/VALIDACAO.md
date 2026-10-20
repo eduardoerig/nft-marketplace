@@ -148,9 +148,14 @@ Tabela completa de cenários em `docs/API.md` → "Cenários da API simulada".
       foco no e-mail, Tab não sai do diálogo e Esc fecha **devolvendo o foco** ao "Entrar".
 
 ## 17 — Qualidade
-- [ ] Use o app só com `Tab`/`Enter`/`Esc`: dá para comprar sem mouse, foco sempre visível.
-- [ ] Em 390, 768 e 1440 não há rolagem horizontal. Zoom 200% não corta conteúdo.
-- [ ] `lighthouse/RESULTS.md` mostra medianas ≥ 90/95/95/90 ou justifica.
+- [ ] Use o app só com `Tab`/`Enter`/`Esc`: dá para comprar sem mouse, foco sempre visível (contorno dourado).
+- [ ] DevTools → modo responsivo em 320, 390, 768, 1024 e 1440: nenhuma tela rola na horizontal. No tablet (768) o
+      detalhe mostra a galeria em cima e as informações embaixo.
+- [ ] Zoom do navegador em 200% (Ctrl +) numa janela de ~1280 px: nada cortado, só rolagem vertical.
+- [ ] DevTools → Network → Img: as artes são `.webp` (~13 KB nos cards, ~40 KB no detalhe), não PNG de 2 MB.
+- [ ] `pnpm lighthouse` (alguns minutos) → `lighthouse/RESULTS.md` com as medianas; o que ficar abaixo da meta
+      (90/95/95/90) está justificado no próprio arquivo.
+- [ ] Opcional: extensão axe DevTools em qualquer tela → sem problemas "serious"/"critical" (os testes já checam).
 
 ## 18 — Entrega
 - [ ] Clone o repo numa pasta nova e siga **só** o README: tudo funciona.

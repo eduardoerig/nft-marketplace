@@ -10,13 +10,13 @@ const PROMOS: {
   {
     title: 'Lançamentos gênesis de edição limitada',
     text: 'Colecione edições escassas diretamente dos criadores antes da revelação pública.',
-    image: '/images/nft-art-1.png',
+    image: '/images/nft-art-1-400.webp',
     search: { view: 'new' },
   },
   {
     title: 'Arte digital selecionada e muito mais',
     text: 'Explore novos artistas, coleções verificadas e obras digitais que definem a cultura.',
-    image: '/images/nft-art-3.png',
+    image: '/images/nft-art-3-400.webp',
     search: { category: 'digital-art' },
   },
 ]

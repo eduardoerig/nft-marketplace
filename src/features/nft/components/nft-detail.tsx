@@ -41,10 +41,11 @@ export function NftDetail({ nft }: { nft: Nft }) {
           </Link>
         </nav>
 
-        <div className="flex flex-col md:flex-row md:gap-8">
+        {/* Duas colunas só a partir de 1024 px: no tablet a galeria de 573 px não deixa espaço ao lado. */}
+        <div className="flex flex-col md:gap-8 lg:flex-row">
           <section
             aria-label="Imagens"
-            className="-mx-4 bg-linear-to-b from-card to-secondary px-6 pt-4 pb-14 md:mx-0 md:w-[573px] md:shrink-0 md:bg-none md:p-0"
+            className="-mx-4 bg-linear-to-b from-card to-secondary px-6 pt-4 pb-14 md:mx-0 md:w-full md:max-w-[573px] md:bg-none md:p-0 lg:w-[573px] lg:shrink-0"
           >
             <MobileTopBar nft={nft} />
             <NftGallery name={nft.name} images={nft.images} />

@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import type { Nft } from '@/api/types'
 import { formatEth } from '@/lib/money'
+import { imageSrcSet } from '@/lib/images'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { useAddToCartAction } from '@/features/cart/use-add-to-cart'
@@ -21,6 +22,8 @@ export function NftCard({ nft }: { nft: Nft }) {
         <div className="relative flex aspect-175/200 items-center justify-center rounded-3xl bg-linear-to-b from-card to-secondary p-1 md:aspect-258/300 md:rounded-none md:bg-card md:p-1">
           <img
             src={nft.images[0]}
+            srcSet={imageSrcSet(nft.images[0])}
+            sizes="(min-width: 768px) 250px, 45vw"
             alt=""
             width={250}
             height={250}

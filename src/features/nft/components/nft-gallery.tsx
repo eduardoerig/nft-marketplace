@@ -1,6 +1,7 @@
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { cn } from '@/lib/utils'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { imageSrcSet, smallImage } from '@/lib/images'
 
 type Props = { name: string; images: string[] }
 
@@ -44,7 +45,13 @@ export function NftGallery({ name, images }: Props) {
               i === active ? 'border-primary' : 'border-transparent',
             )}
           >
-            <img src={src} alt="" width={100} height={100} className="aspect-square w-full object-cover" />
+            <img
+              src={smallImage(src)}
+              alt=""
+              width={100}
+              height={100}
+              className="aspect-square w-full object-cover"
+            />
           </button>
         ))}
       </div>
@@ -53,6 +60,8 @@ export function NftGallery({ name, images }: Props) {
         <div className="rounded-3xl p-0 md:rounded-md md:bg-card md:p-4">
           <img
             src={images[active]}
+            srcSet={imageSrcSet(images[active])}
+            sizes="(min-width: 1024px) 404px, 100vw"
             alt={alt(active)}
             width={404}
             height={404}
@@ -76,7 +85,7 @@ export function NftGallery({ name, images }: Props) {
         </Dialog>
 
         {/* Mobile: pontos no lugar das miniaturas */}
-        <div className="mt-3 flex justify-center gap-2 md:hidden">
+        <div className="mt-2 flex justify-center md:hidden">
           {images.map((src, i) => (
             <button
               key={src}
@@ -84,8 +93,12 @@ export function NftGallery({ name, images }: Props) {
               onClick={() => setActive(i)}
               aria-pressed={i === active}
               aria-label={`Mostrar imagem ${i + 1} de ${images.length}`}
-              className={cn('h-[7px] rounded-full bg-primary', i === active ? 'w-7' : 'w-[7px] opacity-50')}
-            />
+              className="flex h-6 min-w-6 items-center justify-center px-0.5"
+            >
+              <span
+                className={cn('h-[7px] rounded-full bg-primary', i === active ? 'w-7' : 'w-[7px] opacity-50')}
+              />
+            </button>
           ))}
         </div>
       </div>

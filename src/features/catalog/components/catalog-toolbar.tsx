@@ -13,7 +13,7 @@ export function CatalogToolbar() {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <nav aria-label="Abas do catálogo">
-        <ul className="flex gap-4 md:gap-5">
+        <ul className="flex flex-wrap gap-x-4 gap-y-2 md:gap-5">
           {NFT_VIEWS.map((v) => {
             const active = view === v
             return (

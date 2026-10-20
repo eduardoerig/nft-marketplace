@@ -1,5 +1,6 @@
 // Cliente HTTP único. Toda chamada REST passa por aqui.
 import axios, { AxiosError } from 'axios'
+import { apiReady } from '@/lib/api-ready'
 import type { ApiErrorBody, ApiErrorCode, ApiErrorReason } from './types'
 
 const TOKEN_KEY = 'session-token'
@@ -46,7 +47,8 @@ export function setGuestCartId(id: string | null) {
 
 export const api = axios.create({ baseURL: '/api', timeout: 10_000 })
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
+  await apiReady // com os mocks, só sai quando o MSW já intercepta (ver src/lib/api-ready.ts)
   const token = getToken()
   if (token) config.headers.Authorization = `Bearer ${token}`
   const guestCartId = getGuestCartId()

@@ -1,5 +1,6 @@
 import type { QuoteItem } from '@/api/types'
 import { formatEth } from '@/lib/money'
+import { smallImage } from '@/lib/images'
 
 /**
  * "Seus NFTs": as linhas de uma cotação ou de um pedido (imagem, nome, edição, quantidade e subtotal).
@@ -14,7 +15,7 @@ export function OrderLines({ items }: { items: QuoteItem[] }) {
           className="flex min-h-[70px] items-center gap-2 rounded-lg bg-card py-1 pr-4 pl-1 md:rounded-none"
         >
           <img
-            src={item.image}
+            src={smallImage(item.image)}
             alt=""
             width={64}
             height={64}

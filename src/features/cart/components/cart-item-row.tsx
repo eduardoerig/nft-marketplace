@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import type { CartItem } from '@/api/types'
 import { formatEth } from '@/lib/money'
+import { smallImage } from '@/lib/images'
 import { QuantityStepper } from '@/components/quantity-stepper'
 import { lineLimit } from '../limits'
 import { useRemoveCartItem, useUpdateCartItem } from '../queries'
@@ -28,7 +29,7 @@ export function CartItemRow({ item }: { item: CartItem }) {
     >
       <div className="flex items-center gap-4 max-lg:contents">
         <img
-          src={item.image}
+          src={smallImage(item.image)}
           alt=""
           width={70}
           height={70}

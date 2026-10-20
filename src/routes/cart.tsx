@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, type SearchSchemaInput } from '@tanstack/react-router'
 import { XIcon } from 'lucide-react'
 import { toast } from 'sonner'
-import { z } from 'zod'
 import { errorHint } from '@/lib/error-hint'
+import { text } from '@/lib/search-params'
 import { MobilePageHeader } from '@/components/layout/mobile-page-header'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -15,12 +15,9 @@ import { useCartChanges } from '@/features/cart/use-cart-changes'
 import { NftShelf } from '@/features/catalog/components/nft-shelf'
 
 // O cupom aplicado fica na URL (?cupom=DESCONTO10): sobrevive ao refresh e o pagamento o recebe.
-const cartSearchSchema = z.object({
-  cupom: z.string().optional().catch(undefined),
-})
 
 export const Route = createFileRoute('/cart')({
-  validateSearch: cartSearchSchema,
+  validateSearch: (search: { cupom?: string } & SearchSchemaInput) => ({ cupom: text(search.cupom) }),
   head: () => ({ meta: [{ title: 'Carrinho — Kurio' }] }),
   component: CartPage,
 })
@@ -66,31 +63,33 @@ function CartPage() {
           <span aria-current="page">Carrinho</span>
         </nav>
 
-        {/* Avisos de mudança de preço/disponibilidade (tempo real). A lista existe mesmo vazia, para o
+        {/* Avisos de mudança de preço/disponibilidade (tempo real). A região existe mesmo vazia, para o
             leitor de tela anunciar o que entrar nela; vazia ela fica sr-only (display:none não anunciaria). */}
-        <ul
+        <div
           role="status"
           aria-live="polite"
           aria-label="Mudanças no carrinho"
-          className="flex flex-col gap-2 empty:sr-only"
+          className={changes.notices.length === 0 ? 'sr-only' : undefined}
         >
-          {changes.notices.map((notice) => (
-            <li
-              key={notice.id}
-              className="flex items-center justify-between gap-4 rounded-[10px] border border-highlight/60 bg-card px-4 py-3 text-sm/5"
-            >
-              <span>{notice.message}</span>
-              <button
-                type="button"
-                onClick={() => changes.dismiss(notice.id)}
-                aria-label="Dispensar aviso"
-                className="shrink-0 rounded-full p-1 text-muted-foreground hover:text-foreground"
+          <ul className="flex flex-col gap-2">
+            {changes.notices.map((notice) => (
+              <li
+                key={notice.id}
+                className="flex items-center justify-between gap-4 rounded-[10px] border border-highlight/60 bg-card px-4 py-3 text-sm/5"
               >
-                <XIcon className="size-4" aria-hidden="true" />
-              </button>
-            </li>
-          ))}
-        </ul>
+                <span>{notice.message}</span>
+                <button
+                  type="button"
+                  onClick={() => changes.dismiss(notice.id)}
+                  aria-label="Dispensar aviso"
+                  className="shrink-0 rounded-full p-1 text-muted-foreground hover:text-foreground"
+                >
+                  <XIcon className="size-4" aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {cart.isPending ? (
           <CartSkeleton />

@@ -7,7 +7,10 @@ dist
 test-results
 playwright-report
 blob-report
-lighthouse/reports/*.tmp
+# Lighthouse: só o relatório da rodada mediana de cada página × perfil é versionado.
+lighthouse/reports/*
+!lighthouse/reports/*-mediana.html
+!lighthouse/reports/*-mediana.json
 
 # editor / sistema
 .vscode/*

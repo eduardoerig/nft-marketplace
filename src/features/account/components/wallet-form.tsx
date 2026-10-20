@@ -59,7 +59,7 @@ export function WalletForm({ kind, wallet, defaultValues, onSaved }: Props) {
       aria-labelledby={`carteira-${kind}-titulo`}
       className="flex flex-col gap-6"
     >
-      <div className="grid gap-x-7 gap-y-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-6 md:grid-cols-2">
         <FormField id={id('apelido')} label="Apelido da carteira" required error={errors.label?.message}>
           {(a11y) => <Input {...a11y} {...register('label')} placeholder="Ex.: Principal" />}
         </FormField>
