@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 13** — `docs/steps/13-pagamento-pedido.md`.
+- [ ] **Próximo: passo 14** — `docs/steps/14-status-recibo.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -119,6 +119,12 @@ Passos concluídos (marque com o hash do commit):
   WebSocket do Vite) e o `socket.io-client` é importado sob demanda (guarda o `WebSocket` no import, antes
   do MSW). O aviso do carrinho (`useCartChanges`) compara dados, não eventos. Passo 13 ("preço muda durante
   o checkout"): `/api/__mock/nft-update` já serve para o teste.
+- [x] passo 13 — pagamento e pedido (eb0768e). Feature em `src/features/checkout/` (`CheckoutForm`, `ReviewDialog`,
+  `WalletConnect`, `OrderLines` e `PriceSummary` — os dois últimos servem ao recibo do passo 14). Mock em
+  `src/mocks/handlers/orders.ts` (pedido `pending` com snapshot; revalida com `buildQuote` de `cart.ts`).
+  Chave de idempotência em `src/lib/idempotency.ts` (por conteúdo, sessionStorage). `useCreateOrder` já reenvia
+  sozinho em falha de rede com a mesma chave (base do cenário `order-timeout`). Cenários novos: `wallet-reject`,
+  `wallet-disconnect`. Testes de compra usam `tests/e2e/shop-helpers.ts` (`startCheckout`, `connectWallet`…).
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
