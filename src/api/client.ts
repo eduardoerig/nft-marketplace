@@ -55,7 +55,20 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Toda resposta com corpo é JSON. Se vier outra coisa (ex.: o MSW perdeu a aba e o Vite
+    // devolveu o index.html com 200), vira falha transitória — a tela mostra erro, não quebra.
+    const isJson = String(response.headers['content-type'] ?? '').includes('json')
+    if (response.status !== 204 && !isJson) {
+      return Promise.reject(
+        new ApiError(
+          { code: 'UNAVAILABLE', message: 'Resposta inesperada do servidor. Tente novamente.' },
+          response.status,
+        ),
+      )
+    }
+    return response
+  },
   (error: unknown) => {
     const apiError = toApiError(error)
     // 401 numa requisição autenticada = sessão vencida. Quem cuida da sessão escuta este evento.

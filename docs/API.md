@@ -47,7 +47,8 @@ Toda resposta de erro tem o corpo `ApiErrorBody`:
 | `IDEMPOTENCY_MISMATCH` | Pedido: mesma chave, corpo diferente (409) |
 
 O cliente ([`src/api/client.ts`](../src/api/client.ts)) converte qualquer falha em `ApiError`
-(com `code`, `reason`, `fields`, `status`). Um 401 em requisição **autenticada** dispara o evento
+(com `code`, `reason`, `fields`, `status`). Resposta com corpo que não é JSON (ex.: o `index.html`
+quando o MSW não interceptou) também vira `UNAVAILABLE`. Um 401 em requisição **autenticada** dispara o evento
 `window` `session-expired`.
 
 ## Endpoints
