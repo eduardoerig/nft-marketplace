@@ -13,7 +13,7 @@ import {
 } from '@/api/types'
 import { compare } from '@/lib/money'
 import { readDb } from '../db'
-import { fail, networkDelay, ok } from './respond'
+import { fail, ok } from './respond'
 
 const DECIMAL = /^\d+(\.\d+)?$/
 const NEW_WINDOW_MS = 21 * 24 * 60 * 60 * 1000 // "Novos lançamentos": listados nos últimos 21 dias
@@ -59,7 +59,6 @@ function countBy<K extends string>(keys: readonly K[], nfts: Nft[], pick: (n: Nf
 export const nftHandlers = [
   // GET /api/nfts?q&category&network&minPrice&maxPrice&view&sort&page&pageSize
   http.get('/api/nfts', async ({ request }) => {
-    await networkDelay()
     const params = new URL(request.url).searchParams
     const get = (key: string) => params.get(key) || undefined
 
@@ -117,13 +116,11 @@ export const nftHandlers = [
 
   // Destaques: hero e banner "NFT em destaque" (antes de /:id para não ser confundido com um id).
   http.get('/api/nfts/featured', async () => {
-    await networkDelay()
     const { nfts } = readDb()
     return ok(nfts.slice(0, 3))
   }),
 
   http.get('/api/nfts/:id', async ({ params }) => {
-    await networkDelay()
     const nft = readDb().nfts.find((n) => n.id === params.id)
     if (!nft) return fail('NOT_FOUND', 'NFT não encontrado.')
     return ok(nft)

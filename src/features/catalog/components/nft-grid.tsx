@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { Link } from '@tanstack/react-router'
 import type { NftListResponse } from '@/api/types'
 import type { ApiError } from '@/api/client'
+import { errorHint } from '@/lib/error-hint'
 import { Button } from '@/components/ui/button'
 import { PAGE_SIZE } from '../search'
 import { NftCard, NftCardSkeleton } from './nft-card'
@@ -12,13 +13,14 @@ type Props = {
   isPending: boolean
   isRefreshing: boolean // mostrando a lista anterior enquanto a nova carrega
   onRetry: () => void
+  filtered: boolean // há busca ou filtro ativo (muda o texto do estado vazio)
 }
 
 // Grade de 2 colunas (mobile, com a coluna da direita deslocada como no Figma) ou 3 (desktop).
 const gridClass =
   'grid grid-cols-2 gap-x-4 gap-y-6 pb-8 max-md:[&>li:nth-child(even)]:translate-y-8 md:grid-cols-3 md:gap-x-[34px] md:gap-y-[72px] md:pb-0'
 
-export function NftGrid({ data, error, isPending, isRefreshing, onRetry }: Props) {
+export function NftGrid({ data, error, isPending, isRefreshing, onRetry, filtered }: Props) {
   // Mensagem para leitores de tela quando o resultado muda.
   const status = isPending
     ? 'Carregando NFTs…'
@@ -41,12 +43,12 @@ export function NftGrid({ data, error, isPending, isRefreshing, onRetry }: Props
           ))}
         </ul>
       ) : error && !data ? (
-        <ErrorState onRetry={onRetry} />
+        <ErrorState error={error} onRetry={onRetry} />
       ) : data && data.items.length === 0 ? (
-        <EmptyState />
+        <EmptyState filtered={filtered} />
       ) : (
         <>
-          {error && <ErrorState onRetry={onRetry} compact />}
+          {error && <ErrorState error={error} onRetry={onRetry} compact />}
           <ul
             aria-label="NFTs"
             aria-busy={isRefreshing}
@@ -64,7 +66,7 @@ export function NftGrid({ data, error, isPending, isRefreshing, onRetry }: Props
   )
 }
 
-function EmptyState() {
+function EmptyState({ filtered }: { filtered: boolean }) {
   const id = useId()
   return (
     <section aria-labelledby={id} className="flex flex-col items-center gap-4 bg-card px-6 py-16 text-center">
@@ -72,18 +74,30 @@ function EmptyState() {
         Nenhum NFT encontrado
       </h3>
       <p className="max-w-sm text-sm/6 text-muted-foreground">
-        Tente outra busca ou remova alguns filtros para ver mais resultados.
+        {filtered
+          ? 'Tente outra busca ou remova alguns filtros para ver mais resultados.'
+          : 'Ainda não há NFTs à venda no mercado. Volte em breve para ver os próximos lançamentos.'}
       </p>
-      <Button asChild variant="outline">
-        <Link to="/" resetScroll={false} activeOptions={{ exact: true }}>
-          Limpar filtros
-        </Link>
-      </Button>
+      {filtered && (
+        <Button asChild variant="outline">
+          <Link to="/" resetScroll={false} activeOptions={{ exact: true }}>
+            Limpar filtros
+          </Link>
+        </Button>
+      )}
     </section>
   )
 }
 
-function ErrorState({ onRetry, compact = false }: { onRetry: () => void; compact?: boolean }) {
+function ErrorState({
+  error,
+  onRetry,
+  compact = false,
+}: {
+  error: ApiError
+  onRetry: () => void
+  compact?: boolean
+}) {
   return (
     <div
       role="alert"
@@ -93,7 +107,10 @@ function ErrorState({ onRetry, compact = false }: { onRetry: () => void; compact
           : 'flex flex-col items-center gap-4 bg-card px-6 py-16 text-center'
       }
     >
-      <p className={compact ? '' : 'text-lg font-bold'}>Não foi possível carregar os NFTs.</p>
+      <div className="flex flex-col gap-1">
+        <p className={compact ? '' : 'text-lg font-bold'}>Não foi possível carregar os NFTs.</p>
+        {!compact && <p className="text-sm text-muted-foreground">{errorHint(error)}</p>}
+      </div>
       <Button onClick={onRetry} size={compact ? 'sm' : 'default'}>
         Tentar novamente
       </Button>

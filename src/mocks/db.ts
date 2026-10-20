@@ -5,7 +5,7 @@ import type { Order } from '@/api/types'
 import { couponFixtures, type MockCoupon } from './fixtures/coupons'
 import { nftFixtures } from './fixtures/nfts'
 import { userFixtures, walletFixtures, type MockUser, type MockWallet } from './fixtures/users'
-import { setScenarioName, type ScenarioName } from './scenarios'
+import { scenarios, setScenarioName, type Scenario, type ScenarioName } from './scenarios'
 
 const DB_KEY = 'mock-db'
 const SCHEMA_VERSION = 3 // aumente quando o formato mudar: estados antigos são descartados
@@ -46,7 +46,7 @@ function seed(scenario: ScenarioName): Db {
     scenario,
     users: userFixtures,
     sessions: [],
-    nfts: nftFixtures,
+    nfts: (scenarios[scenario] as Scenario).emptyCatalog ? [] : nftFixtures,
     carts: [],
     favorites: {},
     wallets: walletFixtures,

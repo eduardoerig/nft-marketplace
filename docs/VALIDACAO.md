@@ -124,8 +124,19 @@ Preparação: entre como `ana@example.com`, ponha 2 NFTs no carrinho e clique em
 - [ ] Leitor de tela: ao confirmar, anuncia "Pagamento confirmado." (região `role=status`).
 
 ## 15 — Cenários de rede
-- [ ] O painel de dev troca cenários e reseta dados.
-- [ ] `slow` → skeletons aparecem; `server-error` → erro + "Tentar novamente" funciona; `offline` → mensagem clara.
+Tabela completa de cenários em `docs/API.md` → "Cenários da API simulada".
+- [ ] Botão com o frasco (canto inferior esquerdo) abre o **painel de testes**: escolher cenário + "Aplicar cenário"
+      recarrega a página no cenário novo; "Resetar dados" volta ao estado inicial; "Emitir nft.updated" muda um
+      preço ao vivo; "Derrubar socket" e o app reconecta.
+- [ ] `slow` → skeletons no catálogo, no detalhe, no carrinho e no pagamento.
+- [ ] `server-error` → "Não foi possível carregar os NFTs." + "O servidor está instável…" (~4 s) → "Tentar novamente" carrega.
+- [ ] `offline` → "Sem conexão com o servidor…" em vez dos dados.
+- [ ] `empty` → "Nenhum NFT encontrado / Ainda não há NFTs à venda…".
+- [ ] `out-of-order` → busque "Golden" e logo depois "Ape": no fim aparecem só os Ape.
+- [ ] `register-conflict` → cadastro com e-mail novo dá "Este e-mail já está cadastrado." no campo.
+- [ ] `session-expired` → entrar mostra "Sua sessão expirou. Entre novamente."; `unauthorized` → continua deslogado.
+- [ ] `price-change-checkout` / `sold-out-checkout` → ver passo 13 (revisão mostra a mudança / esgotou).
+- [ ] Repita um cenário duas vezes: o resultado é o mesmo (determinístico).
 
 ## 16 — Testes
 - [ ] `pnpm test:e2e` verde em desktop e mobile.

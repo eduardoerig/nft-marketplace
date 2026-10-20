@@ -4,7 +4,7 @@ import { http } from 'msw'
 import type { LoginInput, RegisterInput, Session, User } from '@/api/types'
 import { readDb, updateDb, type Db } from '../db'
 import type { MockUser } from '../fixtures/users'
-import { fail, networkDelay, noContent, ok } from './respond'
+import { fail, noContent, ok } from './respond'
 
 const SESSION_TTL_MS = 2 * 60 * 60 * 1000 // 2 horas
 
@@ -60,7 +60,6 @@ function validateRegister(input: Partial<RegisterInput>) {
 
 export const authHandlers = [
   http.post('/api/auth/register', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<RegisterInput>
     const fields = validateRegister(input)
     if (Object.keys(fields).length > 0) return fail('VALIDATION', 'Confira os campos.', { fields })
@@ -100,7 +99,6 @@ export const authHandlers = [
   }),
 
   http.post('/api/auth/login', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<LoginInput>
     if (!input.email || !input.password) {
       return fail('VALIDATION', 'Informe e-mail e senha.', {
@@ -122,7 +120,6 @@ export const authHandlers = [
   }),
 
   http.get('/api/auth/session', async ({ request }) => {
-    await networkDelay()
     const db = readDb()
     const user = requireUser(db, request)
     if (user instanceof Response) return user
@@ -131,7 +128,6 @@ export const authHandlers = [
   }),
 
   http.post('/api/auth/logout', async ({ request }) => {
-    await networkDelay()
     const token = bearerToken(request)
     updateDb((db) => {
       db.sessions = db.sessions.filter((s) => s.token !== token)

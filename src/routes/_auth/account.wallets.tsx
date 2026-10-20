@@ -22,7 +22,7 @@ function WalletsPage() {
       {isPending ? (
         <AccountFormSkeleton label="Carregando carteiras" />
       ) : error ? (
-        <AccountLoadError onRetry={() => refetch()} />
+        <AccountLoadError error={error} onRetry={() => refetch()} />
       ) : (
         <>
           <WalletSection kind="primary" wallet={primary} />

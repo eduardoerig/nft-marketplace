@@ -3,6 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { XIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { errorHint } from '@/lib/error-hint'
 import { MobilePageHeader } from '@/components/layout/mobile-page-header'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -96,6 +97,7 @@ function CartPage() {
         ) : cart.error ? (
           <div role="alert" className="flex flex-col items-start gap-4 py-12">
             <p className="text-lg font-bold">Não foi possível carregar o carrinho.</p>
+            <p className="text-sm text-muted-foreground">{errorHint(cart.error)}</p>
             <Button onClick={() => cart.refetch()}>Tentar novamente</Button>
           </div>
         ) : items.length === 0 ? (

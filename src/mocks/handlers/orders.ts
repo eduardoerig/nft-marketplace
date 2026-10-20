@@ -2,12 +2,13 @@
 // confirma ou recusa o pagamento alguns segundos depois (emitindo order.updated só para o dono).
 import { http, HttpResponse } from 'msw'
 import { NETWORKS, type Buyer, type Network, type Order, type OrderInput } from '@/api/types'
+import { add } from '@/lib/money'
 import { readDb, updateDb, type Db, type MockOrder } from '../db'
 import { emit, updateNft } from '../realtime'
-import { getScenario } from '../scenarios'
+import { firstTime, getScenario } from '../scenarios'
 import { EMAIL, requireUser, USERNAME } from './auth'
 import { buildQuote, findCart } from './cart'
-import { fail, networkDelay, ok } from './respond'
+import { fail, ok } from './respond'
 
 /** O que a API mostra: o pedido sem os campos internos (dono, chave e hash do corpo). */
 function toOrder(order: MockOrder): Order {
@@ -26,7 +27,6 @@ const EXPLORERS: Record<Network, string> = {
   solana: 'https://solscan.io/tx/',
 }
 const scheduled = new Set<string>() // pedidos com timer de resolução nesta aba
-const lostResponses = new Set<string>() // cenário order-timeout: chaves cuja 1ª resposta já "se perdeu"
 
 /** Hash fictício e estável da transação (64 hexadecimais), derivado do id do pedido. */
 function txHashOf(orderId: string) {
@@ -98,6 +98,24 @@ function resolveDueOrders() {
   }
 }
 
+/**
+ * Cenários price-change-checkout e sold-out-checkout: no 1º envio de pedido, o primeiro item do carrinho
+ * sobe de preço ou esgota "no servidor" (com nft.updated, como uma mudança real) antes da revalidação.
+ */
+function changeCatalogAtCheckout(request: Request) {
+  const scenario = getScenario()
+  if (!scenario.changePriceAtCheckout && !scenario.sellOutAtCheckout) return
+  const db = readDb()
+  const user = requireUser(db, request)
+  if (user instanceof Response) return
+  const line = db.carts.find((c) => c.userId === user.id)?.items[0]
+  const edition = db.nfts.find((n) => n.id === line?.nftId)?.editions.find((e) => e.id === line?.editionId)
+  if (!line || !edition || !firstTime('mudanca-no-checkout')) return
+  const target = { nftId: line.nftId, editionId: line.editionId }
+  if (scenario.changePriceAtCheckout) updateNft({ ...target, price: add(edition.price, '0.1') })
+  else updateNft({ ...target, available: 0 })
+}
+
 /** Agenda a resolução nesta aba. Depois de um refresh, o GET reagenda (e resolve se já passou da hora). */
 function scheduleResolution(order: MockOrder) {
   if (order.status !== 'pending' || scheduled.has(order.id)) return
@@ -137,11 +155,11 @@ function validateBuyer(buyer: Partial<Buyer> | undefined) {
 export const orderHandlers = [
   // POST /api/orders + Idempotency-Key. Mesma chave + mesmo corpo → o mesmo pedido (sem duplicar).
   http.post('/api/orders', async ({ request }) => {
-    await networkDelay()
     const key = request.headers.get('Idempotency-Key')
     if (!key) return fail('VALIDATION', 'Envie o header Idempotency-Key.')
     const input = (await request.json().catch(() => ({}))) as Partial<OrderInput>
     const requestHash = requestHashOf(input)
+    changeCatalogAtCheckout(request)
 
     return updateDb((db) => {
       const user = requireUser(db, request)
@@ -164,9 +182,6 @@ export const orderHandlers = [
       const wallet = db.wallets.find((w) => w.id === input.walletId)
       if (!wallet) return fail('NOT_FOUND', 'Carteira não encontrada.')
       if (wallet.userId !== user.id) return fail('FORBIDDEN', 'Esta carteira não é sua.')
-      if (getScenario().disconnectWallet) {
-        return fail('CONFLICT', 'A carteira desconectou antes de assinar.', { reason: 'WALLET_DISCONNECTED' })
-      }
 
       // Revalida: a cotação revisada ainda é a atual? (preço, estoque, cupom e taxa)
       const quote = buildQuote(db, findCart(db, { userId: user.id, guestId: null }), input.couponCode)
@@ -204,8 +219,7 @@ export const orderHandlers = [
 
       // Cenário order-timeout: o pedido foi criado, mas a resposta "se perde" (o cliente vê falha de
       // rede, como num timeout). O reenvio com a mesma chave recebe este mesmo pedido.
-      if (getScenario().loseOrderResponse && !lostResponses.has(key)) {
-        lostResponses.add(key)
+      if (getScenario().loseOrderResponse && firstTime(`resposta-perdida:${key}`)) {
         return HttpResponse.error()
       }
       return ok(toOrder(order), 201)
@@ -213,7 +227,6 @@ export const orderHandlers = [
   }),
 
   http.get('/api/orders/:id', async ({ request, params }) => {
-    await networkDelay()
     resolveDueOrders() // depois de um refresh, o timer da aba anterior se perdeu
     const db = readDb()
     const user = requireUser(db, request)

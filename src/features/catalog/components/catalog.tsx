@@ -1,5 +1,5 @@
 import { useNfts } from '../queries'
-import { PAGE_SIZE, toListParams } from '../search'
+import { hasActiveFilters, PAGE_SIZE, toListParams } from '../search'
 import { useCatalogSearch } from '../use-catalog-search'
 import { CatalogToolbar } from './catalog-toolbar'
 import { FeaturedBanner } from './featured-banner'
@@ -36,6 +36,7 @@ export function Catalog() {
             isPending={query.isPending}
             isRefreshing={query.isPlaceholderData}
             onRetry={() => query.refetch()}
+            filtered={hasActiveFilters(search)}
           />
           <Pagination page={search.page} totalPages={totalPages} />
         </div>

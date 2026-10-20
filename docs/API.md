@@ -241,6 +241,43 @@ O cliente ignora eventos com `eventId` já visto ou `version` menor ou igual à 
 Exemplo pelo console do navegador:
 `fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: '7', editionId: 'ed-1-50', price: '1.5' }) })`
 
+## Cenários da API simulada
+
+Definidos numa tabela em [`src/mocks/scenarios.ts`](../src/mocks/scenarios.ts). Escolha com `?scenario=<nome>`, pelo
+**painel de testes** (botão com o frasco, no canto inferior esquerdo, só com mocks ligados) ou
+`POST /api/__mock/reset { scenario }`. **Trocar de cenário reseta os dados** (sessão, carrinho, pedidos).
+
+- Latência e falhas genéricas são aplicadas num lugar só: `applyScenario`, um handler `http.all('/api/*')`
+  no topo da lista que espera a latência, devolve a falha quando há regra para a rota e, se não, devolve
+  `undefined` (o MSW passa a requisição ao handler da rota).
+- Falhas fixas são **regras declarativas** (método, caminho, status, corpo, "só logado", "só N vezes").
+- O que depende de regra de negócio é uma flag lida pelo handler (pedido recusado, preço que muda no checkout…).
+- **Determinismo:** contadores (requisições, falhas, "1ª vez") vivem na memória da aba e recomeçam a cada carga
+  e a cada reset; a latência variável usa um gerador pseudoaleatório de semente fixa.
+
+| Cenário | O que acontece |
+|---|---|
+| `default` | Tudo funciona, 250 ms por resposta. |
+| `empty` | O banco começa sem NFTs: estados vazios. |
+| `slow` | 2 s por resposta: skeletons. |
+| `variable-latency` | 100 ms a 1,5 s por resposta, sempre na mesma sequência. |
+| `out-of-order` | Leituras alternam 1,2 s e 100 ms: respostas chegam fora de ordem (a busca mais nova vence). |
+| `offline` | Nenhuma resposta (`HttpResponse.error()`): "Sem conexão com o servidor". |
+| `server-error` | Cada rota responde 500 nas 3 primeiras vezes (1ª + 2 novas tentativas automáticas) e depois funciona: "Tentar novamente" recupera. |
+| `unauthorized` | Toda rota com token responde 401: o app volta a "deslogado". |
+| `session-expired` | Depois do login, a próxima chamada logada responde 401 `SESSION_EXPIRED`: aviso e volta ao login. |
+| `register-conflict` | Cadastro responde 409 `EMAIL_TAKEN` (erro no campo e-mail). |
+| `favorites-fail` | Favoritar/desfavoritar respondem 503: rollback do otimista + aviso. |
+| `price-change-checkout` | No 1º envio de pedido, o 1º item sobe 0.1 ETH (com `nft.updated`): 409 `QUOTE_STALE` e nova confirmação. |
+| `sold-out-checkout` | No 1º envio de pedido, o 1º item esgota: 409 `OUT_OF_STOCK` e "Voltar ao carrinho". |
+| `order-timeout` | A 1ª resposta de cada pedido se perde; o app reenvia com a mesma chave e recupera o pedido. |
+| `payment-rejected` | O pedido termina `rejected`; os itens ficam no carrinho. |
+| `wallet-reject` | "Conectar carteira" responde 409 `WALLET_REJECTED`. |
+| `wallet-disconnect` | O pedido responde 409 `WALLET_DISCONNECTED` (a carteira "caiu"). |
+
+Na interface, todo erro de carregamento diz o motivo (sem conexão / servidor instável / demora —
+[`src/lib/error-hint.ts`](../src/lib/error-hint.ts)) e tem "Tentar novamente".
+
 ## Política de cache (TanStack Query)
 
 Configurada em [`src/lib/queryClient.ts`](../src/lib/queryClient.ts); chaves em

@@ -2,10 +2,9 @@
 import { http } from 'msw'
 import { NETWORKS, type Wallet, type WalletInput, type WalletUpdate } from '@/api/types'
 import { readDb, updateDb } from '../db'
-import { getScenario } from '../scenarios'
 import type { MockWallet } from '../fixtures/users'
 import { requireUser } from './auth'
-import { fail, networkDelay, ok } from './respond'
+import { fail, ok } from './respond'
 
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/
 const ENS = /^[a-z0-9][a-z0-9.-]{1,38}\.eth$/ // ex.: "nova.kurio.eth"
@@ -36,7 +35,6 @@ function validateWallet(input: WalletUpdate & { kind?: unknown }, creating: bool
 
 export const walletHandlers = [
   http.get('/api/wallets', async ({ request }) => {
-    await networkDelay()
     const db = readDb()
     const user = requireUser(db, request)
     if (user instanceof Response) return user
@@ -44,7 +42,6 @@ export const walletHandlers = [
   }),
 
   http.post('/api/wallets', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<WalletInput>
     const fields = validateWallet(input, true)
     if (Object.keys(fields).length > 0) return fail('VALIDATION', 'Confira os campos.', { fields })
@@ -71,7 +68,6 @@ export const walletHandlers = [
   }),
 
   http.patch('/api/wallets/:id', async ({ request, params }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as WalletUpdate
     const fields = validateWallet(input, false)
     if (Object.keys(fields).length > 0) return fail('VALIDATION', 'Confira os campos.', { fields })
@@ -94,9 +90,8 @@ export const walletHandlers = [
     })
   }),
 
-  // "Conectar carteira" (simulado). Cenário wallet-reject: a pessoa recusa na carteira.
+  // "Conectar carteira" (simulado). A recusa (cenário wallet-reject) é uma regra em scenarios.ts.
   http.post('/api/wallets/:id/connect', async ({ request, params }) => {
-    await networkDelay()
     const { provider } = (await request.json().catch(() => ({}))) as { provider?: string }
     if (!PROVIDERS.includes(provider ?? '')) {
       return fail('VALIDATION', 'Escolha a carteira.', { fields: { provider: 'Escolha a carteira.' } })
@@ -107,9 +102,6 @@ export const walletHandlers = [
     const wallet = db.wallets.find((w) => w.id === params.id)
     if (!wallet) return fail('NOT_FOUND', 'Carteira não encontrada.')
     if (wallet.userId !== user.id) return fail('FORBIDDEN', 'Esta carteira não é sua.')
-    if (getScenario().rejectWallet) {
-      return fail('CONFLICT', 'A conexão foi recusada na carteira.', { reason: 'WALLET_REJECTED' })
-    }
     return ok({ walletId: wallet.id, provider, address: wallet.address })
   }),
 ]

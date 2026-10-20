@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { errorHint } from '@/lib/error-hint'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -33,7 +34,11 @@ function OrderPage() {
                   ? 'Pedido não encontrado'
                   : 'Não foi possível carregar o pedido'}
               </DialogTitle>
-              <DialogDescription>{order.error.message}</DialogDescription>
+              <DialogDescription>
+                {order.error.code === 'NOT_FOUND' || order.error.code === 'FORBIDDEN'
+                  ? order.error.message
+                  : errorHint(order.error)}
+              </DialogDescription>
               {order.error.code === 'NOT_FOUND' || order.error.code === 'FORBIDDEN' ? (
                 <Button asChild>
                   <Link to="/">Voltar ao início</Link>

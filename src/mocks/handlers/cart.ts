@@ -13,7 +13,7 @@ import type {
 import { add, mul, percentOf, sub } from '@/lib/money'
 import { readDb, updateDb, type Db, type MockCart, type MockCartLine } from '../db'
 import { requireUser } from './auth'
-import { fail, networkDelay, ok } from './respond'
+import { fail, ok } from './respond'
 
 const NETWORK_FEE_PER_ITEM = '0.004' // taxa de rede estimada por linha do carrinho
 const QUOTE_TTL_MS = 10 * 60 * 1000
@@ -169,7 +169,6 @@ export function buildQuote(db: Db, mockCart: MockCart | undefined, couponCode?: 
 
 export const cartHandlers = [
   http.get('/api/cart', async ({ request }) => {
-    await networkDelay()
     const db = readDb()
     const owner = cartOwner(db, request)
     if (owner instanceof Response) return owner
@@ -177,7 +176,6 @@ export const cartHandlers = [
   }),
 
   http.post('/api/cart/items', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<CartItemInput>
     if (!Number.isInteger(input.quantity) || input.quantity! < 1) {
       return fail('VALIDATION', 'Quantidade inválida.', {
@@ -207,7 +205,6 @@ export const cartHandlers = [
   }),
 
   http.patch('/api/cart/items/:id', async ({ request, params }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<CartItemUpdate>
     if (!Number.isInteger(input.quantity) || input.quantity! < 1) {
       return fail('VALIDATION', 'Quantidade inválida.', {
@@ -229,7 +226,6 @@ export const cartHandlers = [
   }),
 
   http.delete('/api/cart/items/:id', async ({ request, params }) => {
-    await networkDelay()
     return updateDb((db) => {
       const owner = cartOwner(db, request)
       if (owner instanceof Response) return owner
@@ -243,7 +239,6 @@ export const cartHandlers = [
 
   // Ao logar: os itens do visitante passam para o carrinho do usuário (somando, sem passar do limite).
   http.post('/api/cart/merge', async ({ request }) => {
-    await networkDelay()
     const { guestCartId } = (await request.json().catch(() => ({}))) as Partial<CartMergeInput>
     return updateDb((db) => {
       const user = requireUser(db, request)
@@ -268,7 +263,6 @@ export const cartHandlers = [
 
   // Cotação: a referência de valores (o app não recalcula nada). Funciona para visitante também.
   http.post('/api/quote', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<QuoteInput>
     return updateDb((db) => {
       const owner = cartOwner(db, request)

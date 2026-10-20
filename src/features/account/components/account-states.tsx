@@ -1,3 +1,5 @@
+import type { ApiError } from '@/api/client'
+import { errorHint } from '@/lib/error-hint'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -15,11 +17,11 @@ export function AccountFormSkeleton({ label }: { label: string }) {
   )
 }
 
-export function AccountLoadError({ onRetry }: { onRetry: () => void }) {
+export function AccountLoadError({ error, onRetry }: { error: ApiError; onRetry: () => void }) {
   return (
     <div role="alert" className="flex flex-col items-start gap-4 py-8">
       <p className="text-base font-bold">Não foi possível carregar seus dados.</p>
-      <p className="text-sm text-muted-foreground">Verifique sua conexão e tente de novo.</p>
+      <p className="text-sm text-muted-foreground">{errorHint(error)}</p>
       <Button onClick={onRetry}>Tentar novamente</Button>
     </div>
   )

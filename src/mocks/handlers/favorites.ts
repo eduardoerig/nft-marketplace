@@ -1,13 +1,11 @@
 // /api/favorites* — ids dos NFTs favoritados pelo usuário logado.
 import { http } from 'msw'
 import { readDb, updateDb } from '../db'
-import { getScenario } from '../scenarios'
 import { requireUser } from './auth'
-import { fail, networkDelay, ok } from './respond'
+import { fail, ok } from './respond'
 
 export const favoriteHandlers = [
   http.get('/api/favorites', async ({ request }) => {
-    await networkDelay()
     const db = readDb()
     const user = requireUser(db, request)
     if (user instanceof Response) return user
@@ -15,8 +13,6 @@ export const favoriteHandlers = [
   }),
 
   http.put('/api/favorites/:nftId', async ({ request, params }) => {
-    await networkDelay()
-    if (getScenario().failFavorites) return fail('UNAVAILABLE', 'Não foi possível favoritar agora.')
     const nftId = String(params.nftId)
     return updateDb((db) => {
       const user = requireUser(db, request)
@@ -29,8 +25,6 @@ export const favoriteHandlers = [
   }),
 
   http.delete('/api/favorites/:nftId', async ({ request, params }) => {
-    await networkDelay()
-    if (getScenario().failFavorites) return fail('UNAVAILABLE', 'Não foi possível remover agora.')
     return updateDb((db) => {
       const user = requireUser(db, request)
       if (user instanceof Response) return user

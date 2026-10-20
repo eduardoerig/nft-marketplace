@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, HeadContent, Link, Outlet } from '@tanstack/react-router'
 import { MobileTabBar } from '@/components/layout/mobile-tab-bar'
@@ -11,6 +12,10 @@ import { authSearchSchema } from '@/features/auth/routing'
 import { useRealtime } from '@/realtime/use-realtime'
 
 type RouterContext = { queryClient: QueryClient }
+
+// Painel de testes da API simulada: só com os mocks ligados, e fora do bundle principal.
+const DevPanel =
+  import.meta.env.VITE_ENABLE_MOCKS === 'true' ? lazy(() => import('@/components/dev-panel')) : null
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   // `?auth=login|register` abre o modal de login/cadastro sobre qualquer página.
@@ -46,6 +51,11 @@ function RootLayout() {
       </div>
       {auth && <AuthDialog mode={auth} redirect={redirect} />}
       <Toaster />
+      {DevPanel && (
+        <Suspense fallback={null}>
+          <DevPanel />
+        </Suspense>
+      )}
     </TooltipProvider>
   )
 }

@@ -4,7 +4,7 @@ import { expect, test } from './fixtures'
 
 // Nomes dos cards visíveis na grade.
 const gridNames = (page: Page) =>
-  page.getByRole('list', { name: 'NFTs' }).getByRole('heading', { level: 3 }).allTextContents()
+  page.getByRole('list', { name: 'NFTs', exact: true }).getByRole('heading', { level: 3 }).allTextContents()
 
 // Filtros: sidebar no desktop; no mobile, abre o painel pelo botão "Filtros".
 async function filters(page: Page, isMobile: boolean) {

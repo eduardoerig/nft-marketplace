@@ -1,4 +1,6 @@
 import { Link } from '@tanstack/react-router'
+import type { ApiError } from '@/api/client'
+import { errorHint } from '@/lib/error-hint'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -49,11 +51,11 @@ export function NftNotFound() {
   )
 }
 
-export function NftLoadError({ onRetry }: { onRetry: () => void }) {
+export function NftLoadError({ error, onRetry }: { error: ApiError; onRetry: () => void }) {
   return (
     <section role="alert" className="flex flex-col items-center gap-6 py-24 text-center">
       <h1 className="text-2xl font-bold">Não foi possível carregar este NFT</h1>
-      <p className="max-w-md text-sm/6 text-muted-foreground">Verifique sua conexão e tente de novo.</p>
+      <p className="max-w-md text-sm/6 text-muted-foreground">{errorHint(error)}</p>
       <Button onClick={onRetry}>Tentar novamente</Button>
     </section>
   )

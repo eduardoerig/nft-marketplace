@@ -1,7 +1,7 @@
-// Respostas padronizadas dos handlers: latência do cenário + formato de erro do docs/API.md.
-import { delay, HttpResponse, type JsonBodyType } from 'msw'
+// Respostas padronizadas dos handlers no formato de erro do docs/API.md. (A latência de cada cenário
+// é aplicada antes, por applyScenario — ver src/mocks/scenarios.ts.)
+import { HttpResponse, type JsonBodyType } from 'msw'
 import type { ApiErrorBody, ApiErrorCode, ApiErrorReason } from '@/api/types'
-import { getScenario } from '../scenarios'
 
 const STATUS: Record<Exclude<ApiErrorCode, 'NETWORK'>, number> = {
   VALIDATION: 422,
@@ -10,11 +10,6 @@ const STATUS: Record<Exclude<ApiErrorCode, 'NETWORK'>, number> = {
   NOT_FOUND: 404,
   CONFLICT: 409,
   UNAVAILABLE: 503,
-}
-
-/** Espera a latência do cenário atual. Chame no início de todo handler. */
-export function networkDelay() {
-  return delay(getScenario().latencyMs)
 }
 
 export function ok<T extends JsonBodyType>(body: T, status = 200) {

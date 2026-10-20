@@ -18,7 +18,7 @@ function NftPage() {
 
   if (isPending) return <NftDetailSkeleton />
   if (error?.code === 'NOT_FOUND') return <NftNotFound />
-  if (error) return <NftLoadError onRetry={() => refetch()} />
+  if (error) return <NftLoadError error={error} onRetry={() => refetch()} />
   // key: ao trocar de NFT (ex.: "Mais desta coleção"), edição e quantidade recomeçam.
   return <NftDetail key={nft.id} nft={nft} />
 }

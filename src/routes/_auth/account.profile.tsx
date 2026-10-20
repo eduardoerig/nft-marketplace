@@ -24,7 +24,7 @@ function ProfilePage() {
       {isPending ? (
         <AccountFormSkeleton label="Carregando perfil" />
       ) : error ? (
-        <AccountLoadError onRetry={() => refetch()} />
+        <AccountLoadError error={error} onRetry={() => refetch()} />
       ) : (
         <>
           {/* key: se o perfil mudar por fora (outra aba), o formulário recomeça com os dados novos. */}

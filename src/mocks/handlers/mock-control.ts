@@ -2,7 +2,7 @@
 import { http } from 'msw'
 import { resetDb } from '../db'
 import { connectionCount, disconnectAll, replay, updateNft } from '../realtime'
-import { isScenarioName } from '../scenarios'
+import { getScenarioName, isScenarioName, scenarios } from '../scenarios'
 import { fail, noContent, ok } from './respond'
 
 const DECIMAL = /^\d+(\.\d+)?$/
@@ -10,6 +10,14 @@ const DECIMAL = /^\d+(\.\d+)?$/
 export const mockControlHandlers = [
   // GET /api/__mock/ping → o worker está interceptando esta aba? (ver reviveIfStopped em browser.ts)
   http.get('/api/__mock/ping', () => ok({ ok: true })),
+
+  // GET /api/__mock/scenarios → a tabela de cenários (nome + descrição) e o atual (painel de testes).
+  http.get('/api/__mock/scenarios', () =>
+    ok({
+      current: getScenarioName(),
+      scenarios: Object.entries(scenarios).map(([name, { description }]) => ({ name, description })),
+    }),
+  ),
 
   // POST /api/__mock/reset { scenario? } → restaura o estado inicial do cenário.
   http.post('/api/__mock/reset', async ({ request }) => {

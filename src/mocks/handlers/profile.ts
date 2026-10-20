@@ -4,7 +4,7 @@ import type { AvatarUpdate, PasswordChange, Profile, ProfileUpdate } from '@/api
 import { readDb, updateDb } from '../db'
 import type { MockUser } from '../fixtures/users'
 import { EMAIL, hashPassword, requireUser, USERNAME } from './auth'
-import { fail, networkDelay, noContent, ok } from './respond'
+import { fail, noContent, ok } from './respond'
 
 const ENS = /^[a-z0-9-]{3,30}$/ // sem o ".eth"
 const AVATAR = /^data:image\/(png|jpeg|webp);base64,/
@@ -34,13 +34,11 @@ function validateProfile(input: ProfileUpdate) {
 
 export const profileHandlers = [
   http.get('/api/profile', async ({ request }) => {
-    await networkDelay()
     const user = requireUser(readDb(), request)
     return user instanceof Response ? user : ok(toProfile(user))
   }),
 
   http.patch('/api/profile', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as ProfileUpdate
     const fields = validateProfile(input)
     if (Object.keys(fields).length > 0) return fail('VALIDATION', 'Confira os campos.', { fields })
@@ -75,7 +73,6 @@ export const profileHandlers = [
   }),
 
   http.post('/api/profile/avatar', async ({ request }) => {
-    await networkDelay()
     const { dataUrl } = (await request.json().catch(() => ({}))) as Partial<AvatarUpdate>
     if (dataUrl !== null && (typeof dataUrl !== 'string' || !AVATAR.test(dataUrl))) {
       return fail('VALIDATION', 'Envie uma imagem PNG, JPEG ou WebP.', {
@@ -96,7 +93,6 @@ export const profileHandlers = [
   }),
 
   http.post('/api/profile/password', async ({ request }) => {
-    await networkDelay()
     const input = (await request.json().catch(() => ({}))) as Partial<PasswordChange>
     const user = requireUser(readDb(), request)
     if (user instanceof Response) return user
