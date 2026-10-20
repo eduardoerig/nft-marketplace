@@ -4,6 +4,7 @@ import type { Nft } from '@/api/types'
 import { formatEth, mul } from '@/lib/money'
 import { ComingSoonButton } from '@/components/layout/coming-soon'
 import { QuantityStepper } from '@/components/quantity-stepper'
+import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 import { defaultEditionId } from '../editions'
 import { EditionPicker } from './edition-picker'
 import { NftGallery } from './nft-gallery'
@@ -40,7 +41,7 @@ export function NftDetail({ nft }: { nft: Nft }) {
             aria-label="Imagens"
             className="-mx-4 bg-linear-to-b from-card to-secondary px-6 pt-4 pb-14 md:mx-0 md:w-[573px] md:shrink-0 md:bg-none md:p-0"
           >
-            <MobileTopBar />
+            <MobileTopBar nft={nft} />
             <NftGallery name={nft.name} images={nft.images} />
           </section>
 
@@ -82,10 +83,7 @@ export function NftDetail({ nft }: { nft: Nft }) {
                 <ComingSoonButton className="h-10 w-[130px] rounded-lg bg-primary text-sm font-bold text-primary-foreground">
                   COMPRAR
                 </ComingSoonButton>
-                <ComingSoonButton className="flex h-10 w-[130px] items-center justify-center gap-2 rounded-lg border border-primary text-sm font-medium text-highlight">
-                  <img src="/icons/heart.svg" alt="" width={20} height={18} />
-                  Favoritar
-                </ComingSoonButton>
+                <FavoriteButton nftId={nft.id} nftName={nft.name} variant="label" />
               </div>
             </div>
 
@@ -240,7 +238,7 @@ function ShareLinks({ name }: { name: string }) {
 }
 
 // Mobile: voltar + favoritar sobre a imagem.
-function MobileTopBar() {
+function MobileTopBar({ nft }: { nft: Nft }) {
   const router = useRouter()
   const canGoBack = useCanGoBack()
   return (
@@ -263,10 +261,7 @@ function MobileTopBar() {
           <img src="/icons/curved-arrow-left-2.svg" alt="" width={20} height={20} />
         </Link>
       )}
-      <ComingSoonButton className="size-[35px] rounded-full opacity-100">
-        <img src="/icons/heart-mobile.svg" alt="" width={35} height={35} />
-        <span className="sr-only">Favoritar</span>
-      </ComingSoonButton>
+      <FavoriteButton nftId={nft.id} nftName={nft.name} variant="icon" className="size-[35px] border" />
     </div>
   )
 }

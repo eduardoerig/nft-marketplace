@@ -3,10 +3,16 @@
 export type Scenario = {
   description: string
   latencyMs: number // atraso de toda resposta
+  failFavorites?: boolean // favoritar/desfavoritar responde 503 (demonstra o rollback otimista)
 }
 
 export const scenarios = {
   default: { description: 'Tudo funciona, com latência curta.', latencyMs: 250 },
+  'favorites-fail': {
+    description: 'Favoritar e desfavoritar falham: o coração volta ao estado anterior com um aviso.',
+    latencyMs: 400,
+    failFavorites: true,
+  },
 } satisfies Record<string, Scenario>
 
 export type ScenarioName = keyof typeof scenarios

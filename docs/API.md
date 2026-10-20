@@ -184,5 +184,8 @@ Configurada em [`src/lib/queryClient.ts`](../src/lib/queryClient.ts); chaves em
 
 - **Retry:** até 2 tentativas só em falha transitória (`NETWORK`, `UNAVAILABLE`); nunca em 4xx.
 - **Mutations** não repetem sozinhas; o reenvio de pedido é manual e usa a mesma `Idempotency-Key`.
+- **Atualização otimista (favoritos):** o coração muda na hora (`onMutate` altera `['favorites', userId]`);
+  se a API falhar, `onError` desfaz só aquela mudança e avisa; `onSettled` busca a lista de novo.
+  Demonstração: `?scenario=favorites-fail` (favoritar/desfavoritar respondem 503).
 - **Isolamento:** chaves privadas incluem o dono (`['cart', userId]`); logout ou troca de usuário
   limpa o cache privado.

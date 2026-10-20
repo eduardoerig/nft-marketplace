@@ -1,4 +1,5 @@
 import { authHandlers } from './auth'
+import { favoriteHandlers } from './favorites'
 import { mockControlHandlers } from './mock-control'
 import { nftHandlers } from './nfts'
 import { profileHandlers } from './profile'
@@ -9,5 +10,6 @@ export const handlers = [
   ...authHandlers,
   ...profileHandlers,
   ...walletHandlers,
+  ...favoriteHandlers,
   ...nftHandlers,
 ]
