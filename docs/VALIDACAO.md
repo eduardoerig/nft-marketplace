@@ -84,9 +84,12 @@ e aba **Console** (sem erros vermelhos).
 - [ ] Os valores fecham na conta (subtotal − desconto + taxa = total), sem números tipo `0.30000000004`.
 
 ## 12 — Tempo real
-- [ ] DevTools → Network → **WS**: existe conexão `socket.io`.
-- [ ] Com um NFT no carrinho, dispare a mudança de preço (painel/endpoint de mock):
-      aparece aviso e o resumo muda **sem refresh**.
+- [ ] DevTools → **Console**: aparecem as linhas do MSW com os quadros Socket.IO (`⬇ 42["nft.updated",…]`).
+      (Não aparece em Network → WS: o socket é simulado dentro da página, sem rede real — ver docs/API.md.)
+- [ ] Com o Golden Beat #207 no carrinho, dispare a mudança de preço pelo console:
+      `fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: '7', editionId: 'ed-1-50', price: '1.5' }) })`
+      → aparece aviso e o resumo muda **sem refresh**. Faça o mesmo com o detalhe `/nfts/7` e com o catálogo abertos.
+- [ ] Desconexão: `fetch('/api/__mock/disconnect', { method: 'POST' })` → o app reconecta sozinho (≈1 s).
 - [ ] Confira no código: o evento chega pelo `socket.io-client` (nada de chamar o cache direto do mock — eliminatório).
 
 ## 13 — Pagamento

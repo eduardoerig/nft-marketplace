@@ -6,6 +6,7 @@ import * as cartApi from '@/api/cart'
 import { ApiError, getGuestCartId, getToken, setGuestCartId, setToken } from '@/api/client'
 import type { Session } from '@/api/types'
 import { queryKeys } from '@/lib/queryKeys'
+import { disconnectSocket } from '@/realtime/socket'
 import { isOnPrivateRoute } from './routing'
 
 // Sessão = token em localStorage + query ['session'] (a fonte de verdade de "quem está logado").
@@ -60,6 +61,7 @@ async function startSession(queryClient: QueryClient, session: Session) {
 
 export function endSession(queryClient: QueryClient) {
   setToken(null)
+  disconnectSocket() // o socket autenticado morre junto; o app reconecta como visitante
   clearPrivateData(queryClient)
   queryClient.setQueryData(queryKeys.session, null)
 }

@@ -269,3 +269,5 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
   remover não está clara) e o resumo é um bloco no fim da tela, não uma folha fixa. "COMPRAR"/"Comprar NFT"
   no detalhe põe no carrinho e leva até ele (o pagamento exige login e parte do carrinho). Valores do
   Figma no resumo (8.92) não fecham com os itens; o app mostra a soma real vinda da cotação.
+- **Avisos de tempo real no carrinho** (sem frame no Figma): faixa acima da tabela, borda dourada,
+  com "O preço de X (1/50) mudou de A para B." ou "X esgotou." e um botão para dispensar; no máximo 3.

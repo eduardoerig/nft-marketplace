@@ -1,3 +1,4 @@
+import { realtimeHandler } from '../realtime'
 import { authHandlers } from './auth'
 import { cartHandlers } from './cart'
 import { favoriteHandlers } from './favorites'
@@ -14,4 +15,5 @@ export const handlers = [
   ...favoriteHandlers,
   ...cartHandlers,
   ...nftHandlers,
+  realtimeHandler,
 ]

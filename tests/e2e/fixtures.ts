@@ -6,6 +6,10 @@ type MockApi = {
   reset: (scenario?: string) => Promise<void>
   /** GET na API simulada a partir da página — passa pelo service worker do MSW. */
   getJson: <T = unknown>(path: string) => Promise<{ status: number; body: T }>
+  /** POST na API simulada a partir da página (rotas de controle como /api/__mock/nft-update). */
+  postJson: <T = unknown>(path: string, body?: unknown) => Promise<{ status: number; body: T }>
+  /** Espera o socket.io-client da página estar conectado ao "servidor" simulado. */
+  waitForSocket: () => Promise<void>
 }
 
 // As requisições precisam sair da PÁGINA (não do `page.request`), senão não passam pelo MSW.
@@ -38,6 +42,23 @@ export const test = base.extend<{ mockApi: MockApi }>({
             const res = await fetch(p)
             return { status: res.status, body: await res.json() }
           }, path)
+        },
+        postJson: async (path, body) => {
+          await waitForMocks(page)
+          return page.evaluate(
+            async ([p, b]) => {
+              const res = await fetch(p, { method: 'POST', body: JSON.stringify(b ?? {}) })
+              return { status: res.status, body: res.status === 204 ? null : await res.json() }
+            },
+            [path, body] as const,
+          )
+        },
+        waitForSocket: async () => {
+          await expect
+            .poll(
+              async () => (await mockApi.getJson<{ count: number }>('/api/__mock/connections')).body.count,
+            )
+            .toBeGreaterThan(0)
         },
       }
 

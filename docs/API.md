@@ -175,7 +175,51 @@ Formato comum (`RealtimeEvent`): `{ eventId, type, resourceId, version, userId?,
 | `order.updated` | id do pedido | `{ status, transaction, failureReason, updatedAt }` | Só o dono (`userId`) |
 
 O cliente ignora eventos com `eventId` já visto ou `version` menor ou igual à já aplicada.
-Detalhes do transporte e da reconciliação com o REST: passo 12.
+
+### Transporte
+- **Cliente:** `socket.io-client` em [`src/realtime/socket.ts`](../src/realtime/socket.ts), uma conexão
+  por sessão, com `auth: { token }` quando há login (visitante conecta sem token e recebe só os
+  eventos públicos). Troca de usuário recria a conexão; logout e sessão expirada a fecham.
+- **Servidor simulado:** [`src/mocks/realtime.ts`](../src/mocks/realtime.ts) — o MSW intercepta o
+  WebSocket e o `@mswjs/socket.io-binding` codifica os pacotes do Socket.IO (`42["nft.updated",{…}]`).
+  O token vem no pacote CONNECT (`40{…}`) e define de quem é a conexão.
+- **Coerência REST × socket:** toda mudança passa por `updateNft()`, que grava no banco simulado
+  (o REST já responde o valor novo) e só então emite o evento com a `version` nova do NFT.
+
+### Limitações do transporte simulado
+- **Só WebSocket** (`transports: ['websocket']`): o MSW não intercepta o long-polling HTTP que o
+  Socket.IO usa por padrão antes do upgrade.
+- **Caminho `/realtime/`** em vez do padrão `/socket.io/`: o MSW remove esse prefixo ao comparar a
+  URL, e ela ficaria igual à do WebSocket de recarga do Vite no `pnpm dev`.
+- **O `socket.io-client` é importado sob demanda**, depois que o MSW liga: ele guarda o `WebSocket`
+  do navegador no momento do import e não veria o interceptado. (Também sai do bundle inicial.)
+- **Não aparece na aba Network → WS do DevTools**, porque não existe conexão de rede real. Os quadros
+  aparecem no **Console**, nas linhas do MSW (`[MSW] … ⬇ 42["nft.updated",…]`).
+- **Uma aba por vez:** o "servidor" vive na página. Mudanças feitas em outra aba chegam pelo REST
+  (o banco é o mesmo localStorage), mas não geram evento nesta.
+- Sem salas, namespaces nem confirmação de entrega (o binding não implementa).
+- O `@mswjs/socket.io-binding` 0.2 declara compatibilidade com o MSW 2; com o MSW 3 ele funciona,
+  porque só usa `client.send` e `client.addEventListener`. O pnpm mostra o aviso de peer dependency.
+
+### Reconciliação com o REST ([`src/realtime/use-realtime.ts`](../src/realtime/use-realtime.ts))
+- `nft.updated` → o detalhe é atualizado na hora (`setQueryData`, só se a versão do evento for maior
+  que a do cache); listas do catálogo, carrinho e cotação são invalidados e buscados de novo no REST.
+- **Reconexão:** eventos emitidos enquanto o socket estava fora se perdem; ao reconectar, o app
+  invalida todas as queries ativas e o REST traz o estado atual.
+- **Aviso no carrinho:** o carrinho compara o novo estado com o anterior e mostra "O preço de X mudou
+  de A para B" / "esgotou" numa região `aria-live="polite"`. Como o aviso nasce da diferença de dados
+  (e não do evento), um evento repetido nunca gera aviso duplicado.
+
+### Rotas de controle (só no mock; usadas pelos testes e pela demonstração)
+| Rota | O que faz |
+|---|---|
+| `POST /api/__mock/nft-update { nftId, editionId, price?, available?, silent? }` | Muda a edição e emite `nft.updated` (devolve o evento). `silent: true` grava sem emitir (evento perdido). |
+| `POST /api/__mock/replay { eventId }` | Reenvia um evento já emitido, idêntico (duplicado ou antigo). |
+| `POST /api/__mock/disconnect` | Derruba as conexões; o `socket.io-client` reconecta sozinho. |
+| `GET /api/__mock/connections` | Quantos sockets estão conectados. |
+
+Exemplo pelo console do navegador:
+`fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: '7', editionId: 'ed-1-50', price: '1.5' }) })`
 
 ## Política de cache (TanStack Query)
 

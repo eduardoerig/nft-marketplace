@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { XIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { MobilePageHeader } from '@/components/layout/mobile-page-header'
@@ -9,6 +10,7 @@ import { CartItemRow } from '@/features/cart/components/cart-item-row'
 import { CartSummary } from '@/features/cart/components/cart-summary'
 import { lineLimit } from '@/features/cart/limits'
 import { useCart, useQuote } from '@/features/cart/queries'
+import { useCartChanges } from '@/features/cart/use-cart-changes'
 import { NftShelf } from '@/features/catalog/components/nft-shelf'
 
 // O cupom aplicado fica na URL (?cupom=DESCONTO10): sobrevive ao refresh e o pagamento o recebe.
@@ -44,6 +46,7 @@ function CartPage() {
   }, [couponReason, cupom, navigate])
 
   const canCheckout = items.length > 0 && items.every((item) => item.quantity <= lineLimit(item))
+  const changes = useCartChanges(cart.data?.items)
 
   return (
     <div className="flex flex-col gap-12 pt-6 md:gap-24 md:pt-8">
@@ -61,6 +64,32 @@ function CartPage() {
           {' / '}
           <span aria-current="page">Carrinho</span>
         </nav>
+
+        {/* Avisos de mudança de preço/disponibilidade (tempo real). A lista existe mesmo vazia, para o
+            leitor de tela anunciar o que entrar nela; vazia ela fica sr-only (display:none não anunciaria). */}
+        <ul
+          role="status"
+          aria-live="polite"
+          aria-label="Mudanças no carrinho"
+          className="flex flex-col gap-2 empty:sr-only"
+        >
+          {changes.notices.map((notice) => (
+            <li
+              key={notice.id}
+              className="flex items-center justify-between gap-4 rounded-[10px] border border-highlight/60 bg-card px-4 py-3 text-sm/5"
+            >
+              <span>{notice.message}</span>
+              <button
+                type="button"
+                onClick={() => changes.dismiss(notice.id)}
+                aria-label="Dispensar aviso"
+                className="shrink-0 rounded-full p-1 text-muted-foreground hover:text-foreground"
+              >
+                <XIcon className="size-4" aria-hidden="true" />
+              </button>
+            </li>
+          ))}
+        </ul>
 
         {cart.isPending ? (
           <CartSkeleton />

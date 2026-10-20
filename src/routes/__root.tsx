@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthDialog } from '@/features/auth/components/auth-dialog'
 import { authSearchSchema } from '@/features/auth/routing'
+import { useRealtime } from '@/realtime/use-realtime'
 
 type RouterContext = { queryClient: QueryClient }
 
@@ -21,6 +22,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
   const { auth, redirect } = Route.useSearch()
+  useRealtime()
   return (
     <TooltipProvider>
       <HeadContent />
