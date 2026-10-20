@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 10** — `docs/steps/10-favoritos.md`.
+- [ ] **Próximo: passo 11** — `docs/steps/11-carrinho-cotacao.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -69,6 +69,12 @@ Passos concluídos (marque com o hash do commit):
   `NativeSelect` para selects. Rotas privadas leem o usuário de `context.session` (vem do `_auth`).
   **Desvios do Figma** ficam em `design/SPEC.md` ("Desvios do Figma") — o passo 18 leva ao ARCHITECTURE.md.
   TanStack `activeProps` só concatena classes: para estilo do link ativo use `data-[status=active]:`.
+- [x] passo 10 — favoritos (e6ee5d0). Feature em `src/features/favorites/`; `FavoriteButton` no card e no
+  detalhe. Otimista: rollback desfaz A MUDANÇA (não restaura cópia — a cópia pode ser undefined).
+  Botões que dependem da sessão esperam `useSession().isPending` (senão tratam logado como deslogado).
+  Cenários de mock: `failFavorites` em `src/mocks/scenarios.ts` (o passo 15 acrescenta os demais).
+  Card: botões ficam ao lado do `<Link>` (não dentro) — o passo 11 põe o "carrinho" do hover ali.
+  Tela de favoritos ("Lista de interesse"/aba Favoritos) não está no escopo do passo: segue "Em breve".
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
