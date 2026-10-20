@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import type { ApiError } from '@/api/client'
 import * as ordersApi from '@/api/orders'
 import type { OrderInput, Quote, WalletProvider } from '@/api/types'
 import * as walletsApi from '@/api/wallets'
@@ -21,7 +20,7 @@ export function useConnectWallet() {
 export function useCreateOrder() {
   return useMutation({
     mutationFn: (input: OrderInput) => ordersApi.createOrder(input, idempotencyKeyFor(input)),
-    retry: (failures, error: ApiError) => error.code === 'NETWORK' && failures < 2,
+    retry: (failures, error) => error.code === 'NETWORK' && failures < 2,
   })
 }
 
