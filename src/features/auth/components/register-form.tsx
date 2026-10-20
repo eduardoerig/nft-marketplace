@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useRegister } from '../queries'
-import { AuthField, authInputClass } from './auth-field'
+import { FormField } from '@/components/form-field'
+import { authInputClass } from '../styles'
 
 // As mesmas regras da API (src/mocks/handlers/auth.ts): o cliente avisa antes, a API garante.
 const schema = z
@@ -50,7 +51,7 @@ export function RegisterForm({ onSuccess }: { onSuccess: (session: Session) => v
 
   return (
     <form noValidate onSubmit={onSubmit} className="flex flex-col gap-3">
-      <AuthField id="cadastro-usuario" label="Nome de usuário" error={errors.username?.message}>
+      <FormField hideLabel id="cadastro-usuario" label="Nome de usuário" error={errors.username?.message}>
         {(a11y) => (
           <Input
             {...a11y}
@@ -60,8 +61,8 @@ export function RegisterForm({ onSuccess }: { onSuccess: (session: Session) => v
             className={authInputClass}
           />
         )}
-      </AuthField>
-      <AuthField id="cadastro-email" label="E-mail" error={errors.email?.message}>
+      </FormField>
+      <FormField hideLabel id="cadastro-email" label="E-mail" error={errors.email?.message}>
         {(a11y) => (
           <Input
             {...a11y}
@@ -72,8 +73,8 @@ export function RegisterForm({ onSuccess }: { onSuccess: (session: Session) => v
             className={authInputClass}
           />
         )}
-      </AuthField>
-      <AuthField id="cadastro-senha" label="Senha" error={errors.password?.message}>
+      </FormField>
+      <FormField hideLabel id="cadastro-senha" label="Senha" error={errors.password?.message}>
         {(a11y) => (
           <PasswordInput
             {...a11y}
@@ -83,8 +84,13 @@ export function RegisterForm({ onSuccess }: { onSuccess: (session: Session) => v
             className={authInputClass}
           />
         )}
-      </AuthField>
-      <AuthField id="cadastro-confirmar" label="Confirmar senha" error={errors.confirmPassword?.message}>
+      </FormField>
+      <FormField
+        hideLabel
+        id="cadastro-confirmar"
+        label="Confirmar senha"
+        error={errors.confirmPassword?.message}
+      >
         {(a11y) => (
           <PasswordInput
             {...a11y}
@@ -94,7 +100,7 @@ export function RegisterForm({ onSuccess }: { onSuccess: (session: Session) => v
             className={authInputClass}
           />
         )}
-      </AuthField>
+      </FormField>
 
       {formError && (
         <p role="alert" className="text-sm text-destructive">

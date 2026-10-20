@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input'
 import { ComingSoon } from '@/components/layout/coming-soon'
 import { PasswordInput } from '@/components/password-input'
 import { useLogin } from '../queries'
-import { AuthField, authInputClass } from './auth-field'
+import { FormField } from '@/components/form-field'
+import { authInputClass } from '../styles'
 
 const schema = z.object({
   email: z.email('Informe um e-mail válido.'),
@@ -37,7 +38,7 @@ export function LoginForm({ onSuccess }: { onSuccess: (session: Session) => void
 
   return (
     <form noValidate onSubmit={onSubmit} className="flex flex-col gap-3">
-      <AuthField id="login-email" label="E-mail" error={errors.email?.message}>
+      <FormField hideLabel id="login-email" label="E-mail" error={errors.email?.message}>
         {(a11y) => (
           <Input
             {...a11y}
@@ -48,8 +49,8 @@ export function LoginForm({ onSuccess }: { onSuccess: (session: Session) => void
             className={authInputClass}
           />
         )}
-      </AuthField>
-      <AuthField id="login-senha" label="Senha" error={errors.password?.message}>
+      </FormField>
+      <FormField hideLabel id="login-senha" label="Senha" error={errors.password?.message}>
         {(a11y) => (
           <PasswordInput
             {...a11y}
@@ -59,7 +60,7 @@ export function LoginForm({ onSuccess }: { onSuccess: (session: Session) => void
             className={authInputClass}
           />
         )}
-      </AuthField>
+      </FormField>
       <ComingSoon className="self-end text-sm/4 text-highlight">Esqueceu a senha?</ComingSoon>
 
       {formError && (

@@ -45,8 +45,8 @@ export function requireUser(db: Db, request: Request): MockUser | Response {
   return user ?? fail('UNAUTHORIZED', 'Entre para continuar.')
 }
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const USERNAME = /^[a-z0-9_.]{3,20}$/i
+export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+export const USERNAME = /^[a-z0-9_.]{3,20}$/i
 
 function validateRegister(input: Partial<RegisterInput>) {
   const fields: Record<string, string> = {}

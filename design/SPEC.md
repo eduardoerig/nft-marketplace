@@ -251,3 +251,16 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
 - Ícones sem equivalente no Figma (menu, alerta, check, spinner) → `lucide-react`, que já vem com o shadcn.
 - O Figma só desenha avatar como ícone genérico (`curved-image-2.svg`); avatares de usuário das
   fixtures serão as próprias artes recortadas.
+
+### Desvios do Figma (decididos na implementação)
+- **Login/cadastro**: no Figma o modal fica sobre a Início; aqui ele abre sobre a página em que a
+  pessoa está (`?auth=login`), para não tirá-la do que estava vendo. `/login` abre sobre a Início.
+- **Perfil**: o Figma tem um só "Salvar" para dados e senha; aqui são dois formulários ("Salvar" e
+  "Alterar senha"), porque são chamadas e validações diferentes — um erro na senha não perde os dados.
+  O avatar salva assim que a imagem é escolhida. "Nome ENS" e "Apelido da carteira" são opcionais
+  (no Figma têm asterisco, mas as contas novas não têm esses dados).
+- **Carteiras**: o formulário do Figma repete dados do perfil (nome de exibição, nome do perfil,
+  e-mail, código de indicação, ENS secundário). A carteira guarda só o que é dela: apelido, rede,
+  endereço, tipo e nome ENS. A caixa ".eth" é informativa (só existe esse domínio).
+- **Conta no mobile** (sem frame): o menu "Meu perfil" vira uma faixa com Dados do perfil ·
+  Carteiras · Sair acima do conteúdo; os itens "Em breve" só aparecem no desktop.

@@ -153,6 +153,11 @@ O `quoteId` muda sempre que preço, disponibilidade, cupom ou taxa mudam — é 
 
 `Wallet = { id, kind: 'primary' | 'secondary', label, address, network, provider, ensName }`.
 
+- Endereço: `0x` + 40 hexadecimais. ENS da carteira com `.eth` (`nova.kurio.eth`); o ENS do perfil
+  é guardado sem `.eth`. No `PATCH`, só apelido, endereço, rede, tipo e ENS mudam (`kind` não).
+- Avatar: data URL PNG/JPEG/WebP de até 200 mil caracteres. O app recorta e reduz a imagem para
+  256×256 antes de enviar (`src/features/account/avatar.ts`); `null` remove.
+
 ## Eventos em tempo real (Socket.IO)
 
 Formato comum (`RealtimeEvent`): `{ eventId, type, resourceId, version, userId?, payload }`.
