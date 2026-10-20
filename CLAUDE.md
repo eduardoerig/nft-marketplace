@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 11** — `docs/steps/11-carrinho-cotacao.md`.
+- [ ] **Próximo: passo 12** — `docs/steps/12-tempo-real.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -103,6 +103,12 @@ Passos concluídos (marque com o hash do commit):
   - `c8b07a7` recorte da barra inferior em SVG (curva medida no PNG do Figma).
   - antes disso: `5693653` o MSW "morria" com a aba em segundo plano (Chrome desliga o service worker);
     `src/mocks/browser.ts` religa ao voltar para a aba. `74a41fd`: resposta não-JSON vira `ApiError`.
+- [x] passo 11 — carrinho e cotação (c054330). Feature em `src/features/cart/` (`useCart`, `useQuote`,
+  `useAddToCartAction`, `CartLink` com o selo). Dono no cache: `session.user.id` ou `guest:<id>` (o id do
+  visitante nasce no 1º `useCart`). **A cotação não exige login** (mudança registrada em `docs/API.md`);
+  cupom aplicado fica em `/cart?cupom=` — o passo 13 deve ler esse parâmetro (ex.: o link "Conectar e
+  finalizar" passar `cupom` para `/checkout`). Mock em `src/mocks/handlers/cart.ts` (`toCart`, `limitOf`,
+  quoteId por hash do conteúdo). `NftShelf` (catalog) substituiu o `RelatedNfts`.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
@@ -134,16 +140,8 @@ Os arquivos de `docs/steps/` foram escritos antes destas decisões; onde divergi
   vai para `/?auth=login&redirect=<url>` (`src/routes/_auth.tsx`) e a sessão expirada faz o mesmo
   sozinha (`src/features/auth/session-expiry.ts`, registrado no `main.tsx`). Passo 13 ("login com
   `redirect=/checkout`"): isso já acontece — falta só preservar os dados do formulário (sessionStorage).
-- **Login limpa o cache privado** (`startSession` → `clearPrivateData` em `src/features/auth/queries.ts`).
-  Passo 11: o merge do carrinho de visitante (`POST /cart/merge`) precisa do `guest-cart-id` **antes**
-  dessa limpeza — encaixe no `onSuccess` de `useLogin`/`useRegister` e só depois invalide `['cart']`.
-- **Mobile não tem header**: o badge de quantidade do carrinho (passo 11) vai no header (≥768px) **e** no
-  ícone de carrinho da `MobileTabBar`. `MobileTabBar` some em `/nfts`, `/cart`, `/checkout`, `/orders`
-  (no Figma essas telas são cheias). Carrinho e Pagamento mobile: use `MobilePageHeader` com o título do
-  Figma ("Carrinho de NFTs", "Pagamento com carteira").
-- **Lugares com "Em breve" que o passo 11 deve trocar pelo carrinho real**: botão de carrinho da fileira
-  de hover do card (`src/features/catalog/components/nft-card.tsx`), "Comprar"/"Comprar NFT" e o botão
-  de carrinho da barra de compra mobile no detalhe (`src/features/nft/components/nft-detail.tsx`).
+- **Mobile não tem header** (o selo do carrinho está no header ≥768px e na `MobileTabBar`). `MobileTabBar` some em `/nfts`, `/cart`, `/checkout`, `/orders`
+  (no Figma essas telas são cheias). Pagamento mobile: use `MobilePageHeader` ("Pagamento com carteira").
 - **Logout** (`useLogout`): no passo 12, desconecte o socket ali também.
 - **Cenários do mock** (passo 15): `src/mocks/scenarios.ts` já tem `default` e `favorites-fail`
   (flag `failFavorites` lida no handler). Ao criar `applyScenario`, migre esse caso para ele.
@@ -157,6 +155,8 @@ Os arquivos de `docs/steps/` foram escritos antes destas decisões; onde divergi
 - **Falhas intermitentes já vistas (1 vez cada, sem reproduzir depois)**: `tests/e2e/mocks.spec.ts`
   (religar o MSW, ~1 em 230 execuções sob carga) e `account.spec.ts` "perfil: editar nome" (mobile).
   Investigar no passo 16 se reaparecerem. Rode suítes novas com `--repeat-each=3`.
+  O teste de sessão expirada já pegou duas corridas (requisição em voo levando o 401 antes do `reload`):
+  hoje ele espera `networkidle` — toda tela nova que busca dados no carregamento pode afetar isso.
 - **Corridas comuns nos testes**: esperar o dado carregar antes de agir (ex.: valor no campo, não só o
   título); esperar o servidor salvar antes de `reload()` (o otimista mostra antes da API responder).
 - **Dev server**: depois de editar, a aba às vezes fica com o módulo antigo em cache — Ctrl+F5. Pasta nova
