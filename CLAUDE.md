@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 08** — `docs/steps/08-auth-sessao.md`.
+- [ ] **Próximo: passo 09** — `docs/steps/09-perfil-carteiras.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -57,10 +57,18 @@ Passos concluídos (marque com o hash do commit):
   elementos `aria-disabled` (use foco + teclado).
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 
+- [x] passo 08 — login e sessão (2bc6bf8). Feature em `src/features/auth/`. A Início é o layout
+  `src/routes/_home.tsx` (`/`, `/login`, `/register`; busca do catálogo via `getRouteApi('/_home')`).
+  Rotas autenticadas no mock começam com `requireUser(db, request)` (`src/mocks/handlers/auth.ts`).
+  Erros da API → campos com `applyApiErrors` (`src/lib/form-errors.ts`); senha com `PasswordInput`.
+  Chaves privadas: use `session.user.id` como `owner`; `clearPrivateData` mantém só `nfts` e `session`.
+  Testes logam pelo modal (`tests/e2e/auth.spec.ts` tem os helpers).
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
 ## Regras obrigatórias
+- **Os avaliadores leem o histórico de commits**: revise o diff antes de commitar (sem arquivos
+  soltos, sem debug), mensagem clara com corpo dizendo o que mudou e por quê.
 - **Código simples e fácil de manter** (pedido explícito do usuário): poucas abstrações, arquivos
   pequenos, uma forma de fazer cada coisa, nomes óbvios. Sem Redux/Zustand.
 - **Commits e PRs sem qualquer atribuição ao Claude**: nada de `Co-Authored-By: Claude`,
