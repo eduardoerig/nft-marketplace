@@ -1,6 +1,6 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { AccountMenu } from '@/features/auth/components/account-menu'
 import { ComingSoon } from './coming-soon'
 import { MobileMenu } from './mobile-menu'
 import { NAV_ITEMS } from './nav-items'
@@ -56,12 +56,7 @@ export function SiteHeader() {
           <Link to="/cart" aria-label="Carrinho" className="relative">
             <img src="/icons/cart-icon.svg" alt="" width={24} height={24} />
           </Link>
-          <Button asChild size="sm" className="hidden px-2.5 font-medium lg:inline-flex">
-            <Link to="/login">
-              <img src="/icons/logout.svg" alt="" width={18} height={17} />
-              Entrar
-            </Link>
-          </Button>
+          <AccountMenu />
           <MobileMenu pathname={pathname} />
         </div>
       </div>

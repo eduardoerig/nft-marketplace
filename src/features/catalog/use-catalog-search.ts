@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
 import type { CatalogSearch } from './search'
 
-const homeRoute = getRouteApi('/')
+const homeRoute = getRouteApi('/_home')
 
 /** Busca atual do catálogo (já validada pelo schema da rota). */
 export function useCatalogSearch() {

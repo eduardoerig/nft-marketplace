@@ -1,15 +1,20 @@
 import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import { MenuIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { UserAvatar } from '@/features/auth/components/account-menu'
+import { useLogout, useSession } from '@/features/auth/queries'
 import { ComingSoon } from './coming-soon'
 import { NAV_ITEMS } from './nav-items'
 
 // Menu das telas menores que 1024px. O Sheet (Radix) já prende o foco e fecha com Esc.
 export function MobileMenu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false)
+  const { data: session } = useSession()
+  const href = useLocation({ select: (l) => l.href })
+  const logout = useLogout()
   const close = () => setOpen(false)
 
   return (
@@ -57,12 +62,36 @@ export function MobileMenu({ pathname }: { pathname: string }) {
             })}
           </ul>
         </nav>
-        <Button asChild>
-          <Link to="/login" onClick={close}>
-            <img src="/icons/logout.svg" alt="" width={18} height={17} />
-            Entrar
-          </Link>
-        </Button>
+        {session ? (
+          <div className="flex flex-col gap-4 border-t border-border pt-6">
+            <div className="flex items-center gap-3">
+              <UserAvatar user={session.user} />
+              <div className="flex min-w-0 flex-col">
+                <span className="truncate font-bold">{session.user.displayName}</span>
+                <span className="truncate text-xs text-muted-foreground">{session.user.email}</span>
+              </div>
+            </div>
+            <Link to="/account/profile" onClick={close}>
+              Meu perfil
+            </Link>
+            <Button
+              variant="outline"
+              onClick={() => {
+                close()
+                logout.mutate()
+              }}
+            >
+              Sair
+            </Button>
+          </div>
+        ) : (
+          <Button asChild>
+            <Link to="/login" search={{ redirect: href }} onClick={close}>
+              <img src="/icons/logout.svg" alt="" width={18} height={17} />
+              Entrar
+            </Link>
+          </Button>
+        )}
       </SheetContent>
     </Sheet>
   )

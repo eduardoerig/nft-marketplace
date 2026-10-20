@@ -64,6 +64,13 @@ quando o MSW não interceptou) também vira `UNAVAILABLE`. Um 401 em requisiçã
 
 `Session = { token, user: User, expiresAt }`.
 
+**Política de sessão:** o token fica em `localStorage['session-token']` (sobrevive ao refresh) e vale
+2 horas. Senhas só existem no banco simulado como SHA-256 de `salt:senha`. Login com e-mail
+inexistente ou senha errada dá a mesma resposta (`INVALID_CREDENTIALS`). Rotas privadas
+(`src/routes/_auth/`) checam `['session']` no `beforeLoad`; sem sessão vão a `/login?redirect=<url>`.
+Um 401 com token dispara `session-expired`: o app apaga a sessão e o cache privado, avisa e, se a
+tela for privada, leva ao login guardando a URL (`src/features/auth/session-expiry.ts`).
+
 ### NFTs — `src/api/nfts.ts`
 
 | Método e rota | Parâmetros | Resposta | Erros |
@@ -164,6 +171,7 @@ Configurada em [`src/lib/queryClient.ts`](../src/lib/queryClient.ts); chaves em
 | Dado | `staleTime` | Observação |
 |---|---|---|
 | Catálogo e detalhe | 30 s | Atualizados também por `nft.updated` |
+| Sessão (`['session']`) | 60 s | Revalidada ao entrar em rota privada depois de 60 s |
 | Carrinho, cotação, pedido | 0 | Sempre revalidados ao montar a tela |
 | Perfil, carteiras, favoritos | 30 s | Invalidados após cada mutation |
 
