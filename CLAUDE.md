@@ -120,7 +120,9 @@ Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
   git config user.email "eduardoferig@gmail.com"
   ```
   (ambientes de nuvem do Claude Code costumam vir com `user.name=Claude` global — sobrescreva no repo).
-  Verificação: `git log --format='%an %ae%n%b' | grep -i claude` deve retornar vazio.
+  Verificação (deve retornar vazio):
+  `git log --format='%an %ae%n%b' | grep -iE "co-authored-by:.*claude|generated with \[?claude|claude-session|^claude "`
+  (um `grep -i claude` simples também acha o nome do arquivo `CLAUDE.md` citado em mensagens — não é atribuição).
 - Componentes/hooks/axios **nunca** importam `src/mocks/` — mocks só na camada de rede (MSW).
 - Valores em ETH sempre como string decimal (big.js em `src/lib/money.ts`).
 
