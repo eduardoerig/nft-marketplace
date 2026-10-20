@@ -63,7 +63,17 @@ test('senha: atual errada dá erro no campo; trocada, vale no próximo login', a
   await expect(current).toHaveAttribute('aria-invalid', 'true')
   await expect(current).toHaveAccessibleDescription('A senha atual está incorreta.')
 
+  // Nova senha igual à atual não é aceita.
+  const newPassword = form.getByLabel('Nova senha', { exact: true })
   await current.fill('Senha@123')
+  await newPassword.fill('Senha@123')
+  await form.getByLabel('Confirmar nova senha').fill('Senha@123')
+  await form.getByRole('button', { name: 'Alterar senha' }).click()
+  await expect(newPassword).toHaveAttribute('aria-invalid', 'true')
+  await expect(newPassword).toHaveAccessibleDescription('A nova senha precisa ser diferente da atual.')
+
+  await newPassword.fill('NovaSenha@456')
+  await form.getByLabel('Confirmar nova senha').fill('NovaSenha@456')
   await form.getByRole('button', { name: 'Alterar senha' }).click()
   await expect(page.getByText('Senha alterada.')).toBeVisible()
 

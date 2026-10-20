@@ -19,6 +19,11 @@ const schema = z
     path: ['confirmPassword'],
     message: 'As senhas não conferem.',
   })
+  // Mesma regra da API: trocar a senha pela mesma não é uma troca.
+  .refine((v) => !v.currentPassword || v.newPassword !== v.currentPassword, {
+    path: ['newPassword'],
+    message: 'A nova senha precisa ser diferente da atual.',
+  })
 type Values = z.infer<typeof schema>
 const EMPTY: Values = { currentPassword: '', newPassword: '', confirmPassword: '' }
 

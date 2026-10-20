@@ -113,6 +113,11 @@ export const profileHandlers = [
         fields: { newPassword: 'A senha precisa ter ao menos 8 caracteres.' },
       })
     }
+    if (input.newPassword === input.currentPassword) {
+      return fail('VALIDATION', 'Confira os campos.', {
+        fields: { newPassword: 'A nova senha precisa ser diferente da atual.' },
+      })
+    }
     const salt = crypto.randomUUID()
     const passwordHash = await hashPassword(salt, input.newPassword!)
     updateDb((db) => {
