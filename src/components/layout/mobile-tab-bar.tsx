@@ -17,15 +17,19 @@ export function MobileTabBar() {
   return (
     <nav
       aria-label="Atalhos"
-      // A sombra fica no <nav> (drop-shadow segue o recorte); o fundo, com o recorte, fica no <div>.
+      // A sombra fica no <nav> (drop-shadow segue o contorno do fundo, inclusive o recorte).
       className="fixed inset-x-0 bottom-0 z-40 h-[95px] drop-shadow-[0_-10px_30px_rgb(10_6_4/45%)] md:hidden"
     >
-      {/* Fundo da barra com a curva do Figma: um recorte em meia-lua (raio 45px) no meio da borda
-          de cima, onde o botão central se encaixa. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 rounded-t-[40px] bg-card mask-[radial-gradient(circle_at_50%_0,transparent_45px,black_46px)]"
-      />
+      {/* Fundo: laterais lisas + o trecho central em SVG com o recorte do Figma, onde o botão
+          central se encaixa (150px de largura, 49px de fundo, com "ombros" suaves — curvas
+          ajustadas ao perfil medido no frame Mobile / Início). */}
+      <div aria-hidden="true" className="absolute inset-0 flex">
+        <div className="-mr-px flex-1 rounded-tl-[40px] bg-card" />
+        <svg viewBox="0 0 150 95" className="h-full w-[150px] shrink-0 fill-card">
+          <path d="M0 0C15 0 24 10 33 25C42 40 55 49 75 49C95 49 108 40 117 25C126 10 135 0 150 0V95H0Z" />
+        </svg>
+        <div className="-ml-px flex-1 rounded-tr-[40px] bg-card" />
+      </div>
       <ul className="relative mx-auto flex h-full max-w-[414px] items-center justify-between px-8">
         <li>
           <Link to="/" aria-label="Início" className={cn(itemClass, pathname === '/' && 'bg-secondary')}>
