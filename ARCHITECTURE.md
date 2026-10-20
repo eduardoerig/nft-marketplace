@@ -205,5 +205,6 @@ e em "Substituições e lacunas". Em resumo:
 - **Baselines visuais:** geradas no Windows. Em outro sistema, gere de novo antes de comparar.
 - **Fora do escopo do desafio:** busca global do header, "Criadores" e "Aprenda", favoritos como tela própria,
   login social e "Esqueceu a senha". Aparecem como "Em breve".
-- **Deploy na Vercel:** ainda não feito (aguarda liberação). `vercel.json` já reescreve as rotas para o
-  `index.html`.
+- **Deploy (Vercel):** https://nft-marketplace-ebon-delta.vercel.app. É um site estático (o `dist/`). O `vercel.json` reescreve para o `index.html` tudo
+  que não for arquivo (acesso direto e refresh em qualquer rota). Os dados simulados vivem no navegador de cada
+  visitante.

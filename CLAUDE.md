@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [x] **Passos 01–18 concluídos.** Falta só o deploy na Vercel (o usuário adiou; é obrigatório no §12 do desafio).
+- [x] **Passos 01–18 concluídos e publicado** em https://nft-marketplace-ebon-delta.vercel.app (projeto Vercel `nft-marketplace`, criado pela CLI).
   Roteiro de validação completo: `docs/CHECKLIST-FINAL.md`.
 
 Passos concluídos (marque com o hash do commit):
@@ -150,7 +150,9 @@ Passos concluídos (marque com o hash do commit):
 - [x] passo 18 — documentação (6aba8f5). README de entrega (setup, comandos, variável, contas, cenários, falhas,
   Lighthouse, deploy, cobertura §9) e `ARCHITECTURE.md`. Clone limpo do GitHub: install + typecheck + lint + build +
   `pnpm test:e2e` = 162 aprovados, 6 pulados. Checklist final em `docs/CHECKLIST-FINAL.md`.
-Deploy na Vercel: **adiado** pelo usuário (passo 18).
+Deploy na Vercel: https://nft-marketplace-ebon-delta.vercel.app. Publicar de novo: `npx vercel@latest deploy --prod` (a pasta já está ligada em
+`.vercel/`; variável `VITE_ENABLE_MOCKS=true` configurada em Production). Depois de mudar código, publique de novo:
+a versão publicada precisa corresponder ao último commit.
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
 ## Regras obrigatórias

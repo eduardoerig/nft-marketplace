@@ -5,7 +5,7 @@ colecionador, em versões desktop e mobile.
 
 | | |
 |---|---|
-| **Aplicação publicada** | _URL pública da Vercel (preencher após o deploy)_ |
+| **Aplicação publicada** | **https://nft-marketplace-ebon-delta.vercel.app** |
 | **Repositório** | https://github.com/eduardoerig/nft-marketplace |
 | **Rodar em localhost** | [`README-LOCAL.md`](README-LOCAL.md) — instalação, comandos, testes e auditoria na sua máquina |
 
@@ -125,7 +125,7 @@ Cupons: `DESCONTO10` (10%) e `EXPIRADO` (vencido). Contas novas podem ser criada
 ## Cenários da API simulada e falhas
 
 Escolha um cenário de três formas (trocar de cenário **reseta os dados** — entre de novo):
-- pela URL: `<URL pública>/?scenario=slow` (fica salvo até trocar);
+- pela URL: `https://nft-marketplace-ebon-delta.vercel.app/?scenario=slow` (fica salvo até trocar);
 - pelo **painel de testes** (botão com o frasco no canto inferior esquerdo), que também reseta os dados, muda
   preços ao vivo e derruba o socket;
 - pela API de controle: `POST /api/__mock/reset { "scenario": "slow" }`.

@@ -4,9 +4,9 @@ Roteiro para testar a entrega inteira **na ordem do enunciado** (`docs/CHALLENGE
 e o que deve acontecer. Marque `[x]` ao conferir.
 
 **Antes de começar**
-- Abra a **URL pública** (no topo do README) no Chrome, com o DevTools aberto
-  (abas **Console**, **Network** e **Application**). Sem o deploy, use a máquina local: `pnpm install` e
-  `pnpm dev` → http://localhost:5173. O comportamento é o mesmo.
+- Abra a **URL pública** (https://nft-marketplace-ebon-delta.vercel.app) no Chrome, com o DevTools aberto
+  (abas **Console**, **Network** e **Application**). Na máquina local o comportamento é o mesmo
+  (ver `README-LOCAL.md`).
 - Contas: `ana@example.com` e `bruno@example.com`, senha `Senha@123`.
 - Cupons: `DESCONTO10` e `EXPIRADO`.
 - Voltar ao estado inicial: painel de testes (botão com o frasco, canto inferior esquerdo) → "Resetar dados"; ou
