@@ -20,7 +20,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 09** — `docs/steps/09-perfil-carteiras.md`.
+- [ ] **Próximo: passo 10** — `docs/steps/10-favoritos.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -63,6 +63,12 @@ Passos concluídos (marque com o hash do commit):
   Erros da API → campos com `applyApiErrors` (`src/lib/form-errors.ts`); senha com `PasswordInput`.
   Chaves privadas: use `session.user.id` como `owner`; `clearPrivateData` mantém só `nfts` e `session`.
   Testes logam pelo modal (`tests/e2e/auth.spec.ts` tem os helpers).
+- [x] passo 09 — perfil e carteiras (914c8e4). Feature em `src/features/account/`; layout de conta em
+  `src/routes/_auth/account.tsx` (menu "Meu perfil": "Lista de interesse" ainda é "Em breve").
+  Campos de formulário: `FormField` (`src/components/form-field.tsx`, com `hideLabel` no login) +
+  `NativeSelect` para selects. Rotas privadas leem o usuário de `context.session` (vem do `_auth`).
+  **Desvios do Figma** ficam em `design/SPEC.md` ("Desvios do Figma") — o passo 18 leva ao ARCHITECTURE.md.
+  TanStack `activeProps` só concatena classes: para estilo do link ativo use `data-[status=active]:`.
 <!-- ex.: - [x] passo 01 — design (abc1234) -->
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
