@@ -6,16 +6,21 @@ import { SiteHeader } from '@/components/layout/site-header'
 import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { AuthDialog } from '@/features/auth/components/auth-dialog'
+import { authSearchSchema } from '@/features/auth/routing'
 
 type RouterContext = { queryClient: QueryClient }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+  // `?auth=login|register` abre o modal de login/cadastro sobre qualquer página.
+  validateSearch: authSearchSchema,
   head: () => ({ meta: [{ title: 'Kurio — Marketplace de NFTs' }] }),
   component: RootLayout,
   notFoundComponent: NotFound,
 })
 
 function RootLayout() {
+  const { auth, redirect } = Route.useSearch()
   return (
     <TooltipProvider>
       <HeadContent />
@@ -37,6 +42,7 @@ function RootLayout() {
         <SiteFooter />
         <MobileTabBar />
       </div>
+      {auth && <AuthDialog mode={auth} redirect={redirect} />}
       <Toaster />
     </TooltipProvider>
   )

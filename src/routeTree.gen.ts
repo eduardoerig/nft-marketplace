@@ -9,24 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as HomeRouteImport } from './routes/_home'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AuthCheckoutRouteImport } from './routes/_auth/checkout'
-import { Route as HomeIndexRouteImport } from './routes/_home/index'
-import { Route as HomeLoginRouteImport } from './routes/_home/login'
-import { Route as HomeRegisterRouteImport } from './routes/_home/register'
 import { Route as NftsNftIdRouteImport } from './routes/nfts.$nftId'
 import { Route as AuthAccountProfileRouteImport } from './routes/_auth/account.profile'
 import { Route as AuthAccountWalletsRouteImport } from './routes/_auth/account.wallets'
 import { Route as AuthOrdersOrderIdRouteImport } from './routes/_auth/orders.$orderId'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/_home',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -34,25 +34,20 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthCheckoutRoute = AuthCheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
   getParentRoute: () => AuthRoute,
-} as any)
-const HomeIndexRoute = HomeIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => HomeRoute,
-} as any)
-const HomeLoginRoute = HomeLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => HomeRoute,
-} as any)
-const HomeRegisterRoute = HomeRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => HomeRoute,
 } as any)
 const NftsNftIdRoute = NftsNftIdRouteImport.update({
   id: '/nfts/$nftId',
@@ -76,22 +71,22 @@ const AuthOrdersOrderIdRoute = AuthOrdersOrderIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof HomeIndexRoute
+  '/': typeof IndexRoute
   '/cart': typeof CartRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/checkout': typeof AuthCheckoutRoute
-  '/login': typeof HomeLoginRoute
-  '/register': typeof HomeRegisterRoute
   '/nfts/$nftId': typeof NftsNftIdRoute
   '/account/profile': typeof AuthAccountProfileRoute
   '/account/wallets': typeof AuthAccountWalletsRoute
   '/orders/$orderId': typeof AuthOrdersOrderIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof HomeIndexRoute
+  '/': typeof IndexRoute
   '/cart': typeof CartRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/checkout': typeof AuthCheckoutRoute
-  '/login': typeof HomeLoginRoute
-  '/register': typeof HomeRegisterRoute
   '/nfts/$nftId': typeof NftsNftIdRoute
   '/account/profile': typeof AuthAccountProfileRoute
   '/account/wallets': typeof AuthAccountWalletsRoute
@@ -99,14 +94,13 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
-  '/_home': typeof HomeRouteWithChildren
   '/cart': typeof CartRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/_auth/checkout': typeof AuthCheckoutRoute
-  '/_home/login': typeof HomeLoginRoute
-  '/_home/register': typeof HomeRegisterRoute
   '/nfts/$nftId': typeof NftsNftIdRoute
-  '/_home/': typeof HomeIndexRoute
   '/_auth/account/profile': typeof AuthAccountProfileRoute
   '/_auth/account/wallets': typeof AuthAccountWalletsRoute
   '/_auth/orders/$orderId': typeof AuthOrdersOrderIdRoute
@@ -116,9 +110,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cart'
-    | '/checkout'
     | '/login'
     | '/register'
+    | '/checkout'
     | '/nfts/$nftId'
     | '/account/profile'
     | '/account/wallets'
@@ -127,49 +121,50 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cart'
-    | '/checkout'
     | '/login'
     | '/register'
+    | '/checkout'
     | '/nfts/$nftId'
     | '/account/profile'
     | '/account/wallets'
     | '/orders/$orderId'
   id:
     | '__root__'
+    | '/'
     | '/_auth'
-    | '/_home'
     | '/cart'
+    | '/login'
+    | '/register'
     | '/_auth/checkout'
-    | '/_home/login'
-    | '/_home/register'
     | '/nfts/$nftId'
-    | '/_home/'
     | '/_auth/account/profile'
     | '/_auth/account/wallets'
     | '/_auth/orders/$orderId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
-  HomeRoute: typeof HomeRouteWithChildren
   CartRoute: typeof CartRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   NftsNftIdRoute: typeof NftsNftIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_home': {
-      id: '/_home'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -179,33 +174,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth/checkout': {
       id: '/_auth/checkout'
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof AuthCheckoutRouteImport
       parentRoute: typeof AuthRoute
-    }
-    '/_home/': {
-      id: '/_home/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof HomeIndexRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/login': {
-      id: '/_home/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof HomeLoginRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/register': {
-      id: '/_home/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof HomeRegisterRouteImport
-      parentRoute: typeof HomeRoute
     }
     '/nfts/$nftId': {
       id: '/nfts/$nftId'
@@ -254,24 +242,12 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-interface HomeRouteChildren {
-  HomeLoginRoute: typeof HomeLoginRoute
-  HomeRegisterRoute: typeof HomeRegisterRoute
-  HomeIndexRoute: typeof HomeIndexRoute
-}
-
-const HomeRouteChildren: HomeRouteChildren = {
-  HomeLoginRoute: HomeLoginRoute,
-  HomeRegisterRoute: HomeRegisterRoute,
-  HomeIndexRoute: HomeIndexRoute,
-}
-
-const HomeRouteWithChildren = HomeRoute._addFileChildren(HomeRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
-  HomeRoute: HomeRouteWithChildren,
   CartRoute: CartRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   NftsNftIdRoute: NftsNftIdRoute,
 }
 export const routeTree = rootRouteImport

@@ -67,7 +67,9 @@ quando o MSW não interceptou) também vira `UNAVAILABLE`. Um 401 em requisiçã
 **Política de sessão:** o token fica em `localStorage['session-token']` (sobrevive ao refresh) e vale
 2 horas. Senhas só existem no banco simulado como SHA-256 de `salt:senha`. Login com e-mail
 inexistente ou senha errada dá a mesma resposta (`INVALID_CREDENTIALS`). Rotas privadas
-(`src/routes/_auth/`) checam `['session']` no `beforeLoad`; sem sessão vão a `/login?redirect=<url>`.
+(`src/routes/_auth/`) checam `['session']` no `beforeLoad`; sem sessão vão a
+`/?auth=login&redirect=<url>`. O modal de login/cadastro é o parâmetro `?auth=login|register` de
+qualquer página: abre por cima da tela atual (`/login` e `/register` só redirecionam para ele).
 Um 401 com token dispara `session-expired`: o app apaga a sessão e o cache privado, avisa e, se a
 tela for privada, leva ao login guardando a URL (`src/features/auth/session-expiry.ts`).
 

@@ -1,4 +1,4 @@
-import { Link, useLocation } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { ChevronDownIcon } from 'lucide-react'
 import type { User } from '@/api/types'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -16,13 +16,12 @@ import { useLogout, useSession } from '../queries'
 /** Botão "Entrar" do header — ou, logado, o menu da conta (variante não desenhada no Figma). */
 export function AccountMenu() {
   const { data: session } = useSession()
-  const href = useLocation({ select: (l) => l.href })
   const logout = useLogout()
 
   if (!session) {
     return (
       <Button asChild size="sm" className="hidden px-2.5 font-medium lg:inline-flex">
-        <Link to="/login" search={{ redirect: href }}>
+        <Link to="." search={(prev) => ({ ...prev, auth: 'login' })}>
           <img src="/icons/logout.svg" alt="" width={18} height={17} />
           Entrar
         </Link>

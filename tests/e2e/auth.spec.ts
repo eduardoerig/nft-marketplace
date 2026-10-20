@@ -39,6 +39,30 @@ async function logout(page: Page, isMobile: boolean) {
   await expect(page.getByText('Você saiu da sua conta.')).toBeVisible()
 }
 
+test('"Entrar" abre o modal por cima da página atual e o login mantém a pessoa nela', async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto('/nfts/1')
+  if (isMobile) await page.getByRole('button', { name: 'Abrir menu' }).click()
+  await page.getByRole('link', { name: 'Entrar', exact: true }).click()
+
+  await expect(page).toHaveURL('/nfts/1?auth=login')
+  await expect(page.getByRole('dialog', { name: 'Entrar' })).toBeVisible()
+
+  // Fechar não muda de página.
+  await page.keyboard.press('Escape')
+  await expect(page).toHaveURL('/nfts/1')
+  await expect(page.getByRole('heading', { level: 1, name: 'Emerald Ape #042' })).toBeVisible()
+
+  // Entrar também não: o modal fecha e a pessoa continua no NFT.
+  await page.goto('/nfts/1?auth=login')
+  await fillLogin(page, 'ana@example.com')
+  await expect(page.getByRole('dialog')).toBeHidden()
+  await expect(page).toHaveURL('/nfts/1')
+  await expectLoggedInAs(page, 'Ana Souza', isMobile)
+})
+
 test('cadastro: e-mail já usado aparece no campo; conta nova entra logada', async ({ page, isMobile }) => {
   await page.goto('/register')
   const dialog = page.getByRole('dialog')
@@ -83,7 +107,7 @@ test('rota privada leva ao login, volta depois de entrar e o refresh mantém a s
   isMobile,
 }) => {
   await page.goto('/account/profile')
-  await expect(page).toHaveURL('/login?redirect=%2Faccount%2Fprofile')
+  await expect(page).toHaveURL('/?auth=login&redirect=%2Faccount%2Fprofile')
 
   await fillLogin(page, 'ana@example.com')
   await expect(page).toHaveURL('/account/profile')
@@ -119,7 +143,7 @@ test('sessão expirada numa tela privada volta ao login guardando o caminho', as
   })
   await page.reload()
 
-  await expect(page).toHaveURL('/login?redirect=%2Faccount%2Fprofile')
+  await expect(page).toHaveURL('/?auth=login&redirect=%2Faccount%2Fprofile')
   await expect(page.getByText('Sua sessão expirou. Entre novamente.')).toBeVisible()
   await fillLogin(page, 'ana@example.com')
   await expect(page).toHaveURL('/account/profile')

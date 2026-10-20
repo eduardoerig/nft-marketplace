@@ -1,16 +1,19 @@
 import type { AnyRouter } from '@tanstack/react-router'
 import { z } from 'zod'
 
-// `?redirect=` das telas de login e cadastro: para onde voltar depois de entrar.
+// O modal de login/cadastro é um parâmetro da URL de QUALQUER página: `/nfts/1?auth=login`.
+// Assim ele abre por cima da tela atual (o refresh mantém aberto) e fechar só tira o parâmetro.
+// `redirect` = para onde ir depois de entrar (quando o login veio de uma rota privada).
 export const authSearchSchema = z.object({
+  auth: z.enum(['login', 'register']).optional().catch(undefined),
   redirect: z.string().optional().catch(undefined),
 })
 
-/** Só aceita caminhos internos ("/account/profile?x=1") — nunca outro site ("//evil.com") nem o próprio login. */
+export type AuthMode = 'login' | 'register'
+
+/** Só aceita caminhos internos ("/account/profile?x=1"), nunca outro site ("//evil.com"). */
 export function safeRedirect(redirect: string | undefined) {
-  const internal = redirect?.startsWith('/') && !redirect.startsWith('//')
-  const isAuthPage = redirect?.startsWith('/login') || redirect?.startsWith('/register')
-  return internal && !isAuthPage ? redirect! : '/'
+  return redirect?.startsWith('/') && !redirect.startsWith('//') ? redirect : '/'
 }
 
 /** A tela atual exige login? (rotas dentro de src/routes/_auth/) */

@@ -18,7 +18,7 @@ export function listenForSessionExpiry(router: AnyRouter, queryClient: QueryClie
     endSession(queryClient)
     toast.error('Sua sessão expirou. Entre novamente.')
     if (isOnPrivateRoute(router)) {
-      router.navigate({ to: '/login', search: { redirect: router.state.location.href } })
+      router.navigate({ to: '/', search: { auth: 'login', redirect: router.state.location.href } })
     }
   })
 }

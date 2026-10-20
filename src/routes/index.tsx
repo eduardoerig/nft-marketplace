@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, stripSearchParams } from '@tanstack/react-router'
+import { createFileRoute, stripSearchParams } from '@tanstack/react-router'
 import { Catalog } from '@/features/catalog/components/catalog'
 import { HomeBlog } from '@/features/catalog/components/home-blog'
 import { HomeHero } from '@/features/catalog/components/home-hero'
@@ -6,11 +6,10 @@ import { HomePromos } from '@/features/catalog/components/home-promos'
 import { SearchBar } from '@/features/catalog/components/search-bar'
 import { catalogSearchDefaults, catalogSearchSchema } from '@/features/catalog/search'
 
-// Layout "sem caminho" da Início: `/` (índice), `/login` e `/register` mostram a mesma página.
-// Login e cadastro abrem por cima dela como modal (no Figma, o modal fica sobre a Início).
-export const Route = createFileRoute('/_home')({
+export const Route = createFileRoute('/')({
   validateSearch: catalogSearchSchema,
   search: { middlewares: [stripSearchParams(catalogSearchDefaults)] },
+  head: () => ({ meta: [{ title: 'Kurio — Marketplace de NFTs' }] }),
   component: HomePage,
 })
 
@@ -23,7 +22,6 @@ function HomePage() {
       <Catalog />
       <HomePromos />
       <HomeBlog />
-      <Outlet />
     </div>
   )
 }

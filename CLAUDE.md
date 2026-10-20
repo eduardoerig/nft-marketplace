@@ -55,14 +55,15 @@ Passos concluídos (marque com o hash do commit):
   troque pelos botões reais lá. Ao mudar fixtures, aumente `SCHEMA_VERSION` (`src/mocks/db.ts`).
   Testes: clique na pílula (`<label>`), não no `<input>` sr-only; o Playwright não clica em
   elementos `aria-disabled` (use foco + teclado).
-<!-- ex.: - [x] passo 01 — design (abc1234) -->
-
-- [x] passo 08 — login e sessão (2bc6bf8). Feature em `src/features/auth/`. A Início é o layout
-  `src/routes/_home.tsx` (`/`, `/login`, `/register`; busca do catálogo via `getRouteApi('/_home')`).
+- [x] passo 08 — login e sessão (2bc6bf8). Feature em `src/features/auth/`. O modal de login/cadastro
+  é o parâmetro `?auth=login|register` de QUALQUER página (validado no `__root.tsx`): abre por cima
+  da tela atual; `/login` e `/register` só redirecionam para `/?auth=…`. Rota privada sem sessão →
+  `/?auth=login&redirect=<url>`.
   Rotas autenticadas no mock começam com `requireUser(db, request)` (`src/mocks/handlers/auth.ts`).
   Erros da API → campos com `applyApiErrors` (`src/lib/form-errors.ts`); senha com `PasswordInput`.
   Chaves privadas: use `session.user.id` como `owner`; `clearPrivateData` mantém só `nfts` e `session`.
   Testes logam pelo modal (`tests/e2e/auth.spec.ts` tem os helpers).
+<!-- ex.: - [x] passo 01 — design (abc1234) -->
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 

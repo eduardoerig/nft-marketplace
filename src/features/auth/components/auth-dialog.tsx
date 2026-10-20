@@ -1,14 +1,12 @@
-import { Link, useCanGoBack, useNavigate, useRouter } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import type { Session } from '@/api/types'
 import { cn } from '@/lib/utils'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { ComingSoonButton } from '@/components/layout/coming-soon'
-import { safeRedirect } from '../routing'
+import { safeRedirect, type AuthMode } from '../routing'
 import { LoginForm } from './login-form'
 import { RegisterForm } from './register-form'
-
-type Mode = 'login' | 'register'
 
 const COPY = {
   login: {
@@ -21,28 +19,32 @@ const COPY = {
     description: 'Crie seu perfil de colecionador e conecte uma carteira quando quiser.',
     switchText: 'Já tem uma conta? Entre',
   },
-} satisfies Record<Mode, unknown>
+} satisfies Record<AuthMode, unknown>
 
 /**
- * Login e cadastro. Desktop (≥640px): modal de 500px sobre a Início, com abas "Entrar | Criar conta".
+ * Login e cadastro, abertos por `?auth=login|register` POR CIMA da página atual (ver __root.tsx).
+ * Desktop (≥640px): modal de 500px com abas "Entrar | Criar conta".
  * Mobile: o mesmo diálogo ocupa a tela inteira, com o logo grande do Figma.
- * Fechar (X, Esc ou overlay) volta para a tela anterior.
+ * Fechar (X, Esc ou overlay) só tira o parâmetro: a pessoa continua onde estava.
  */
-export function AuthDialog({ mode, redirect }: { mode: Mode; redirect?: string }) {
-  const router = useRouter()
+export function AuthDialog({ mode, redirect }: { mode: AuthMode; redirect?: string }) {
   const navigate = useNavigate()
-  const canGoBack = useCanGoBack()
   const copy = COPY[mode]
-  const other: Mode = mode === 'login' ? 'register' : 'login'
+  const other: AuthMode = mode === 'login' ? 'register' : 'login'
 
   function close() {
-    if (canGoBack) router.history.back()
-    else navigate({ to: '/' })
+    navigate({
+      to: '.',
+      search: (prev) => ({ ...prev, auth: undefined, redirect: undefined }),
+      replace: true,
+    })
   }
 
   function onSuccess(session: Session) {
     toast.success(`Olá, ${session.user.displayName}!`)
-    navigate({ href: safeRedirect(redirect), replace: true })
+    // Veio de uma rota privada? Vai para ela. Senão, fica na página atual.
+    if (redirect) navigate({ href: safeRedirect(redirect), replace: true })
+    else close()
   }
 
   return (
@@ -58,16 +60,16 @@ export function AuthDialog({ mode, redirect }: { mode: Mode; redirect?: string }
           <p aria-hidden="true" className="text-[32px] font-bold tracking-[0.1em] sm:hidden">
             KURIO
           </p>
-          {/* Abas do desktop: são links, cada formulário tem a sua URL. */}
+          {/* Abas do desktop: trocam só o `?auth=` da URL. */}
           <nav
             aria-label="Entrar ou criar conta"
             className="flex items-center gap-2 text-xl/4 font-medium max-sm:hidden"
           >
-            <AuthTab to="/login" active={mode === 'login'} redirect={redirect}>
+            <AuthTab mode="login" active={mode === 'login'}>
               Entrar
             </AuthTab>
             <span aria-hidden="true" className="h-5 w-px bg-destructive" />
-            <AuthTab to="/register" active={mode === 'register'} redirect={redirect}>
+            <AuthTab mode="register" active={mode === 'register'}>
               Criar conta
             </AuthTab>
           </nav>
@@ -86,8 +88,8 @@ export function AuthDialog({ mode, redirect }: { mode: Mode; redirect?: string }
         <SocialLogin />
 
         <Link
-          to={other === 'login' ? '/login' : '/register'}
-          search={{ redirect }}
+          to="."
+          search={(prev) => ({ ...prev, auth: other })}
           replace
           className="mt-10 self-center text-[15px] text-muted-foreground hover:text-highlight sm:hidden"
         >
@@ -98,21 +100,11 @@ export function AuthDialog({ mode, redirect }: { mode: Mode; redirect?: string }
   )
 }
 
-function AuthTab({
-  to,
-  active,
-  redirect,
-  children,
-}: {
-  to: '/login' | '/register'
-  active: boolean
-  redirect?: string
-  children: string
-}) {
+function AuthTab({ mode, active, children }: { mode: AuthMode; active: boolean; children: string }) {
   return (
     <Link
-      to={to}
-      search={{ redirect }}
+      to="."
+      search={(prev) => ({ ...prev, auth: mode })}
       replace
       aria-current={active ? 'page' : undefined}
       className={cn('hover:text-highlight', active && 'text-highlight')}

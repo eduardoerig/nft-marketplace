@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { MenuIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -13,7 +13,6 @@ import { NAV_ITEMS } from './nav-items'
 export function MobileMenu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false)
   const { data: session } = useSession()
-  const href = useLocation({ select: (l) => l.href })
   const logout = useLogout()
   const close = () => setOpen(false)
 
@@ -86,7 +85,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
           </div>
         ) : (
           <Button asChild>
-            <Link to="/login" search={{ redirect: href }} onClick={close}>
+            <Link to="." search={(prev) => ({ ...prev, auth: 'login' })} onClick={close}>
               <img src="/icons/logout.svg" alt="" width={18} height={17} />
               Entrar
             </Link>
