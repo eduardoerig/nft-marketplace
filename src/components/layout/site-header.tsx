@@ -8,8 +8,10 @@ import { NAV_ITEMS } from './nav-items'
 export function SiteHeader() {
   const pathname = useLocation({ select: (l) => l.pathname })
 
+  // No mobile (< 768px) o Figma não tem header: a navegação é a barra inferior (MobileTabBar).
+  // Tablet (768–1023px) mantém o header com o menu ☰; desktop, a navegação completa.
   return (
-    <header className="mx-auto w-full max-w-page px-4 pt-6 lg:px-0">
+    <header className="mx-auto w-full max-w-page px-4 pt-6 max-md:hidden lg:px-0">
       <div className="flex h-[45px] items-center justify-between border-b border-primary/30">
         <Link to="/" className="w-40 text-sm font-bold tracking-[0.1em]" aria-label="Kurio, página inicial">
           KURIO

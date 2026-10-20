@@ -1,13 +1,11 @@
 import { expectLoggedInAs, fillLogin, login, logout } from './auth-helpers'
 import { expect, test } from './fixtures'
 
-test('"Entrar" abre o modal por cima da página atual e o login mantém a pessoa nela', async ({
-  page,
-  isMobile,
-}) => {
+test('login abre como modal por cima da página atual e mantém a pessoa nela', async ({ page, isMobile }) => {
   await page.goto('/nfts/1')
-  if (isMobile) await page.getByRole('button', { name: 'Abrir menu' }).click()
-  await page.getByRole('link', { name: 'Entrar', exact: true }).click()
+  // Desktop: botão "Entrar" do header. Mobile (sem header no Figma): o coração pede login.
+  if (isMobile) await page.getByRole('button', { name: 'Favoritar Emerald Ape #042' }).click()
+  else await page.getByRole('link', { name: 'Entrar', exact: true }).click()
 
   await expect(page).toHaveURL('/nfts/1?auth=login')
   await expect(page.getByRole('dialog', { name: 'Entrar' })).toBeVisible()
@@ -22,6 +20,7 @@ test('"Entrar" abre o modal por cima da página atual e o login mantém a pessoa
   await fillLogin(page, 'ana@example.com')
   await expect(page.getByRole('dialog')).toBeHidden()
   await expect(page).toHaveURL('/nfts/1')
+  if (isMobile) await page.goto('/') // o detalhe mobile não tem a barra inferior, onde fica o Perfil
   await expectLoggedInAs(page, 'Ana Souza', isMobile)
 })
 

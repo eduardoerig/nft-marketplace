@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Link, useCanGoBack, useRouter } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import type { Nft } from '@/api/types'
 import { formatEth, mul } from '@/lib/money'
 import { ComingSoonButton } from '@/components/layout/coming-soon'
+import { BackButton } from '@/components/layout/back-button'
 import { QuantityStepper } from '@/components/quantity-stepper'
 import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 import { defaultEditionId } from '../editions'
@@ -239,28 +240,9 @@ function ShareLinks({ name }: { name: string }) {
 
 // Mobile: voltar + favoritar sobre a imagem.
 function MobileTopBar({ nft }: { nft: Nft }) {
-  const router = useRouter()
-  const canGoBack = useCanGoBack()
   return (
     <div className="mb-3 flex justify-between md:hidden">
-      {canGoBack ? (
-        <button
-          type="button"
-          onClick={() => router.history.back()}
-          aria-label="Voltar"
-          className="flex size-[35px] items-center justify-center rounded-full border bg-secondary"
-        >
-          <img src="/icons/curved-arrow-left-2.svg" alt="" width={20} height={20} />
-        </button>
-      ) : (
-        <Link
-          to="/"
-          aria-label="Voltar ao início"
-          className="flex size-[35px] items-center justify-center rounded-full border bg-secondary"
-        >
-          <img src="/icons/curved-arrow-left-2.svg" alt="" width={20} height={20} />
-        </Link>
-      )}
+      <BackButton />
       <FavoriteButton nftId={nft.id} nftName={nft.name} variant="icon" className="size-[35px] border" />
     </div>
   )
