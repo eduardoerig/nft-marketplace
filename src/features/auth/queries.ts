@@ -2,7 +2,8 @@ import { queryOptions, useMutation, useQuery, useQueryClient, type QueryClient }
 import { useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import * as authApi from '@/api/auth'
-import { ApiError, getToken, setToken } from '@/api/client'
+import * as cartApi from '@/api/cart'
+import { ApiError, getGuestCartId, getToken, setGuestCartId, setToken } from '@/api/client'
 import type { Session } from '@/api/types'
 import { queryKeys } from '@/lib/queryKeys'
 import { isOnPrivateRoute } from './routing'
@@ -40,9 +41,19 @@ export function clearPrivateData(queryClient: QueryClient) {
   })
 }
 
-/** Grava a nova sessão: token no localStorage, cache privado limpo, ['session'] preenchida. */
-function startSession(queryClient: QueryClient, session: Session) {
+/**
+ * Grava a nova sessão: token no localStorage, itens do carrinho de visitante passados para a conta,
+ * cache privado limpo e ['session'] preenchida. O merge vem ANTES da limpeza: depois dela o app
+ * já não saberia de quem era o carrinho de visitante.
+ */
+async function startSession(queryClient: QueryClient, session: Session) {
   setToken(session.token)
+  const guestCartId = getGuestCartId()
+  if (guestCartId) {
+    // Falhar o merge não pode impedir o login: na pior hipótese os itens ficam no carrinho de visitante.
+    await cartApi.mergeCart({ guestCartId }).catch(() => undefined)
+    setGuestCartId(null)
+  }
   clearPrivateData(queryClient)
   queryClient.setQueryData(queryKeys.session, session)
 }

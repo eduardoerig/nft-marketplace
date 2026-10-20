@@ -1,6 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { useSession } from '@/features/auth/queries'
+import { CartLink } from '@/features/cart/components/cart-link'
 import { ComingSoon } from './coming-soon'
 
 // Telas de compra no mobile são "tela cheia" no Figma (voltar + título), sem a barra inferior.
@@ -55,9 +56,7 @@ export function MobileTabBar() {
           </Link>
         </li>
         <li>
-          <Link to="/cart" aria-label="Carrinho" className={itemClass}>
-            <img src="/icons/shop.svg" alt="" width={20} height={20} />
-          </Link>
+          <CartLink icon="shop" iconSize={20} className={itemClass} />
         </li>
         <li>
           <Link

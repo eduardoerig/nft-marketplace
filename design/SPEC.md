@@ -264,3 +264,8 @@ versões WebP/AVIF redimensionadas (ex.: 300/600/1200px) no passo 17 para o Ligh
   endereço, tipo e nome ENS. A caixa ".eth" é informativa (só existe esse domínio).
 - **Conta no mobile** (sem frame): o menu "Meu perfil" vira uma faixa com Dados do perfil ·
   Carteiras · Sair acima do conteúdo; os itens "Em breve" só aparecem no desktop.
+- **Carrinho**: cada linha mostra também "Edição: 1/50" (no desktop, junto do ID do token) — duas
+  edições do mesmo NFT são linhas diferentes. No mobile, cada card tem uma lixeira (no Figma a ação de
+  remover não está clara) e o resumo é um bloco no fim da tela, não uma folha fixa. "COMPRAR"/"Comprar NFT"
+  no detalhe põe no carrinho e leva até ele (o pagamento exige login e parte do carrinho). Valores do
+  Figma no resumo (8.92) não fecham com os itens; o app mostra a soma real vinda da cotação.

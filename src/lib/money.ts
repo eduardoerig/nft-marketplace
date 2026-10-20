@@ -18,6 +18,11 @@ export function mul(price: Eth, quantity: number): Eth {
   return new Big(price).times(quantity).toString()
 }
 
+/** Porcentagem de um valor, arredondada para baixo em 6 casas: percentOf('26.83', 10) → '2.683' */
+export function percentOf(value: Eth, percent: number): Eth {
+  return new Big(value).times(percent).div(100).round(6, Big.roundDown).toString()
+}
+
 /** Compara: -1 se a < b, 0 se iguais, 1 se a > b. */
 export function compare(a: Eth, b: Eth): -1 | 0 | 1 {
   return new Big(a).cmp(b)

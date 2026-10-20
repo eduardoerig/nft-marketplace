@@ -13,7 +13,12 @@ const SCHEMA_VERSION = 2 // aumente quando o formato mudar: estados antigos são
 export type MockSession = { token: string; userId: string; expiresAt: string }
 
 export type MockCartLine = { id: string; nftId: string; editionId: string; quantity: number }
-export type MockCart = { id: string; userId: string | null; items: MockCartLine[] }
+export type MockCart = {
+  id: string
+  userId: string | null
+  items: MockCartLine[]
+  lastQuote?: { id: string; version: number } // última cotação emitida (a versão sobe quando muda)
+}
 
 export type MockOrder = Order & { userId: string; idempotencyKey: string; requestHash: string }
 

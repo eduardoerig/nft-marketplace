@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import type { Nft } from '@/api/types'
 import { formatEth, mul } from '@/lib/money'
-import { ComingSoonButton } from '@/components/layout/coming-soon'
+import { useAddToCartAction } from '@/features/cart/use-add-to-cart'
+import { NftShelf } from '@/features/catalog/components/nft-shelf'
 import { BackButton } from '@/components/layout/back-button'
 import { QuantityStepper } from '@/components/quantity-stepper'
 import { FavoriteButton } from '@/features/favorites/components/favorite-button'
@@ -10,7 +11,6 @@ import { defaultEditionId } from '../editions'
 import { EditionPicker } from './edition-picker'
 import { NftGallery } from './nft-gallery'
 import { NftInfoTabs } from './nft-info-tabs'
-import { RelatedNfts } from './related-nfts'
 
 // Tela de detalhe. Desktop: galeria à esquerda e informações à direita. Mobile: imagem no topo,
 // "folha" de detalhes e barra de compra fixa embaixo (como no Figma).
@@ -23,6 +23,10 @@ export function NftDetail({ nft }: { nft: Nft }) {
   const max = Math.max(1, Math.min(edition.available, edition.maxPerOrder))
   const qty = Math.min(quantity, max) // se a disponibilidade cair, a quantidade acompanha
   const atLimit = qty >= max && !soldOut
+  const { add, isPending } = useAddToCartAction()
+  const cartInput = { nftId: nft.id, editionId: edition.id, quantity: qty }
+  // "Comprar" põe no carrinho e leva até ele (o pagamento exige login e passa pelo carrinho).
+  const buy = () => add(cartInput, { goToCart: true })
 
   return (
     <article className="flex flex-col gap-12 pb-40 md:gap-24 md:pt-8 md:pb-0">
@@ -81,9 +85,14 @@ export function NftDetail({ nft }: { nft: Nft }) {
                 name={nft.name}
               />
               <div className="flex gap-2">
-                <ComingSoonButton className="h-10 w-[130px] rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+                <button
+                  type="button"
+                  onClick={buy}
+                  disabled={soldOut || isPending}
+                  className="h-10 w-[130px] rounded-lg bg-primary text-sm font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                >
                   COMPRAR
-                </ComingSoonButton>
+                </button>
                 <FavoriteButton nftId={nft.id} nftName={nft.name} variant="label" />
               </div>
             </div>
@@ -109,7 +118,13 @@ export function NftDetail({ nft }: { nft: Nft }) {
       </div>
 
       <NftInfoTabs nft={nft} />
-      <RelatedNfts nft={nft} />
+      {/* "Mais desta coleção": mesma categoria, mais populares primeiro, sem o NFT aberto. */}
+      <NftShelf
+        id="relacionados"
+        title="Mais desta coleção"
+        params={{ category: nft.category, sort: 'popular' }}
+        excludeId={nft.id}
+      />
 
       {/* Mobile: barra de compra fixa */}
       <div className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-5 rounded-t-[40px] bg-card px-6 pt-5 pb-9 shadow-overlay md:hidden">
@@ -131,13 +146,23 @@ export function NftDetail({ nft }: { nft: Nft }) {
           </p>
         </div>
         <div className="flex gap-3">
-          <ComingSoonButton className="h-[60px] flex-1 rounded-[40px] bg-linear-to-r from-primary to-primary/80 font-bold text-primary-foreground">
+          <button
+            type="button"
+            onClick={buy}
+            disabled={soldOut || isPending}
+            className="h-[60px] flex-1 rounded-[40px] bg-linear-to-r from-primary to-primary/80 font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+          >
             Comprar NFT
-          </ComingSoonButton>
-          <ComingSoonButton className="flex size-[60px] items-center justify-center rounded-full border bg-secondary">
+          </button>
+          <button
+            type="button"
+            onClick={() => add(cartInput)}
+            disabled={soldOut || isPending}
+            aria-label="Adicionar ao carrinho"
+            className="flex size-[60px] items-center justify-center rounded-full border bg-secondary disabled:cursor-not-allowed disabled:opacity-50"
+          >
             <img src="/icons/shop.svg" alt="" width={20} height={20} />
-            <span className="sr-only">Adicionar ao carrinho</span>
-          </ComingSoonButton>
+          </button>
         </div>
       </div>
     </article>

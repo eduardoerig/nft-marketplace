@@ -94,8 +94,10 @@ test('logout e troca de usuário não deixam nada do usuário anterior', async (
 test('sessão expirada numa tela privada volta ao login guardando o caminho', async ({ page }) => {
   await login(page, 'ana@example.com')
   await page.goto('/account/profile')
-  // Espera o perfil chegar: assim nenhuma requisição da tela está no meio do caminho quando a sessão vencer.
+  // Espera a tela terminar de carregar (perfil e carrinho do selo): nenhuma requisição pode estar no
+  // meio do caminho quando a sessão vencer — ela levaria o 401 antes do reload e o aviso se perderia.
   await expect(page.getByLabel('Nome de exibição')).toHaveValue('Ana Souza')
+  await page.waitForLoadState('networkidle')
 
   // Vence a sessão no "servidor" (banco simulado) e recarrega: a API responde 401 SESSION_EXPIRED.
   await page.evaluate(() => {

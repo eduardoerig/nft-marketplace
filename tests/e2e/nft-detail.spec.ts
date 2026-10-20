@@ -72,14 +72,3 @@ test('galeria troca a imagem pelas setas do teclado e amplia', async ({ page, is
   await page.keyboard.press('Escape')
   await expect(dialog).toBeHidden()
 })
-
-test('ações ainda não implementadas não simulam sucesso', async ({ page, isMobile }) => {
-  await page.goto('/nfts/1')
-  const buy = page.getByRole('button', { name: isMobile ? /Comprar NFT/ : /COMPRAR/ })
-  await expect(buy).toHaveAttribute('aria-disabled', 'true')
-  // Pelo teclado (o Playwright não clica em elemento aria-disabled): foca, mostra a dica e nada acontece.
-  await buy.focus()
-  await expect(page.getByRole('tooltip', { name: 'Em breve' })).toBeVisible()
-  await page.keyboard.press('Enter')
-  await expect(page).toHaveURL('/nfts/1')
-})

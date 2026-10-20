@@ -1,6 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { AccountMenu } from '@/features/auth/components/account-menu'
+import { CartLink } from '@/features/cart/components/cart-link'
 import { ComingSoon } from './coming-soon'
 import { MobileMenu } from './mobile-menu'
 import { NAV_ITEMS } from './nav-items'
@@ -57,9 +58,7 @@ export function SiteHeader() {
           >
             <img src="/icons/search-icon.svg" alt="" width={20} height={20} />
           </Link>
-          <Link to="/cart" aria-label="Carrinho" className="relative">
-            <img src="/icons/cart-icon.svg" alt="" width={24} height={24} />
-          </Link>
+          <CartLink icon="cart-icon" iconSize={24} />
           <AccountMenu />
           <MobileMenu pathname={pathname} />
         </div>

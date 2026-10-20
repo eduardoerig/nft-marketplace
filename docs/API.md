@@ -111,14 +111,21 @@ completo e atualizado: `{ id, items: CartItem[], itemCount, subtotal }`.
 Adicionar um item que já existe (mesmo `nftId` + `editionId`) soma a quantidade.
 `CartItem` traz os valores **atuais** do catálogo (`unitPrice`, `available`, `lineTotal`).
 
-### Cotação — `src/api/quote.ts` (autenticado)
+### Cotação — `src/api/quote.ts` (visitante ou logado, como o carrinho)
 
 | Método e rota | Corpo | Resposta | Erros |
 |---|---|---|---|
-| `POST /quote` | `{ couponCode? }` | 200 `Quote` | 401, 409 `OUT_OF_STOCK`, 422 `COUPON_INVALID` / `COUPON_EXPIRED` |
+| `POST /quote` | `{ couponCode? }` | 200 `Quote` | 401 (token inválido), 409 `OUT_OF_STOCK`, 422 carrinho vazio / `COUPON_INVALID` / `COUPON_EXPIRED` (no campo `couponCode`) |
 
 `Quote = { quoteId, version, items, subtotal, coupon, discount, networkFee, total, expiresAt }`.
 O `quoteId` muda sempre que preço, disponibilidade, cupom ou taxa mudam — é a referência para o pedido.
+
+- Mudou em relação ao plano: a cotação **não exige login** (o resumo e o cupom aparecem para o visitante);
+  só o pedido (`POST /orders`) exige.
+- Contas com big.js no mock: `subtotal` = soma das linhas; `discount` = % do cupom sobre o subtotal,
+  arredondado para baixo em 6 casas; `networkFee` = 0.004 ETH por linha; `total` = subtotal − desconto + taxa.
+- `version` sobe a cada cotação com `quoteId` diferente para o mesmo carrinho.
+- O app guarda o cupom aplicado na URL do carrinho (`/cart?cupom=DESCONTO10`) e nunca recalcula valores.
 
 ### Pedidos — `src/api/orders.ts` (autenticado)
 

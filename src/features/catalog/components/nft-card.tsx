@@ -3,7 +3,8 @@ import type { Nft } from '@/api/types'
 import { formatEth } from '@/lib/money'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { ComingSoonButton } from '@/components/layout/coming-soon'
+import { useAddToCartAction } from '@/features/cart/use-add-to-cart'
+import { defaultEditionId } from '@/features/nft/editions'
 import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 
 // Card do catálogo. Desktop: moldura 258×300 com a arte 250×250; mobile: card arredondado com
@@ -69,14 +70,22 @@ const actionClass = 'flex size-[42px] items-center justify-center rounded-[4px] 
  * A camada tem o tamanho da moldura da imagem só para posicionar a fileira.
  */
 function HoverActions({ nft }: { nft: Nft }) {
+  const { add, isPending } = useAddToCartAction()
+  // Do card vai 1 unidade da edição que o detalhe abriria (a mais barata disponível).
+  const soldOut = nft.editions.every((e) => e.available === 0)
+
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 aspect-258/300 max-md:hidden">
       <div className="pointer-events-auto absolute bottom-2.5 left-1/2 flex -translate-x-1/2 gap-3 opacity-0 transition-opacity group-hover:opacity-100 group-has-focus-visible:opacity-100 motion-reduce:transition-none">
-        {/* O carrinho chega no passo 11. */}
-        <ComingSoonButton className={cn(actionClass, 'opacity-100')}>
+        <button
+          type="button"
+          onClick={() => add({ nftId: nft.id, editionId: defaultEditionId(nft.editions), quantity: 1 })}
+          disabled={soldOut || isPending}
+          aria-label={soldOut ? `${nft.name} esgotado` : `Adicionar ${nft.name} ao carrinho`}
+          className={cn(actionClass, 'disabled:cursor-not-allowed disabled:opacity-50')}
+        >
           <img src="/icons/cart-icon.svg" alt="" width={22} height={21} />
-          <span className="sr-only">Adicionar {nft.name} ao carrinho</span>
-        </ComingSoonButton>
+        </button>
         <FavoriteButton nftId={nft.id} nftName={nft.name} variant="icon" className={actionClass} />
         {/* Atalho de mouse: o card inteiro já é um link para o detalhe, então este fica fora do Tab. */}
         <Link
