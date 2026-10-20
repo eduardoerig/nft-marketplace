@@ -19,8 +19,8 @@ e aba **Console** (sem erros vermelhos).
 ---
 
 ## 01 — Design
-- [ ] `design/SPEC.md` tem cores em hex, nome das fontes, tamanhos e espaçamentos.
-- [ ] Abra 2–3 cores no Figma e compare com o SPEC.
+- [x] `design/SPEC.md` tem cores em hex, nome das fontes, tamanhos e espaçamentos.
+- [x] Abra 2–3 cores no Figma e compare com o SPEC.
 - [ ] `design/screens/` tem 15 imagens e elas batem com os frames.
 - [ ] `public/` tem imagens dos NFTs, logo e fontes.
 
