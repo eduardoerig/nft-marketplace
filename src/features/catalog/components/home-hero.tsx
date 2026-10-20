@@ -1,22 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ArrowRightIcon } from 'lucide-react'
+import { ArrowRightIcon, PauseIcon, PlayIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useFeaturedNfts } from '../queries'
 
+const ROTATE_MS = 6000
+
 // Hero da Início. Desktop: texto à esquerda e arte 450×450 à direita. Mobile: card com gradiente.
-// Os 3 pontos do Figma alternam entre os NFTs em destaque.
+// Os 3 pontos do Figma alternam entre os NFTs em destaque — sozinhos a cada 6 s.
+// Acessibilidade (WCAG 2.2.2): pausa com o mouse em cima ou o foco dentro, tem botão de pausar e
+// começa pausado para quem pediu "reduzir movimento" no sistema.
 export function HomeHero() {
   const { data: featured } = useFeaturedNfts()
   const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(prefersReducedMotion)
+  const [holding, setHolding] = useState(false) // mouse em cima ou foco dentro
+  const count = featured?.length ?? 0
+
+  // Um timer por troca: escolher um ponto recomeça a contagem.
+  useEffect(() => {
+    if (count < 2 || paused || holding) return
+    const timer = setTimeout(() => setActive((i) => (i + 1) % count), ROTATE_MS)
+    return () => clearTimeout(timer)
+  }, [active, count, paused, holding])
+
   const current = featured?.[active]
   const secondary = featured?.[(active + 1) % (featured?.length || 1)]
 
   return (
     <section
       aria-labelledby="hero-titulo"
+      onMouseEnter={() => setHolding(true)}
+      onMouseLeave={() => setHolding(false)}
+      onFocus={() => setHolding(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setHolding(false)
+      }}
       className="relative flex items-center gap-2 overflow-hidden rounded-[30px] bg-linear-to-br from-primary/20 to-primary/10 p-4 md:h-[450px] md:justify-between md:rounded-none md:bg-none md:p-0 md:pl-10"
     >
       <div className="flex max-w-[600px] flex-1 flex-col gap-4 md:gap-11">
@@ -50,7 +71,7 @@ export function HomeHero() {
         </div>
 
         {featured && featured.length > 1 && (
-          <div className="flex gap-1.5 md:justify-end md:gap-4">
+          <div className="flex items-center gap-1.5 md:justify-end md:gap-4">
             {featured.map((nft, i) => (
               <button
                 key={nft.id}
@@ -64,6 +85,20 @@ export function HomeHero() {
                 )}
               />
             ))}
+            <button
+              type="button"
+              onClick={() => setPaused((p) => !p)}
+              aria-label={
+                paused ? 'Retomar troca automática dos destaques' : 'Pausar troca automática dos destaques'
+              }
+              className="ml-1 flex size-6 items-center justify-center rounded-full text-muted-foreground hover:text-highlight"
+            >
+              {paused ? (
+                <PlayIcon aria-hidden="true" className="size-3.5" />
+              ) : (
+                <PauseIcon aria-hidden="true" className="size-3.5" />
+              )}
+            </button>
           </div>
         )}
       </div>
@@ -72,12 +107,13 @@ export function HomeHero() {
         {current ? (
           <Link to="/nfts/$nftId" params={{ nftId: current.id }} aria-label={`Ver ${current.name}`}>
             <img
+              key={current.id}
               src={current.images[0]}
               alt={current.name}
               width={450}
               height={450}
               fetchPriority="high"
-              className="aspect-square w-full rounded-2xl object-cover md:rounded-4xl"
+              className="aspect-square w-full animate-in rounded-2xl object-cover duration-500 fade-in motion-reduce:animate-none md:rounded-4xl"
             />
           </Link>
         ) : (
@@ -95,4 +131,8 @@ export function HomeHero() {
       </div>
     </section>
   )
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }

@@ -88,3 +88,19 @@ test('card leva ao detalhe do NFT', async ({ page }) => {
     .click()
   await expect(page).toHaveURL('/nfts/1')
 })
+
+test('hero troca de destaque sozinho a cada 6 s e para no botão de pausar', async ({ page }) => {
+  await page.clock.install() // relógio controlado pelo teste: nada de esperar 6 s de verdade
+  await page.goto('/')
+  const dot = (n: number) => page.getByRole('button', { name: new RegExp(`^Destaque ${n} de 3`) })
+  await expect(dot(1)).toHaveAttribute('aria-pressed', 'true')
+
+  await page.clock.runFor(6_000)
+  await expect(dot(2)).toHaveAttribute('aria-pressed', 'true')
+
+  await page.getByRole('button', { name: 'Pausar troca automática dos destaques' }).click()
+  await page.mouse.move(0, 0) // tira o mouse de cima do hero (o hover também pausa)
+  await page.clock.runFor(20_000)
+  await expect(dot(2)).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('button', { name: 'Retomar troca automática dos destaques' })).toBeVisible()
+})
