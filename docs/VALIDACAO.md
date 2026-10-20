@@ -158,9 +158,10 @@ Tabela completa de cenários em `docs/API.md` → "Cenários da API simulada".
 - [ ] Opcional: extensão axe DevTools em qualquer tela → sem problemas "serious"/"critical" (os testes já checam).
 
 ## 18 — Entrega
-- [ ] Clone o repo numa pasta nova e siga **só** o README: tudo funciona.
+**Roteiro completo, na ordem do enunciado: [`docs/CHECKLIST-FINAL.md`](CHECKLIST-FINAL.md).**
+- [ ] Clone o repo numa pasta nova e siga **só** o README: tudo funciona (já conferido: 162 testes aprovados).
 - [ ] `ARCHITECTURE.md` explica sessão, carrinho, cache, tempo real e desvios do Figma.
-- [ ] URL da Vercel: refresh em `/nfts/<id>` funciona, compra completa funciona, evento de preço funciona.
+- [ ] URL da Vercel (quando liberar o deploy): refresh em `/nfts/<id>` funciona, compra completa funciona, evento de preço funciona.
 
 ---
 
