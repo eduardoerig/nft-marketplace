@@ -36,7 +36,7 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 16** — `docs/steps/16-testes-e2e.md`.
+- [ ] **Próximo: passo 17** — `docs/steps/17-a11y-responsivo-lighthouse.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -135,6 +135,11 @@ Passos concluídos (marque com o hash do commit):
   "só na 1ª vez"). Não há mais `networkDelay`. Painel em `src/components/dev-panel.tsx` (lazy, só com mocks).
   Mensagens de erro via `errorHint` (`src/lib/error-hint.ts`). **Armadilha de teste:** `getByRole(..., { name })`
   casa por trecho — a grade é `{ name: 'NFTs', exact: true }` (senão pega o skeleton "Carregando NFTs").
+- [x] passo 16 — matriz E2E e visual (db9a3c7; ajuste de foco em 81fddec). `a11y.spec.ts` (teclado/foco — o axe do
+  passo 17 entra aqui), `visual.spec.ts` + baselines win32 (`pnpm test:e2e:update` para regenerar; esconda o botão
+  do painel e use movimento reduzido). Diálogos sem DialogTrigger usam `useReturnFocus` (`src/lib/`). Tabela §9 →
+  arquivo no README. `mocks.spec.ts` tem `retries: 2` (CDP fecha a aba às vezes); o flake do account não reapareceu
+  em 100 execuções.
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
@@ -177,9 +182,9 @@ Os arquivos de `docs/steps/` foram escritos antes destas decisões; onde divergi
   para o ARCHITECTURE.md). Registre lá todo desvio novo.
 
 ## Problemas conhecidos e dicas do ambiente
-- **Falhas intermitentes já vistas (1 vez cada, sem reproduzir depois)**: `tests/e2e/mocks.spec.ts`
-  (religar o MSW, ~1 em 230 execuções sob carga) e `account.spec.ts` "perfil: editar nome" (mobile).
-  Investigar no passo 16 se reaparecerem. Rode suítes novas com `--repeat-each=3`.
+- **Falhas intermitentes**: `mocks.spec.ts` — o CDP `stopAllWorkers` às vezes fecha a aba (artefato da automação;
+  o arquivo tem `retries: 2`). `account.spec.ts` "perfil: editar nome" (1 vez no passo 10) não reapareceu em 100
+  execuções no passo 16. Rode suítes novas com `--repeat-each=3`.
   O teste de sessão expirada já pegou duas corridas (requisição em voo levando o 401 antes do `reload`):
   hoje ele espera `networkidle` — toda tela nova que busca dados no carregamento pode afetar isso.
 - **Corridas comuns nos testes**: esperar o dado carregar antes de agir (ex.: valor no campo, não só o
