@@ -5,6 +5,9 @@ import { isScenarioName } from '../scenarios'
 import { fail, ok } from './respond'
 
 export const mockControlHandlers = [
+  // GET /api/__mock/ping → o worker está interceptando esta aba? (ver reviveIfStopped em browser.ts)
+  http.get('/api/__mock/ping', () => ok({ ok: true })),
+
   // POST /api/__mock/reset { scenario? } → restaura o estado inicial do cenário.
   http.post('/api/__mock/reset', async ({ request }) => {
     const body = (await request.json().catch(() => ({}))) as { scenario?: unknown }
