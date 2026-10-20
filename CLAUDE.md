@@ -36,7 +36,8 @@ O usuário quer controle total. O trabalho está dividido em **18 passos**, um a
 
 ## Status atual
 - [x] Plano aprovado e versionado; README inicial.
-- [ ] **Próximo: passo 18** — `docs/steps/18-docs-deploy.md`.
+- [x] **Passos 01–18 concluídos.** Falta só o deploy na Vercel (o usuário adiou; é obrigatório no §12 do desafio).
+  Roteiro de validação completo: `docs/CHECKLIST-FINAL.md`.
 
 Passos concluídos (marque com o hash do commit):
 - [x] passo 01 — design (8074a5f). Figma via API REST (o MCP no plano Starter esgota em poucas
@@ -146,6 +147,9 @@ Passos concluídos (marque com o hash do commit):
   AuthDialog lazy. Artes em WebP (`-800`/`-400`, `src/lib/images.ts`). `pnpm lighthouse [--runs=1 --profile=mobile]`;
   resultados em `lighthouse/RESULTS.md` (desktop 98, mobile ~73 justificado). **Não** use `taskkill /IM chrome.exe`:
   mata o Chrome do usuário — encerre só os PIDs do Lighthouse/preview.
+- [x] passo 18 — documentação (6aba8f5). README de entrega (setup, comandos, variável, contas, cenários, falhas,
+  Lighthouse, deploy, cobertura §9) e `ARCHITECTURE.md`. Clone limpo do GitHub: install + typecheck + lint + build +
+  `pnpm test:e2e` = 162 aprovados, 6 pulados. Checklist final em `docs/CHECKLIST-FINAL.md`.
 Deploy na Vercel: **adiado** pelo usuário (passo 18).
 Plano original em ondas (só referência): `docs/PLAN-ORIGINAL.md`.
 
