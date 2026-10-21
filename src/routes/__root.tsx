@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { validateAuthSearch } from '@/features/auth/routing'
+import { useApiFailed } from '@/lib/api-ready'
 import { useRealtime } from '@/realtime/use-realtime'
 
 type RouterContext = { queryClient: QueryClient }
@@ -32,6 +33,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
   const { auth, redirect } = Route.useSearch()
+  const apiFailed = useApiFailed()
   useRealtime()
   return (
     <TooltipProvider>
@@ -51,7 +53,7 @@ function RootLayout() {
           tabIndex={-1}
           className="mx-auto min-h-dvh w-full max-w-page flex-1 px-4 outline-none lg:px-0"
         >
-          <Outlet />
+          {apiFailed ? <ApiUnavailable /> : <Outlet />}
         </main>
         <SiteFooter />
         <MobileTabBar />
@@ -68,6 +70,25 @@ function RootLayout() {
         </Suspense>
       )}
     </TooltipProvider>
+  )
+}
+
+/**
+ * A API simulada (MSW) não ligou: sem ela nenhum dado chega e as telas ficariam nos skeletons. Recarregar é o
+ * que tenta registrar o service worker de novo — por isso "Tentar novamente" recarrega a página.
+ */
+function ApiUnavailable() {
+  return (
+    <section role="alert" className="flex flex-col items-center gap-6 py-24 text-center">
+      <h1 className="text-2xl font-bold">Não foi possível iniciar a API simulada</h1>
+      <p className="max-w-md text-sm/6 text-muted-foreground">
+        O navegador não conseguiu ligar o service worker que simula a API deste site, então os dados não
+        carregam. Recarregue para tentar de novo.
+      </p>
+      <Button className="uppercase" onClick={() => window.location.reload()}>
+        Tentar novamente
+      </Button>
+    </section>
   )
 }
 

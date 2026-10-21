@@ -273,6 +273,7 @@ Usa o Chromium do Playwright e o preview na porta 4174. Configuração em
 | Depois de editar o código, a tela mostra a versão antiga | Recarregue sem cache (Ctrl+F5). |
 | Uma classe nova do Tailwind "não pega" numa pasta nova | Reinicie o `pnpm dev`. |
 | "Sem conexão com o servidor" logo de cara | O service worker do MSW não ligou: recarregue a aba. Se persistir, DevTools → Application → Service Workers → "Unregister" e recarregue. |
+| Tela "Não foi possível iniciar a API simulada" | O navegador não registrou o service worker do MSW (bloqueado ou travou por mais de 15 s). Clique em "Tentar novamente". Se repetir, confira se uma extensão, o modo anônimo com cookies bloqueados ou um firewall (ex.: Attack Mode da Vercel) está barrando o `/mockServiceWorker.js`. |
 | Dados "estranhos" depois de testar cenários | Painel → "Resetar dados" ou `http://localhost:5173/?scenario=default`. |
 | Os testes não pegam uma mudança recente | Se um `pnpm preview` antigo estiver aberto na porta 4173, o Playwright reaproveita esse servidor (com o build velho). Feche-o e rode `pnpm test:e2e` de novo. |
 | `pnpm dlx` falha no Windows | Use `npx` no lugar. |

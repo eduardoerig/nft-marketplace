@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { listenForSessionExpiry } from '@/features/auth/session-expiry'
-import { setApiReady } from '@/lib/api-ready'
+import { setApiFailed, setApiReady } from '@/lib/api-ready'
 import { queryClient } from '@/lib/queryClient'
 import { routeTree } from './routeTree.gen'
 import './index.css'
@@ -38,7 +38,22 @@ async function enableMocks() {
   await startMocks()
 }
 
-void enableMocks().then(setApiReady)
+// Prazo para o MSW ligar. Passou dele (ou o registro do service worker falhou), a tela mostra o erro com
+// "Tentar novamente" em vez de skeletons sem fim. Se o MSW ligar depois, o app segue normalmente.
+const MOCKS_TIMEOUT_MS = 15_000
+const mocksTimeout = setTimeout(setApiFailed, MOCKS_TIMEOUT_MS)
+
+enableMocks().then(
+  () => {
+    clearTimeout(mocksTimeout)
+    setApiReady()
+  },
+  (error: unknown) => {
+    clearTimeout(mocksTimeout)
+    console.error('A API simulada (MSW) não ligou.', error)
+    setApiFailed()
+  },
+)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
