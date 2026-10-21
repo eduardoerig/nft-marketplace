@@ -9,12 +9,23 @@ import { connectSocket } from './socket'
 
 // Duplicatas e eventos antigos: o mesmo eventId nunca é aplicado duas vezes, e um evento com
 // versão menor ou igual à já aplicada naquele recurso é ignorado (não regride o estado).
+// Só os últimos MAX_SEEN ids ficam guardados: um duplicado chega logo depois do original, e o
+// `lastVersion` continua barrando um evento antigo mesmo depois que o id dele saiu da lista.
+const MAX_SEEN = 500
 const seenEventIds = new Set<string>()
 const lastVersion = new Map<string, number>()
+
+/** Esquece os eventos vistos (troca de usuário): nada da sessão anterior fica na memória. */
+function resetSeenEvents() {
+  seenEventIds.clear()
+  lastVersion.clear()
+}
 
 function isNew(event: RealtimeEvent) {
   if (seenEventIds.has(event.eventId)) return false
   seenEventIds.add(event.eventId)
+  // O Set guarda a ordem de inserção: o primeiro é o mais antigo.
+  if (seenEventIds.size > MAX_SEEN) seenEventIds.delete(seenEventIds.values().next().value!)
   const key = `${event.type}:${event.resourceId}`
   if (event.version <= (lastVersion.get(key) ?? 0)) return false
   lastVersion.set(key, event.version)
@@ -74,6 +85,7 @@ export function useRealtime() {
 
   useEffect(() => {
     if (!ready) return
+    resetSeenEvents()
     let connectedBefore = false
     const onConnect = () => {
       if (connectedBefore) void queryClient.invalidateQueries({ refetchType: 'active' })

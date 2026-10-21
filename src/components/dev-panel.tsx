@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { FlaskConicalIcon } from 'lucide-react'
+import { api } from '@/api/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,7 +15,7 @@ import {
 } from '@/components/ui/sheet'
 
 // Painel de testes da API simulada: só existe com VITE_ENABLE_MOCKS=true (carregado sob demanda pelo
-// __root). Fala apenas com as rotas de controle /api/__mock/* — nada de importar src/mocks aqui.
+// __root). Fala apenas com as rotas de controle /api/__mock/* (pelo Axios) — nada de importar src/mocks aqui.
 
 type ScenarioList = { current: string; scenarios: { name: string; description: string }[] }
 
@@ -25,12 +26,9 @@ const EDITIONS = [
   { id: 'ed-open', name: 'Aberta' },
 ]
 
+// Pelo mesmo cliente Axios do app (baseURL /api): o erro já chega como ApiError, com a mensagem da API.
 async function post(path: string, body?: unknown) {
-  const res = await fetch(path, { method: 'POST', body: JSON.stringify(body ?? {}) })
-  if (!res.ok && res.status !== 204) {
-    const error = (await res.json().catch(() => null)) as { message?: string } | null
-    throw new Error(error?.message ?? `Falhou (${res.status}).`)
-  }
+  await api.post(path, body ?? {})
 }
 
 export default function DevPanel() {
@@ -41,7 +39,7 @@ export default function DevPanel() {
   async function load(open: boolean) {
     if (!open) return
     try {
-      const data = (await fetch('/api/__mock/scenarios').then((r) => r.json())) as ScenarioList
+      const { data } = await api.get<ScenarioList>('/__mock/scenarios')
       setList(data)
       setChosen(data.current)
     } catch {
@@ -61,7 +59,7 @@ export default function DevPanel() {
   // Trocar de cenário ou resetar apaga os dados (sessão, carrinho…): recarrega a página do zero.
   const resetTo = (scenario: string) =>
     run(async () => {
-      await post('/api/__mock/reset', { scenario })
+      await post('/__mock/reset', { scenario })
       window.location.reload()
     }, 'Recarregando…')
 
@@ -72,7 +70,7 @@ export default function DevPanel() {
     const available = String(form.get('available') ?? '').trim()
     void run(
       () =>
-        post('/api/__mock/nft-update', {
+        post('/__mock/nft-update', {
           nftId: String(form.get('nftId')),
           editionId: String(form.get('editionId')),
           ...(price && { price }),
@@ -91,7 +89,8 @@ export default function DevPanel() {
           variant="outline"
           size="icon"
           aria-label="Painel de testes da API simulada"
-          className="fixed bottom-4 left-4 z-40 rounded-full bg-card opacity-60 hover:opacity-100 focus-visible:opacity-100 max-md:bottom-28"
+          // Mobile: aba encostada na borda, metade fora da tela — fica só na margem de 16 px e não cobre os cards.
+          className="fixed bottom-4 left-4 z-40 rounded-full bg-card opacity-60 hover:opacity-100 focus-visible:opacity-100 max-md:bottom-28 max-md:left-0 max-md:h-10 max-md:w-8 max-md:-translate-x-1/2 max-md:justify-end max-md:pr-0.5 max-md:[&_svg]:size-3.5"
         >
           <FlaskConicalIcon aria-hidden="true" />
         </Button>
@@ -169,7 +168,7 @@ export default function DevPanel() {
             variant="outline"
             className="w-fit"
             onClick={() =>
-              void run(() => post('/api/__mock/disconnect'), 'Socket derrubado: o app reconecta sozinho.')
+              void run(() => post('/__mock/disconnect'), 'Socket derrubado: o app reconecta sozinho.')
             }
           >
             Derrubar socket

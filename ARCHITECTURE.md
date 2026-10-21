@@ -151,8 +151,9 @@ lighthouse/     config.cjs, run.mjs, RESULTS.md
   movimento".
 
 ## 10. Desvios do Figma
-A lista completa, com o porquê de cada desvio, está em [`design/SPEC.md` → "Desvios do Figma"](design/SPEC.md#desvios-do-figma-decididos-na-implementação)
-e em "Substituições e lacunas". Em resumo:
+Todos os desvios estão listados abaixo. O detalhamento de cada um (medidas, textos e motivo) está em
+[`design/SPEC.md` → "Desvios do Figma"](design/SPEC.md#desvios-do-figma-decididos-na-implementação) e em
+"Substituições e lacunas".
 - **Login:** modal sobre a página atual, em vez de sobre a Início.
 - **Perfil e senha:** dois formulários.
 - **Pagamento:**
@@ -167,6 +168,16 @@ e em "Substituições e lacunas". Em resumo:
 - **Imagens:** artes convertidas de PNG (2 MB) para WebP (~13/40 KB).
 - **Modais e avisos:** cantos arredondados e faixa inferior fina (no Figma, faixa de 10 px); avisos com o mesmo cartão.
 - **Observação do pedido:** campo fixo, da largura da coluna (no Figma, 350 px).
+- **Busca no desktop:** o frame desktop só tem a lupa no header. Como a busca é obrigatória, a barra "Explorar
+  coleções" do frame mobile aparece também acima do catálogo no desktop, e a lupa leva até ela (`#busca`).
+- **Ordenação no mobile:** o frame mobile não tem "Ordenar por"; ela aparece abaixo das abas, porque é
+  obrigatória em todos os tamanhos.
+- **Hero:** os 3 pontos do Figma viraram botões (trocam o destaque) e ganharam um botão de pausar, exigido pela
+  WCAG 2.2.2 para conteúdo que se move sozinho.
+- **Favoritar nos cards:** o Figma mostra o coração só no primeiro card mobile; aqui todo card tem, para que o
+  favorito funcione em qualquer NFT.
+- **Painel de testes:** o botão com o frasco (canto inferior esquerdo; no mobile, uma aba metade fora da tela)
+  não existe no Figma. Ele só aparece com os mocks ligados e controla cenários, reset e eventos.
 
 ## 11. Acessibilidade (ajustes além do layout)
 - **Navegação e estrutura:** "Pular para o conteúdo"; foco visível em tudo; uma `<main>` por página; títulos em
