@@ -39,12 +39,13 @@ export function NftCard({ nft }: { nft: Nft }) {
         </div>
         <div className="flex flex-col gap-1 pl-2 md:gap-3 md:pl-0">
           <h3 className="text-[15px] md:text-base/4">{nft.name}</h3>
-          <p className="text-base/4 font-bold text-highlight">
-            {formatEth(nft.price)}
+          {/* Cada preço fica inteiro ("1.99 ETH"); se os dois não cabem (card mobile), o antigo desce de linha. */}
+          <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-base/4 font-bold text-highlight">
+            <span className="whitespace-nowrap">{formatEth(nft.price)}</span>
             {nft.previousPrice && (
               <>
                 <span className="sr-only">, antes </span>
-                <s className="ml-3 font-normal whitespace-nowrap text-muted-foreground">
+                <s className="text-sm/4 font-normal whitespace-nowrap text-muted-foreground md:text-base/4">
                   {formatEth(nft.previousPrice)}
                 </s>
               </>
