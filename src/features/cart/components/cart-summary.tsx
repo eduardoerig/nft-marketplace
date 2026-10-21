@@ -148,7 +148,6 @@ function CouponForm({ couponCode, onCouponChange }: Props) {
     )
   }
 
-  const message = fieldError
   return (
     <form noValidate onSubmit={onSubmit} className="flex flex-col gap-2">
       <label htmlFor="cupom" className="text-sm font-bold max-lg:sr-only">
@@ -161,8 +160,8 @@ function CouponForm({ couponCode, onCouponChange }: Props) {
           onChange={(e) => setCode(e.target.value)}
           placeholder="Digite o código promocional..."
           autoComplete="off"
-          aria-invalid={Boolean(message)}
-          aria-describedby={message ? 'cupom-erro' : undefined}
+          aria-invalid={Boolean(fieldError)}
+          aria-describedby={fieldError ? 'cupom-erro' : undefined}
           className="min-w-0 flex-1 bg-transparent px-4 text-sm uppercase placeholder:text-placeholder placeholder:normal-case focus-visible:outline-none lg:px-2 lg:text-xs"
         />
         <button
@@ -173,9 +172,9 @@ function CouponForm({ couponCode, onCouponChange }: Props) {
           {check.isPending ? 'Aplicando…' : 'Aplicar'}
         </button>
       </div>
-      {message && (
+      {fieldError && (
         <p id="cupom-erro" role="alert" className="text-sm text-destructive">
-          {message}
+          {fieldError}
         </p>
       )}
     </form>
