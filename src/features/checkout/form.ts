@@ -14,28 +14,37 @@ export type CheckoutValues = z.input<typeof checkoutSchema>
 export const CHECKOUT_FIELDS = ['displayName', 'username', 'email', 'walletId', 'network', 'note'] as const
 
 // Rascunho do formulário no sessionStorage: se a sessão expirar no meio do pagamento, a pessoa
-// entra de novo e volta para /checkout com tudo que tinha digitado.
+// entra de novo e volta para /checkout com tudo que tinha digitado. O rascunho guarda o dono: se
+// outra conta entrar na mesma aba, ela não recebe nome, e-mail e carteira de quem saiu.
 const DRAFT_KEY = 'checkout-draft'
 
-export function loadDraft(): Partial<CheckoutValues> {
+type Draft = { userId: string; values: Partial<CheckoutValues> }
+
+function loadDraft(userId: string): Partial<CheckoutValues> {
   try {
-    return JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? '{}') as Partial<CheckoutValues>
+    const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? 'null') as Draft | null
+    return draft?.userId === userId ? draft.values : {}
   } catch {
     return {}
   }
 }
 
-export function saveDraft(values: Partial<CheckoutValues>) {
-  sessionStorage.setItem(DRAFT_KEY, JSON.stringify(values))
+export function saveDraft(userId: string, values: Partial<CheckoutValues>) {
+  sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ userId, values } satisfies Draft))
 }
 
 export function clearDraft() {
   sessionStorage.removeItem(DRAFT_KEY)
 }
 
-/** Valores iniciais: o rascunho, se houver; senão o perfil e a carteira principal. */
+/**
+ * Valores iniciais: o rascunho desta conta, se houver; senão o perfil e a carteira principal.
+ * Uma carteira do rascunho que já não está na lista (foi apagada) dá lugar à principal.
+ */
 export function initialValues(profile: Profile, wallets: Wallet[]): CheckoutValues {
   const primary = wallets.find((w) => w.kind === 'primary') ?? wallets[0]
+  const { walletId, ...draft } = loadDraft(profile.id)
+  const draftWallet = wallets.find((w) => w.id === walletId)
   return {
     displayName: profile.displayName,
     username: profile.username,
@@ -43,6 +52,7 @@ export function initialValues(profile: Profile, wallets: Wallet[]): CheckoutValu
     walletId: primary?.id ?? '',
     network: primary?.network ?? '',
     note: '',
-    ...loadDraft(),
+    ...draft,
+    ...(draftWallet && { walletId: draftWallet.id }),
   }
 }

@@ -1,6 +1,6 @@
-import { fillLogin } from './auth-helpers'
+import { fillLogin, login, logout } from './auth-helpers'
 import { expect, test } from './fixtures'
-import { connectWallet, EMERALD_APE, openReview, ordersInDb, startCheckout } from './shop-helpers'
+import { addToCart, connectWallet, EMERALD_APE, openReview, ordersInDb, startCheckout } from './shop-helpers'
 
 test('campos inválidos mostram o erro no campo e não abrem a revisão', async ({ page }) => {
   await startCheckout(page)
@@ -133,4 +133,19 @@ test('sessão expirada no pagamento: login e volta com os dados preenchidos', as
   await expect(page).toHaveURL('/checkout')
   await expect(page.getByLabel('Observação do colecionador (opcional)')).toHaveValue('Presente para a Bia')
   await expect(page.getByLabel('Nome de exibição')).toHaveValue('Ana S.')
+})
+
+test('rascunho do pagamento é de quem o escreveu: outra conta na mesma aba não o recebe', async ({
+  page,
+  isMobile,
+}) => {
+  await startCheckout(page) // Ana
+  await page.getByLabel('Nome de exibição').fill('Ana S.')
+  await logout(page, isMobile)
+
+  await login(page, 'bruno@example.com')
+  await addToCart(page, [EMERALD_APE])
+  await page.goto('/checkout')
+  await expect(page.getByLabel('Nome de exibição')).toHaveValue('Bruno Lima')
+  await expect(page.getByRole('textbox', { name: 'E-mail', exact: true })).toHaveValue('bruno@example.com')
 })

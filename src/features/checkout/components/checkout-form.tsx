@@ -61,7 +61,7 @@ export function CheckoutForm({ profile, wallets, quote, quoteLoading, couponCode
 
   // Rascunho: cada mudança vai para o sessionStorage.
   const values = useWatch({ control })
-  useEffect(() => saveDraft(values as Partial<CheckoutValues>), [values])
+  useEffect(() => saveDraft(profile.id, values as Partial<CheckoutValues>), [profile.id, values])
 
   const walletId = values.walletId ?? ''
   const wallet = wallets.find((w) => w.id === walletId)
