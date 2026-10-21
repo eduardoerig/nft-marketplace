@@ -29,9 +29,10 @@ export function NftGallery({ name, images }: Props) {
         onKeyDown={onKeyDown}
         className="hidden w-[100px] shrink-0 flex-col gap-4 md:flex"
       >
+        {/* key = posição: a mesma imagem pode se repetir na galeria. */}
         {images.map((src, i) => (
           <button
-            key={src}
+            key={i}
             ref={(el) => {
               thumbs.current[i] = el
             }}
@@ -86,9 +87,9 @@ export function NftGallery({ name, images }: Props) {
 
         {/* Mobile: pontos no lugar das miniaturas */}
         <div className="mt-2 flex justify-center md:hidden">
-          {images.map((src, i) => (
+          {images.map((_, i) => (
             <button
-              key={src}
+              key={i}
               type="button"
               onClick={() => setActive(i)}
               aria-pressed={i === active}
