@@ -54,9 +54,9 @@ export function AuthDialog({ mode, redirect }: { mode: AuthMode; redirect?: stri
       <DialogContent
         onCloseAutoFocus={returnFocus}
         className={cn(
-          'flex flex-col gap-0 p-0 sm:max-w-[500px] sm:rounded-lg',
+          'flex flex-col gap-0 p-0 sm:max-w-[500px]',
           // Mobile: tela cheia, fundo da página, sem a faixa inferior do modal.
-          'max-sm:inset-0 max-sm:max-w-none max-sm:translate-x-0 max-sm:translate-y-0 max-sm:overflow-y-auto max-sm:border-b-0 max-sm:bg-background max-sm:px-7 max-sm:pt-20 max-sm:pb-6',
+          'max-sm:inset-0 max-sm:max-w-none max-sm:translate-x-0 max-sm:translate-y-0 max-sm:overflow-y-auto max-sm:rounded-none max-sm:border-0 max-sm:bg-background max-sm:px-7 max-sm:pt-20 max-sm:pb-6',
         )}
       >
         <header className="flex flex-col items-center gap-10 text-center sm:px-12 sm:pt-12">
