@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Wallet } from '@/api/types'
+import type { Profile, Wallet } from '@/api/types'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
@@ -24,20 +24,25 @@ type Props = {
   wallet?: Wallet
   /** Só na secundária: a principal, para "Igual à carteira principal". */
   primary?: Wallet
+  /** Perfil da conta: preenche nome, perfil e e-mail de uma carteira nova. */
+  profile?: Profile
 }
 
 /**
  * Uma carteira (principal ou secundária). Existe → formulário de edição já preenchido.
  * Não existe → estado vazio do Figma + "Adicionar" (abre o formulário de cadastro).
  */
-export function WalletSection({ kind, wallet, primary }: Props) {
+export function WalletSection({ kind, wallet, primary, profile }: Props) {
   const copy = COPY[kind]
   const [adding, setAdding] = useState(false)
   const [sameAsPrimary, setSameAsPrimary] = useState(false)
   const titleId = `carteira-${kind}-titulo`
 
-  // "Igual à carteira principal" copia rede, endereço, tipo e ENS — o apelido continua próprio.
-  const defaults = walletValues(wallet ?? (sameAsPrimary && primary ? { ...primary, label: '' } : {}))
+  // "Igual à carteira principal" copia todos os campos da principal — o apelido continua próprio.
+  const defaults = walletValues(
+    wallet ?? (sameAsPrimary && primary ? { ...primary, label: '' } : {}),
+    profile,
+  )
 
   return (
     <section aria-labelledby={titleId} className="flex flex-col gap-6">

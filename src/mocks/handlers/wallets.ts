@@ -3,15 +3,32 @@ import { http } from 'msw'
 import { NETWORKS, type Wallet, type WalletInput, type WalletUpdate } from '@/api/types'
 import { readDb, updateDb } from '../db'
 import type { MockWallet } from '../fixtures/users'
-import { requireUser } from './auth'
+import { EMAIL, requireUser, USERNAME } from './auth'
 import { fail, ok } from './respond'
 
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/
 const ENS = /^[a-z0-9][a-z0-9.-]{1,38}\.eth$/ // ex.: "nova.kurio.eth"
 const PROVIDERS = ['metamask', 'walletconnect', 'coinbase']
+const REFERRAL = /^[A-Z0-9-]{4,20}$/i // código de indicação, ex.: "KURIO-ANA"
 
-function toWallet({ id, kind, label, address, network, provider, ensName }: MockWallet): Wallet {
-  return { id, kind, label, address, network, provider, ensName }
+/** A carteira como a API mostra: sem o dono (userId). */
+function toWallet(wallet: MockWallet): Wallet {
+  const { id, kind, label, address, network, provider, ensName } = wallet
+  const { displayName, profileName, email, secondaryAddress, referralCode } = wallet
+  return {
+    id,
+    kind,
+    label,
+    address,
+    network,
+    provider,
+    ensName,
+    displayName,
+    profileName,
+    email,
+    secondaryAddress,
+    referralCode,
+  }
 }
 
 function validateWallet(input: WalletUpdate & { kind?: unknown }, creating: boolean) {
@@ -29,7 +46,27 @@ function validateWallet(input: WalletUpdate & { kind?: unknown }, creating: bool
   if ((creating || input.provider !== undefined) && !PROVIDERS.includes(input.provider!)) {
     fields.provider = 'Selecione o tipo de carteira.'
   }
-  if (input.ensName && !ENS.test(input.ensName)) fields.ensName = 'Use um nome terminado em ".eth".'
+  if ((creating || input.ensName !== undefined) && !ENS.test(input.ensName ?? '')) {
+    fields.ensName = 'Use um nome terminado em ".eth".'
+  }
+  // Dados do titular: as mesmas regras do perfil.
+  if ((creating || input.displayName !== undefined) && !/^.{2,40}$/.test(input.displayName?.trim() ?? '')) {
+    fields.displayName = 'Use de 2 a 40 caracteres.'
+  }
+  if ((creating || input.profileName !== undefined) && !USERNAME.test(input.profileName ?? '')) {
+    fields.profileName = 'Use de 3 a 20 letras, números, "." ou "_".'
+  }
+  if ((creating || input.email !== undefined) && !EMAIL.test(input.email ?? '')) {
+    fields.email = 'Informe um e-mail válido.'
+  }
+  // "ENS ou carteira secundária": um nome .eth ou outro endereço 0x.
+  const secondary = input.secondaryAddress
+  if (secondary && !ENS.test(secondary) && !ADDRESS.test(secondary)) {
+    fields.secondaryAddress = 'Use um nome .eth ou um endereço 0x.'
+  }
+  if ((creating || input.referralCode !== undefined) && !REFERRAL.test(input.referralCode ?? '')) {
+    fields.referralCode = 'Use de 4 a 20 letras, números ou "-".'
+  }
   return fields
 }
 
@@ -60,7 +97,12 @@ export const walletHandlers = [
         address: input.address!,
         network: input.network!,
         provider: input.provider!,
-        ensName: input.ensName || null,
+        ensName: input.ensName!,
+        displayName: input.displayName!.trim(),
+        profileName: input.profileName!,
+        email: input.email!,
+        secondaryAddress: input.secondaryAddress || null,
+        referralCode: input.referralCode!.toUpperCase(),
       }
       db.wallets.push(wallet)
       return ok(toWallet(wallet), 201)
@@ -84,7 +126,12 @@ export const walletHandlers = [
         ...(input.address !== undefined && { address: input.address }),
         ...(input.network !== undefined && { network: input.network }),
         ...(input.provider !== undefined && { provider: input.provider }),
-        ...(input.ensName !== undefined && { ensName: input.ensName || null }),
+        ...(input.ensName !== undefined && { ensName: input.ensName }),
+        ...(input.displayName !== undefined && { displayName: input.displayName.trim() }),
+        ...(input.profileName !== undefined && { profileName: input.profileName }),
+        ...(input.email !== undefined && { email: input.email }),
+        ...(input.secondaryAddress !== undefined && { secondaryAddress: input.secondaryAddress || null }),
+        ...(input.referralCode !== undefined && { referralCode: input.referralCode.toUpperCase() }),
       })
       return ok(toWallet(wallet))
     })

@@ -23,7 +23,9 @@ export function FormField({ id, label, error, required, hideLabel, className, ch
   const errorId = `${id}-erro`
   return (
     <Field data-invalid={Boolean(error)} className={cn('gap-2', className)}>
-      <FieldLabel htmlFor={id} className={cn('text-[15px] font-normal', hideLabel && 'sr-only')}>
+      {/* `w-px!`: o FieldLabel do shadcn tem `w-fit`, que venceria o 1px do `sr-only` e deixaria o rótulo invisível
+          com a largura do texto (estoura a tela em 320px quando o rótulo é longo). */}
+      <FieldLabel htmlFor={id} className={cn('text-[15px] font-normal', hideLabel && 'sr-only w-px!')}>
         {label}
         {required && (
           <span aria-hidden="true" className="text-destructive">

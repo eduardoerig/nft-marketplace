@@ -116,7 +116,13 @@ export type Wallet = {
   address: string // 0x…
   network: Network
   provider: WalletProvider
-  ensName: string | null
+  ensName: string // obrigatório (asterisco no Figma), com ".eth": "nova.kurio.eth"
+  // Dados do titular, como no formulário de carteira do Figma.
+  displayName: string // nome de exibição
+  profileName: string // nome do perfil (mesmas regras do nome de usuário)
+  email: string
+  secondaryAddress: string | null // "ENS ou carteira secundária": nome .eth ou endereço 0x
+  referralCode: string // código de indicação (letras, números e "-")
 }
 
 /** Resultado de "Conectar carteira" (simulado). */

@@ -8,7 +8,7 @@ import { userFixtures, walletFixtures, type MockUser, type MockWallet } from './
 import { scenarios, setScenarioName, type Scenario, type ScenarioName } from './scenarios'
 
 const DB_KEY = 'mock-db'
-const SCHEMA_VERSION = 5 // aumente quando o formato mudar: estados antigos são descartados
+const SCHEMA_VERSION = 6 // aumente quando o formato mudar: estados antigos são descartados
 
 export type MockSession = { token: string; userId: string; expiresAt: string }
 

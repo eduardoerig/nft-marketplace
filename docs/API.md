@@ -178,10 +178,13 @@ O `quoteId` muda sempre que preço, disponibilidade, cupom ou taxa mudam — é 
 | `PATCH /wallets/:id` | `WalletUpdate` | 200 `Wallet` | 401, 403, 404, 422 |
 | `POST /wallets/:id/connect` | `{ provider }` | 200 `WalletConnection { walletId, provider, address }` | 401, 403, 404, 422, 409 `WALLET_REJECTED` (cenário `wallet-reject`) |
 
-`Wallet = { id, kind: 'primary' | 'secondary', label, address, network, provider, ensName }`.
+`Wallet = { id, kind: 'primary' | 'secondary', label, address, network, provider, ensName, displayName, profileName, email, secondaryAddress, referralCode }`.
 
-- Endereço: `0x` + 40 hexadecimais. ENS da carteira com `.eth` (`nova.kurio.eth`); o ENS do perfil
-  é guardado sem `.eth`. No `PATCH`, só apelido, endereço, rede, tipo e ENS mudam (`kind` não).
+- Endereço: `0x` + 40 hexadecimais. ENS da carteira **obrigatório**, com `.eth` (`nova.kurio.eth`); o ENS do perfil
+  é guardado sem `.eth`. No `PATCH`, todos os campos mudam, menos `kind`.
+- Dados do titular (formulário do Figma): `displayName` (2–40), `profileName` (regras do nome de usuário), `email`,
+  `secondaryAddress` opcional (nome `.eth` ou endereço `0x`) e `referralCode` (4–20 letras, números ou `-`, guardado em
+  maiúsculas). Numa carteira nova o app sugere nome, perfil e e-mail a partir do perfil da conta.
 - Avatar: data URL PNG/JPEG/WebP de até 200 mil caracteres. O app recorta e reduz a imagem para
   256×256 antes de enviar (`src/features/account/avatar.ts`); `null` remove.
 

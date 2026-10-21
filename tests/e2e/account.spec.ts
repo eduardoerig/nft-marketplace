@@ -90,16 +90,32 @@ test('carteiras: endereço inválido é barrado; secundária nova persiste após
 
   await secondary.getByRole('button', { name: 'Adicionar carteira secundária' }).click()
   const form = secondary.getByRole('form')
+  // Dados do titular já vêm do perfil da conta.
+  await expect(form.getByLabel('Nome de exibição')).toHaveValue('Bruno Lima')
+  await expect(form.getByLabel('Nome do perfil')).toHaveValue('bruno')
+  await expect(form.getByRole('textbox', { name: 'E-mail', exact: true })).toHaveValue('bruno@example.com')
+
   await form.getByLabel('Apelido da carteira').fill('Reserva')
   await form.getByLabel('Rede').selectOption('polygon')
   await form.getByLabel('Endereço da carteira').fill('0x123')
   await form.getByLabel('Tipo de carteira').selectOption('coinbase')
+  await form.getByLabel('ENS ou carteira secundária (opcional)').fill('não-é-ens')
   await form.getByRole('button', { name: 'Salvar carteira' }).click()
   const address = form.getByLabel('Endereço da carteira')
   await expect(address).toHaveAttribute('aria-invalid', 'true')
   await expect(address).toHaveAccessibleDescription('Use "0x" seguido de 40 caracteres hexadecimais.')
+  await expect(form.getByLabel('Código de indicação')).toHaveAccessibleDescription(
+    'Use de 4 a 20 letras, números ou "-".',
+  )
+  await expect(form.getByLabel('ENS ou carteira secundária (opcional)')).toHaveAccessibleDescription(
+    'Use um nome .eth ou um endereço 0x.',
+  )
+  await expect(form.getByLabel('Nome ENS')).toHaveAccessibleDescription('Informe o nome ENS.')
 
   await address.fill('0x1111111111111111111111111111111111111111')
+  await form.getByLabel('Nome ENS').fill('reserva-bruno')
+  await form.getByLabel('Código de indicação').fill('kurio-bruno')
+  await form.getByLabel('ENS ou carteira secundária (opcional)').fill('reserva.bruno.eth')
   await form.getByRole('button', { name: 'Salvar carteira' }).click()
   await expect(page.getByText('Carteira salva.')).toBeVisible()
 
@@ -108,6 +124,9 @@ test('carteiras: endereço inválido é barrado; secundária nova persiste após
     '0x1111111111111111111111111111111111111111',
   )
   await expect(secondary.getByLabel('Rede')).toHaveValue('polygon')
+  await expect(secondary.getByLabel('Código de indicação')).toHaveValue('KURIO-BRUNO')
+  await expect(secondary.getByLabel('ENS ou carteira secundária (opcional)')).toHaveValue('reserva.bruno.eth')
+  await expect(secondary.getByLabel('Nome ENS')).toHaveValue('reserva-bruno')
 })
 
 test('carteiras: "Igual à carteira principal" copia os dados da principal', async ({ page }) => {
@@ -121,5 +140,6 @@ test('carteiras: "Igual à carteira principal" copia os dados da principal', asy
   const secondary = page.getByRole('region', { name: 'Carteira secundária' })
   await secondary.getByLabel('Igual à carteira principal').check()
   await expect(secondary.getByLabel('Endereço da carteira')).toHaveValue(primaryAddress)
+  await expect(secondary.getByLabel('Código de indicação')).toHaveValue('KURIO-BRUNO')
   await expect(secondary.getByLabel('Apelido da carteira')).toHaveValue('')
 })

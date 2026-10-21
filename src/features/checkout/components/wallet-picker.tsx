@@ -48,7 +48,7 @@ export function WalletPicker({ wallets, field, error }: Props) {
             <span className="flex min-w-0 flex-col gap-1">
               <span className="font-bold">{wallet.label}</span>
               <span className="truncate text-sm text-placeholder">
-                {wallet.ensName ?? shortAddress(wallet.address)}
+                {wallet.ensName} · {shortAddress(wallet.address)}
               </span>
               <span className="text-sm text-placeholder">Rede {NETWORK_LABELS[wallet.network]}</span>
             </span>

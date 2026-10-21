@@ -59,7 +59,11 @@ export function WalletForm({ kind, wallet, defaultValues, onSaved }: Props) {
       aria-labelledby={`carteira-${kind}-titulo`}
       className="flex flex-col gap-6"
     >
+      {/* Ordem do Figma, em duas colunas: titular e carteira lado a lado, linha a linha. */}
       <div className="grid grid-cols-1 gap-x-7 gap-y-6 md:grid-cols-2">
+        <FormField id={id('nome')} label="Nome de exibição" required error={errors.displayName?.message}>
+          {(a11y) => <Input {...a11y} {...register('displayName')} autoComplete="name" />}
+        </FormField>
         <FormField id={id('apelido')} label="Apelido da carteira" required error={errors.label?.message}>
           {(a11y) => <Input {...a11y} {...register('label')} placeholder="Ex.: Principal" />}
         </FormField>
@@ -77,6 +81,9 @@ export function WalletForm({ kind, wallet, defaultValues, onSaved }: Props) {
             </NativeSelect>
           )}
         </FormField>
+        <FormField id={id('perfil')} label="Nome do perfil" required error={errors.profileName?.message}>
+          {(a11y) => <Input {...a11y} {...register('profileName')} autoComplete="username" />}
+        </FormField>
         <FormField id={id('endereco')} label="Endereço da carteira" required error={errors.address?.message}>
           {(a11y) => (
             <Input
@@ -86,6 +93,25 @@ export function WalletForm({ kind, wallet, defaultValues, onSaved }: Props) {
               spellCheck={false}
               autoComplete="off"
               className="font-mono"
+            />
+          )}
+        </FormField>
+        {/* No Figma este campo não tem rótulo visível (só o texto de exemplo): o rótulo fica para leitor de tela
+            e o campo alinha pela base com o endereço ao lado. */}
+        <FormField
+          hideLabel
+          id={id('secundaria')}
+          label="ENS ou carteira secundária (opcional)"
+          error={errors.secondaryAddress?.message}
+          className="md:self-end"
+        >
+          {(a11y) => (
+            <Input
+              {...a11y}
+              {...register('secondaryAddress')}
+              placeholder="ENS ou carteira secundária (opcional)"
+              spellCheck={false}
+              autoComplete="off"
             />
           )}
         </FormField>
@@ -103,8 +129,27 @@ export function WalletForm({ kind, wallet, defaultValues, onSaved }: Props) {
             </NativeSelect>
           )}
         </FormField>
-        <FormField id={id('ens')} label="Nome ENS" error={errors.ensName?.message}>
-          {(a11y) => <EnsInput {...a11y} {...register('ensName')} placeholder="opcional" />}
+        <FormField
+          id={id('indicacao')}
+          label="Código de indicação"
+          required
+          error={errors.referralCode?.message}
+        >
+          {(a11y) => (
+            <Input
+              {...a11y}
+              {...register('referralCode')}
+              placeholder="Ex.: KURIO-ANA"
+              autoComplete="off"
+              className="uppercase"
+            />
+          )}
+        </FormField>
+        <FormField id={id('email')} label="E-mail" required error={errors.email?.message}>
+          {(a11y) => <Input {...a11y} {...register('email')} type="email" autoComplete="email" />}
+        </FormField>
+        <FormField id={id('ens')} label="Nome ENS" required error={errors.ensName?.message}>
+          {(a11y) => <EnsInput {...a11y} {...register('ensName')} placeholder="seunome" />}
         </FormField>
       </div>
 
