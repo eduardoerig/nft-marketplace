@@ -7,23 +7,24 @@ colecionador, em versões desktop e mobile.
 |---|---|
 | **Aplicação publicada** | **https://nft-marketplace-ebon-delta.vercel.app** |
 | **Repositório** | https://github.com/eduardoerig/nft-marketplace |
-| **Rodar em localhost** | [`README-LOCAL.md`](README-LOCAL.md) — instalação, comandos, testes e auditoria na sua máquina |
+| **Rodar em localhost** | [Rodar localmente](#rodar-localmente) — instalação, comandos, testes e auditoria na sua máquina |
 
 ## Sumário
 
 1. [Sobre o projeto](#sobre-o-projeto)
-2. [Como avaliar na URL pública](#como-avaliar-na-url-pública)
+2. [Uso de IA](#uso-de-ia)
+3. [Como avaliar na URL pública](#como-avaliar-na-url-pública)
    - [Antes de começar](#antes-de-começar)
    - [Roteiro sugerido](#roteiro-sugerido)
    - [Rotas para acesso direto](#rotas-para-acesso-direto)
    - [O que observar no DevTools](#o-que-observar-no-devtools)
-3. [Contas e cupons de teste](#contas-e-cupons-de-teste)
-4. [Cenários da API simulada e falhas](#cenários-da-api-simulada-e-falhas)
-5. [Variáveis de ambiente](#variáveis-de-ambiente)
-6. [Rodar localmente (resumo)](#rodar-localmente-resumo)
-7. [Lighthouse](#lighthouse-10)
-8. [Cobertura de testes](#cobertura-de-testes-9-do-desafio)
-9. [Documentação](#documentação)
+4. [Contas e cupons de teste](#contas-e-cupons-de-teste)
+5. [Cenários da API simulada e falhas](#cenários-da-api-simulada-e-falhas)
+6. [Variáveis de ambiente](#variáveis-de-ambiente)
+7. [Rodar localmente](#rodar-localmente)
+8. [Lighthouse](#lighthouse-10)
+9. [Cobertura de testes](#cobertura-de-testes-9-do-desafio)
+10. [Documentação](#documentação)
 
 ## Sobre o projeto
 
@@ -34,6 +35,21 @@ Não há backend: a API REST e os eventos Socket.IO são simulados **dentro do n
 worker), com dados salvos no `localStorage` e cenários de falha determinísticos. A versão publicada é o mesmo
 build de produção dos testes (`pnpm build`, com `VITE_ENABLE_MOCKS=true`): login, carrinho, pagamento, pedidos e
 tempo real funcionam completos na URL pública, sem nenhum servidor além da hospedagem.
+
+## Uso de IA
+
+Desenvolvi este projeto com o **Claude Code** como par de programação, num prazo de 2 dias. A maior parte do
+código foi escrita pela IA; o planejamento, as decisões e a validação foram meus. O fluxo foi:
+
+1. **Planejamento:** a partir do enunciado e do Figma, montei com a IA um plano técnico e o dividi em 18 passos
+   pequenos, um arquivo por passo.
+2. **Execução passo a passo:** a IA implementava **um** passo por vez, rodava `typecheck`, `lint` e os testes E2E
+   e parava. Nada seguia sem minha validação.
+3. **Validação:** para cada passo, eu conferia o resultado no navegador com um checklist próprio, lia o diff e
+   pedia explicação do que não entendia. Ajustes de UI e correções de bugs que encontrei viraram commits próprios.
+
+Os commits saíram sem a linha `Co-Authored-By`; este parágrafo é a declaração de que o código foi escrito com
+ajuda de IA. Os planos, os 18 passos e os checklists estão em [`docs/processo/`](docs/processo/README.md).
 
 ## Como avaliar na URL pública
 
@@ -166,13 +182,16 @@ fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: 
 
 A versão publicada é gerada com `VITE_ENABLE_MOCKS=true` — por isso a API simulada e o tempo real funcionam nela.
 
-## Rodar localmente (resumo)
+## Rodar localmente
 
-O guia completo para a sua máquina está em **[`README-LOCAL.md`](README-LOCAL.md)**. Ele cobre os cenários em
-localhost, o tempo real pelo console, os testes, o Lighthouse e os problemas comuns.
+O projeto roda a partir de um checkout limpo, sem serviço privado nem backend: a API REST e o Socket.IO são
+simulados no navegador pelo MSW.
 
-Resumo: o projeto roda a partir de um checkout limpo, sem serviço privado nem backend. Requisitos: Node 22+ e
-pnpm 10 (`corepack enable`). Depois de instalar e subir o servidor, abra http://localhost:5173.
+**Requisitos:**
+- **Node 22+**
+- **pnpm 10**: `corepack enable` instala a versão do campo `packageManager` do `package.json`.
+- **Chrome ou Edge** para usar o app. O Chromium dos testes é instalado pelo Playwright (ver
+  [Testes E2E](#testes-e2e-em-localhost)).
 
 ```bash
 pnpm install
@@ -182,19 +201,81 @@ pnpm install
 pnpm dev
 ```
 
-Os testes E2E precisam do Chromium do Playwright uma vez: `npx playwright install chromium`.
+Abra **http://localhost:5173**. A API simulada liga sozinha (`VITE_ENABLE_MOCKS=true` no `.env`; para mudar só na
+sua máquina, crie um `.env.local`). As [contas](#contas-e-cupons-de-teste) e os
+[cenários](#cenários-da-api-simulada-e-falhas) são os mesmos da URL pública, trocando o endereço por
+`http://localhost:5173`. Para ver o build de produção, igual ao publicado, rode `pnpm build` e depois
+`pnpm preview` (http://localhost:4173).
 
 | Comando | O que faz |
 |---|---|
-| `pnpm dev` | Servidor de desenvolvimento com os mocks |
+| `pnpm dev` | Servidor de desenvolvimento com os mocks (http://localhost:5173) |
 | `pnpm build` | Verifica tipos e gera o build de produção em `dist/` (com os mocks, como a demonstração) |
 | `pnpm preview` | Serve o `dist/` em http://localhost:4173 |
 | `pnpm typecheck` | TypeScript sem gerar arquivos |
 | `pnpm lint` | ESLint |
 | `pnpm format` | Prettier (com ordenação de classes do Tailwind) |
-| `pnpm test:e2e` | Playwright; relatório em `playwright-report/` (`npx playwright show-report`) |
+| `pnpm test:e2e` | Playwright: build + preview + testes em desktop e mobile |
 | `pnpm test:e2e:update` | Regenera as baselines da regressão visual |
 | `pnpm lighthouse` | Build + preview + Lighthouse (Início e Detalhe, mobile e desktop, 3×) → `lighthouse/RESULTS.md` |
+
+### Tempo real à mão
+
+No console do navegador, com a página aberta:
+
+- Mudar o preço do Golden Beat #207 (edição 1/50):
+  ```js
+  fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: '7', editionId: 'ed-1-50', price: '1.5' }) })
+  ```
+- Esgotar a mesma edição:
+  ```js
+  fetch('/api/__mock/nft-update', { method: 'POST', body: JSON.stringify({ nftId: '7', editionId: 'ed-1-50', available: 0 }) })
+  ```
+- Derrubar o socket (o app reconecta em ~1 s):
+  ```js
+  fetch('/api/__mock/disconnect', { method: 'POST' })
+  ```
+
+### Testes E2E em localhost
+
+Na primeira vez, instale o Chromium:
+
+```bash
+npx playwright install chromium
+```
+
+```bash
+pnpm test:e2e
+```
+
+- O comando faz o build, sobe o preview na porta 4173 e roda os testes nos projetos **desktop** (1440×900) e
+  **mobile** (390×844). Leva ~5 min; 6 testes são pulados de propósito (casos só de desktop ou só de mobile).
+- Para rodar só uma área: `pnpm test:e2e checkout`. Relatório HTML (traces e screenshots só das falhas):
+  `npx playwright show-report`.
+- A tabela "requisito do §9 → arquivo de teste" está em [Cobertura de testes](#cobertura-de-testes-9-do-desafio).
+
+### Lighthouse em localhost
+
+`pnpm lighthouse` é a rodada oficial: 3× cada página e perfil (≈6 min); reescreve o `lighthouse/RESULTS.md` e os
+relatórios `*-mediana.html/json`. Para uma conferência rápida que não altera o `RESULTS.md`:
+
+```bash
+pnpm lighthouse --runs=1 --profile=mobile
+```
+
+Usa o Chromium do Playwright e o preview na porta 4174. Configuração em
+[`lighthouse/config.cjs`](lighthouse/config.cjs).
+
+### Problemas comuns em localhost
+
+| Sintoma | O que fazer |
+|---|---|
+| Depois de editar o código, a tela mostra a versão antiga | Recarregue sem cache (Ctrl+F5). |
+| Uma classe nova do Tailwind "não pega" numa pasta nova | Reinicie o `pnpm dev`. |
+| "Sem conexão com o servidor" logo de cara | O service worker do MSW não ligou: recarregue a aba. Se persistir, DevTools → Application → Service Workers → "Unregister" e recarregue. |
+| Dados "estranhos" depois de testar cenários | Painel → "Resetar dados" ou `http://localhost:5173/?scenario=default`. |
+| Os testes não pegam uma mudança recente | Se um `pnpm preview` antigo estiver aberto na porta 4173, o Playwright reaproveita esse servidor (com o build velho). Feche-o e rode `pnpm test:e2e` de novo. |
+| `pnpm dlx` falha no Windows | Use `npx` no lugar. |
 
 ## Lighthouse (§10)
 
@@ -245,7 +326,6 @@ Relatório HTML em `playwright-report/` (`npx playwright show-report`); traces e
 | [`docs/API.md`](docs/API.md) | Contratos REST e de eventos, erros, transporte do socket simulado, tabela de cenários |
 | [`design/SPEC.md`](design/SPEC.md) | Tokens e inventário do Figma, assets e desvios |
 | [`lighthouse/RESULTS.md`](lighthouse/RESULTS.md) | Notas do Lighthouse (medianas) e condições |
-| [`docs/VALIDACAO.md`](docs/VALIDACAO.md) | Checklist manual de validação, passo a passo |
 | [`docs/CHALLENGE.md`](docs/CHALLENGE.md) | Enunciado do desafio |
 | [`docs/CHECKLIST-FINAL.md`](docs/CHECKLIST-FINAL.md) | Roteiro completo de validação, na ordem do enunciado |
-| [`README-LOCAL.md`](README-LOCAL.md) | Como rodar, testar e auditar em localhost |
+| [`docs/processo/`](docs/processo/README.md) | Planos, os 18 passos e checklists usados no desenvolvimento com IA |

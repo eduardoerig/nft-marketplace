@@ -1,7 +1,7 @@
 # Enunciado do desafio (texto original)
 
 Layout de referência: https://www.figma.com/design/Ff0SksUi7UFtPWUO8kyNtw/Frontend-Challenge?node-id=0-1
-(cópia com acesso via MCP: `5Ma6UpJeqdO7vTTFPduSPB` — ver `docs/PLAN.md`)
+(cópia com acesso via MCP: `5Ma6UpJeqdO7vTTFPduSPB` — ver `docs/processo/PLAN.md`)
 
 O desafio avalia fidelidade visual, qualidade das interações, integração com APIs, gerenciamento de estado assíncrono, tempo real, acessibilidade e performance.
 

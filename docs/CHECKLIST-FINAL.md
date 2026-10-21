@@ -6,7 +6,7 @@ e o que deve acontecer. Marque `[x]` ao conferir.
 **Antes de começar**
 - Abra a **URL pública** (https://nft-marketplace-ebon-delta.vercel.app) no Chrome, com o DevTools aberto
   (abas **Console**, **Network** e **Application**). Na máquina local o comportamento é o mesmo
-  (ver `README-LOCAL.md`).
+  (ver "Rodar localmente" no `README.md`).
 - Contas: `ana@example.com` e `bruno@example.com`, senha `Senha@123`.
 - Cupons: `DESCONTO10` e `EXPIRADO`.
 - Voltar ao estado inicial: painel de testes (botão com o frasco, canto inferior esquerdo) → "Resetar dados"; ou
@@ -227,10 +227,6 @@ Painel de testes: escolha o cenário → "Aplicar cenário" (reseta os dados). L
   - `ARCHITECTURE.md`: sessão, carrinho, cache, reconciliação REST ↔ Socket.IO, idempotência, mocks, UX, desvios,
     acessibilidade, limitações;
   - `docs/API.md`: contratos REST e eventos.
-- [ ] **Commits:** histórico sem atribuição ao Claude. O comando abaixo deve voltar vazio:
-  ```bash
-  git log --format='%an %ae%n%b' | grep -iE '^(co-authored-by:.*claude|claude-session:|claude )|generated with \[claude code\]'
-  ```
 - [ ] ⚠️ **Deploy público (obrigatório no §12):** a URL pública está no topo do README e corresponde ao último
   commit da `main`. Nela:
   - refresh em `/nfts/1`, `/cart` e `/checkout` abre a tela certa;
