@@ -45,7 +45,12 @@ export function NftGrid({ data, error, isPending, isRefreshing, onRetry, filtere
       ) : error && !data ? (
         <ErrorState error={error} onRetry={onRetry} />
       ) : data && data.items.length === 0 ? (
-        <EmptyState filtered={filtered} />
+        // Há NFTs, mas não nesta página (link antigo ou `?page=` além da última).
+        data.total > 0 ? (
+          <PageOutOfRange />
+        ) : (
+          <EmptyState filtered={filtered} />
+        )
       ) : (
         <>
           {error && <ErrorState error={error} onRetry={onRetry} compact />}
@@ -85,6 +90,25 @@ function EmptyState({ filtered }: { filtered: boolean }) {
           </Link>
         </Button>
       )}
+    </section>
+  )
+}
+
+function PageOutOfRange() {
+  const id = useId()
+  return (
+    <section aria-labelledby={id} className="flex flex-col items-center gap-4 bg-card px-6 py-16 text-center">
+      <h3 id={id} className="text-lg font-bold">
+        Esta página não existe
+      </h3>
+      <p className="max-w-sm text-sm/6 text-muted-foreground">
+        O catálogo tem menos páginas com a busca e os filtros atuais.
+      </p>
+      <Button asChild variant="outline">
+        <Link from="/" to="/" search={(prev) => ({ ...prev, page: 1 })} hash="catalogo">
+          Ir para a primeira página
+        </Link>
+      </Button>
     </section>
   )
 }

@@ -35,7 +35,8 @@ function PageLink(props: { page: number; label: string; current?: boolean; child
 }
 
 export function Pagination({ page, totalPages }: Props) {
-  if (totalPages <= 1) return null
+  // Página além da última: a grade já oferece o caminho de volta (não há "anterior" que faça sentido).
+  if (totalPages <= 1 || page > totalPages) return null
 
   return (
     <nav aria-label="Paginação" className="flex justify-end">

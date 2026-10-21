@@ -104,3 +104,14 @@ test('hero troca de destaque sozinho a cada 6 s e para no botão de pausar', asy
   await expect(dot(2)).toHaveAttribute('aria-pressed', 'true')
   await expect(page.getByRole('button', { name: 'Retomar troca automática dos destaques' })).toBeVisible()
 })
+
+test('página além da última não diz que o mercado está vazio e leva de volta à 1ª', async ({ page }) => {
+  await page.goto('/?page=50')
+  const region = page.getByRole('region', { name: 'Esta página não existe' })
+  await expect(region).toBeVisible()
+  await expect(page.getByText('Ainda não há NFTs à venda')).toHaveCount(0)
+  await expect(page.getByRole('navigation', { name: 'Paginação' })).toHaveCount(0)
+  await region.getByRole('link', { name: 'Ir para a primeira página' }).click()
+  await expect(page).toHaveURL(/\/(#catalogo)?$/)
+  await expect.poll(() => gridNames(page)).toHaveLength(9)
+})
