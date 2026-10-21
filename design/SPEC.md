@@ -260,9 +260,6 @@ Os NFTs das fixtures reutilizam essas 4 artes.
   "Alterar senha"), porque são chamadas e validações diferentes — um erro na senha não perde os dados.
   O avatar salva assim que a imagem é escolhida. "Nome ENS" e "Apelido da carteira" são opcionais
   (no Figma têm asterisco, mas as contas novas não têm esses dados).
-- **Carteiras**: o formulário do Figma repete dados do perfil (nome de exibição, nome do perfil,
-  e-mail, código de indicação, ENS secundário). A carteira guarda só o que é dela: apelido, rede,
-  endereço, tipo e nome ENS. A caixa ".eth" é informativa (só existe esse domínio).
 - **Conta no mobile** (sem frame): o menu "Meu perfil" vira uma faixa com Dados do perfil ·
   Carteiras · Sair acima do conteúdo; os itens "Em breve" só aparecem no desktop.
 - **Carrinho**: cada linha mostra também "Edição: 1/50" (no desktop, junto do ID do token) — duas
@@ -288,3 +285,9 @@ Os NFTs das fixtures reutilizam essas 4 artes.
   não deixa espaço ao lado, então ela fica em cima e as informações embaixo; as 2 colunas começam em 1024 px.
 - **Telas estreitas (320 px)**: as abas do catálogo e do detalhe e o menu da conta quebram linha em vez de
   estourar a largura (WCAG 1.4.10). Acima de ~360 px ficam numa linha, como no Figma.
+- **Observação do colecionador (pagamento)**: o Figma tem 350×152 px. Aqui mantém os 152 px de altura, mas ocupa a
+  largura da coluna de dados e não redimensiona (pedido do usuário: campo fixo e mais largo).
+- **Modais e avisos (toasts)**: o Figma desenha o modal reto, com faixa inferior de 10px `primary`. A pedido do usuário
+  ("mais clean"), os modais têm cantos de 14px, borda `border-soft`, faixa inferior fina (3px `primary`), fundo com leve
+  desfoque e o "X" redondo e discreto. Os avisos (sem frame no Figma) usam o mesmo cartão; o de "adicionado ao carrinho"
+  mostra a miniatura do NFT. No mobile os avisos descem do topo (o rodapé tem barras fixas).

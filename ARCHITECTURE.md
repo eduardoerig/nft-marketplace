@@ -155,7 +155,6 @@ A lista completa, com o porquê de cada desvio, está em [`design/SPEC.md` → "
 e em "Substituições e lacunas". Em resumo:
 - **Login:** modal sobre a página atual, em vez de sobre a Início.
 - **Perfil e senha:** dois formulários.
-- **Carteiras:** guardam só os dados da carteira.
 - **Pagamento:**
   - sem os campos repetidos da conta;
   - carteiras cadastradas em cartões;
@@ -166,6 +165,8 @@ e em "Substituições e lacunas". Em resumo:
 - **Telas de 320 px:** as abas quebram linha.
 - **Valores:** o resumo do Figma (8.92) não fecha com os itens; o app mostra a soma real da cotação.
 - **Imagens:** artes convertidas de PNG (2 MB) para WebP (~13/40 KB).
+- **Modais e avisos:** cantos arredondados e faixa inferior fina (no Figma, faixa de 10 px); avisos com o mesmo cartão.
+- **Observação do pedido:** campo fixo, da largura da coluna (no Figma, 350 px).
 
 ## 11. Acessibilidade (ajustes além do layout)
 - **Navegação e estrutura:** "Pular para o conteúdo"; foco visível em tudo; uma `<main>` por página; títulos em
