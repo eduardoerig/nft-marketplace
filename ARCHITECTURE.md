@@ -203,10 +203,12 @@ Todos os desvios estão listados abaixo. O detalhamento de cada um (medidas, tex
   - `width`/`height` em todas as imagens (CLS ≈ 0);
   - `loading="lazy"` fora da primeira tela e `fetchpriority="high"` na imagem principal;
   - fonte pré-carregada.
+- **HTML do build** (`vite.config.ts`): o chunk do MSW e suas dependências ganham `modulepreload` (baixam em
+  paralelo com o JS principal; LCP mobile ~0,4 s menor na Início) e o CSS principal vai embutido num `<style>`.
 - **Resultado:** [`lighthouse/RESULTS.md`](lighthouse/RESULTS.md).
-  - Desktop: 98 em performance.
-  - Mobile: ~73. A causa está explicada no próprio arquivo: SPA sem SSR + MSW no navegador, num celular
-    simulado com CPU 4× mais lenta.
+  - Desktop: 97–98 em performance.
+  - Mobile: 72–74. A causa está explicada no próprio arquivo, com os experimentos medidos: SPA sem SSR + MSW no
+    navegador, num celular simulado com CPU 4× mais lenta.
   - Acessibilidade, boas práticas e SEO: 100.
 
 ## 13. Limitações conhecidas

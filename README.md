@@ -287,7 +287,7 @@ Usa o Chromium do Playwright e o preview na porta 4174. Configuração em
 | Página | Perfil | Performance | Acessibilidade | Boas práticas | SEO |
 |---|---|---|---|---|---|
 | Início | mobile | 72 | 100 | 100 | 100 |
-| Início | desktop | 98 | 100 | 100 | 100 |
+| Início | desktop | 97 | 100 | 100 | 100 |
 | Detalhe | mobile | 74 | 100 | 100 | 100 |
 | Detalhe | desktop | 98 | 100 | 100 | 100 |
 
