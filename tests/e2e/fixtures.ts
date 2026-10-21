@@ -15,14 +15,38 @@ type MockApi = {
 // As requisições precisam sair da PÁGINA (não do `page.request`), senão não passam pelo MSW.
 // Depois de goto/reload, espere o MSW ligar: antes disso a chamada vai direto ao servidor.
 async function waitForMocks(page: Page) {
-  await page.waitForFunction(() => (window as Window & { __mocksReady?: boolean }).__mocksReady === true)
+  await page.waitForFunction(
+    () => (window as Window & { __mocksReady?: boolean }).__mocksReady === true,
+    null,
+    {
+      timeout: 15_000,
+    },
+  )
+}
+
+// Mensagens do console da página, para o erro dizer POR QUE o MSW não ligou (sem isso, a falha é só "timeout").
+function collectConsole(page: Page) {
+  const lines: string[] = []
+  page.on('console', (msg) => lines.push(`[${msg.type()}] ${msg.text()}`))
+  page.on('pageerror', (error) => lines.push(`[pageerror] ${error.message}`))
+  return lines
 }
 
 export const test = base.extend<{ mockApi: MockApi }>({
   mockApi: [
     async ({ page }, use) => {
+      const consoleLines = collectConsole(page)
       await page.goto('/')
-      await waitForMocks(page)
+      // O 1º registro do service worker do MSW às vezes não termina com muitos workers em paralelo. Em vez de
+      // esperar o teste inteiro estourar, recarrega uma vez; se falhar de novo, o erro traz o console da página.
+      await waitForMocks(page).catch(async () => {
+        await page.reload()
+        await waitForMocks(page).catch((error: Error) => {
+          throw new Error(`O MSW não ligou na página.\nConsole:\n${consoleLines.slice(-30).join('\n')}`, {
+            cause: error,
+          })
+        })
+      })
 
       const mockApi: MockApi = {
         reset: async (scenario = 'default') => {

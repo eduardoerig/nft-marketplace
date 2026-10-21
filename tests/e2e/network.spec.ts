@@ -1,10 +1,11 @@
 // Cenários de rede e de falha (src/mocks/scenarios.ts). Cada teste escolhe o cenário com
 // mockApi.reset(nome) — o mesmo que ?scenario= e o painel de testes fazem — e olha só a tela.
 import { fillLogin } from './auth-helpers'
+import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { connectWallet, openReview, ordersInDb, startCheckout } from './shop-helpers'
 
-const grid = (page: import('@playwright/test').Page) => page.getByRole('list', { name: 'NFTs', exact: true })
+const grid = (page: Page) => page.getByRole('list', { name: 'NFTs', exact: true })
 
 test('slow: skeletons enquanto carrega e depois os cards', async ({ page, mockApi }) => {
   await mockApi.reset('slow')
@@ -45,15 +46,28 @@ test('out-of-order: a resposta antiga que chega depois não substitui a nova', a
   await page.goto('/?category=music#catalogo')
   await expect(grid(page).getByRole('listitem').first()).toBeVisible({ timeout: 10_000 })
   // Duas buscas seguidas: a 1ª (lenta) responde depois da 2ª (rápida).
+  const golden = requestSettled(page, /\/api\/nfts\?.*q=Golden/)
   await page.goto('/?q=Golden#catalogo')
   await page.getByRole('searchbox').first().fill('Ape')
   await page.getByRole('searchbox').first().press('Enter')
   await expect(page).toHaveURL(/q=Ape/)
-  await page.waitForTimeout(2000) // tempo para a resposta atrasada chegar
-  const names = await grid(page).getByRole('heading').allInnerTexts()
-  expect(names.length).toBeGreaterThan(0)
-  expect(names.every((name) => /Ape/.test(name))).toBe(true)
+  // Espera a resposta lenta terminar (ou ser cancelada pelo app) em vez de um tempo fixo.
+  await golden
+  await expect
+    .poll(async () => {
+      const names = await grid(page).getByRole('heading').allInnerTexts()
+      return names.length > 0 && names.every((name) => /Ape/.test(name))
+    })
+    .toBe(true)
 })
+
+/** Resolve quando a requisição que casa com `url` termina — com resposta ou cancelada (AbortController). */
+function requestSettled(page: Page, url: RegExp) {
+  return Promise.race([
+    page.waitForEvent('requestfinished', (request) => url.test(request.url())),
+    page.waitForEvent('requestfailed', (request) => url.test(request.url())),
+  ])
+}
 
 test('register-conflict: o e-mail já usado aparece no campo', async ({ page, mockApi }) => {
   await mockApi.reset('register-conflict')
@@ -99,8 +113,12 @@ test('sold-out-checkout: item esgota ao confirmar e o pedido não é criado', as
   await connectWallet(page)
   const dialog = await openReview(page)
   await dialog.getByRole('button', { name: 'Confirmar e pagar' }).click()
-  await expect(dialog.getByRole('alert')).toContainText('Emerald Ape #042 esgotou nesta edição.')
-  await expect(dialog.getByRole('link', { name: 'Voltar ao carrinho' })).toBeVisible()
+  // Duas telas válidas, conforme o que chega primeiro: a resposta 409 do pedido (aviso dentro da revisão) ou o
+  // `nft.updated` do socket, que refaz a cotação e troca o formulário inteiro pelo aviso da página. Por isso o
+  // aviso e o link são procurados na página, não só no diálogo.
+  const soldOut = page.getByRole('alert').filter({ hasText: 'Emerald Ape #042 esgotou nesta edição.' })
+  await expect(soldOut.last()).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Voltar ao carrinho', exact: true }).last()).toBeVisible()
   expect(await ordersInDb(page)).toBe(0)
 })
 

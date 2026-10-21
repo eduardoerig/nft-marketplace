@@ -46,8 +46,10 @@ test('evento antigo ou duplicado não regride o detalhe', async ({ page, mockApi
 
   // O servidor reenvia o evento antigo (versão menor): a tela não pode voltar para 0.45.
   // (Cada reenvio é conferido sozinho: se o novo viesse logo atrás, ele "consertaria" a tela.)
+  // Espera fixa de propósito: o teste prova uma AUSÊNCIA de mudança, então não há elemento pelo qual esperar.
+  // Um evento "marcador" depois do reenvio não serve — ele traz o estado atual e esconderia a regressão.
   await mockApi.postJson('/api/__mock/replay', { eventId: older.body.eventId })
-  await page.waitForTimeout(500) // nada deveria acontecer: dá tempo de um erro aparecer
+  await page.waitForTimeout(500)
   await expect(shown(page, '0.35 ETH')).toBeVisible()
   await expect(page.getByText('0.45 ETH').filter({ visible: true })).toHaveCount(0)
 
@@ -88,9 +90,8 @@ test('evento perdido durante a desconexão é recuperado do REST ao reconectar',
   await expect(shown(page, '0.99 ETH')).toBeVisible()
   await mockApi.waitForSocket()
 
-  // Muda no "servidor" sem emitir (o evento se perdeu) e derruba a conexão.
+  // Muda no "servidor" sem emitir (o evento se perdeu) e derruba a conexão. Sem evento, não há o que esperar.
   await mockApi.postJson('/api/__mock/nft-update', { ...GOLDEN_BEAT, price: '0.25', silent: true })
-  await page.waitForTimeout(500)
   await expect(page.getByText('0.25 ETH').filter({ visible: true })).toHaveCount(0)
   await mockApi.postJson('/api/__mock/disconnect')
 
