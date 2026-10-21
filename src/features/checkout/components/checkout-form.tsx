@@ -225,8 +225,8 @@ export function CheckoutForm({ profile, wallets, quote, quoteLoading, couponCode
             <textarea
               {...a11y}
               {...register('note')}
-              rows={6}
-              className="w-full rounded-sm border border-input bg-transparent p-3 text-sm placeholder:text-placeholder focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none md:w-[350px]"
+              // Tamanho fixo (sem a alça de redimensionar): 152px de altura como no Figma, largura da coluna.
+              className="h-[152px] w-full resize-none rounded-sm border border-input bg-transparent p-3 text-sm placeholder:text-placeholder focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             />
           )}
         </FormField>
